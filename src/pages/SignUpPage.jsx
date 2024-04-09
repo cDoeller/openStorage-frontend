@@ -1,6 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 import "../styles/SignUp.css";
 
 function SignUpPage() {
@@ -8,17 +9,56 @@ function SignUpPage() {
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [passwordsMatching, setPasswordsMatching] = useState(true);
+
+  const navigate = useNavigate();
+
+  const passwordError = (
+    <>
+      <h3 className="signup-password-error">
+        Your passwords do not match. <br /> please try again.
+      </h3>
+    </>
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    
+    if (password !== repeatedPassword) {
+      setPasswordsMatching(false);
+      setPassword("");
+      setRepeatedPassword("");
+      return;
+    } else {
+      setPasswordsMatching(true);
+    }
+
+    const newUser = {
+      email: email,
+      password: password,
+      user_name: userName,
+    };
+
+    // ******* TO DO: ERROR HANDLING
+    axios
+      .post(`${import.meta.env.VITE_API_URL}/api/auth/signup`, newUser)
+      .then((createdUser) => {
+        console.log(createdUser);
+        navigate("/login");
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
-    <>
+    <div className="signup-page-wrapper">
       <h1 className="signup-headline">Welcome to Open Storage</h1>
-      <form action="" className="signup-form">
+      <form
+        action=""
+        className="signup-form"
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+      >
         <label htmlFor="" className="signup-form-label">
           user name
           <input
@@ -67,6 +107,7 @@ function SignUpPage() {
             className="signup-form-input"
           />
         </label>
+        {!passwordsMatching && passwordError}
         <button type="submit" className="signup-form-button">
           Sign Up
         </button>
@@ -74,7 +115,7 @@ function SignUpPage() {
           <p className="singup-login-link">Already have an Acoount?</p>
         </Link>
       </form>
-    </>
+    </div>
   );
 }
 
