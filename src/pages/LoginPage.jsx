@@ -6,6 +6,9 @@ import "../styles/Login.css";
 
 import { AuthContext } from "../context/auth.context";
 
+// christian@testmail.com
+// Ab123456
+
 function LoginPage() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +37,7 @@ function LoginPage() {
         authenticateUser();
 
         // navigate to profile page
-        // navigate("/");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);

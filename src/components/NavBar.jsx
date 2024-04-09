@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../styles/NavBar.css";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
 
 function NavBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [userName, setUserName] = useState("userName");
+  const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
   const publicNav = (
     <div className="nav-signup-login">
@@ -21,31 +20,29 @@ function NavBar() {
   const privateNav = (
     <div className="nav-signup-login">
       <Link to="/">
-        <h3 className="nav-signup-login-text"> {userName} </h3>
+        <h3 className="nav-signup-login-text"> {user && user.user_name} </h3>
       </Link>
-      <Link to="/">
-        <div className="nav-logo-container">
-          <img
-            className="nav-logo-img"
-            src="../../public/img/signout.png"
-            alt=""
-          />
-        </div>
-      </Link>
+      <div className="nav-logo-container" onClick={logOutUser}>
+        <img
+          className="nav-logo-img"
+          src="../../public/img/signout.png"
+          alt=""
+        />
+      </div>
     </div>
   );
 
   return (
     <nav className="nav">
-        <div className="nav-logo-container">
-          <img
-            src="../../public/img/logo-placeholder-image.png"
-            alt="open-storage-logo"
-            className="nav-logo-img"
-          />
-        </div>
-        {!isLoggedIn && publicNav}
-        {isLoggedIn && privateNav}
+      <div className="nav-logo-container">
+        <img
+          src="../../public/img/logo-placeholder-image.png"
+          alt="open-storage-logo"
+          className="nav-logo-img"
+        />
+      </div>
+      {!isLoggedIn && publicNav}
+      {isLoggedIn && privateNav}
     </nav>
   );
 }

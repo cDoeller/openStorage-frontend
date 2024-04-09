@@ -40,6 +40,7 @@ function AuthProviderWrapper(props) {
       setIsLoggedIn(false);
       setIsLoading(false);
       setUser(null);
+      console.log("user not logged in.");
     }
   }
 
