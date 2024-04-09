@@ -1,0 +1,28 @@
+.nav {
+  background-color: rgb(160, 144, 248);
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 2px solid black;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.nav-logo-container {
+  width: 50px;
+  height: 50px;
+}
+.nav-logo-img {
+  width: 100%;
+}
+.nav-signup-login {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav-signup-login-text {
+  font-size: 1rem;
+}
