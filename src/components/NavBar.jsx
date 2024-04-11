@@ -67,11 +67,13 @@ function NavBar() {
     <nav className="nav">
       <div className="nav-top">
         <div className="nav-top-logo-container">
+    <Link to="/">
           <img
             src="../../public/img/logo-placeholder-image.png"
             alt="open-storage-logo"
             className="nav-top-logo-img"
           />
+       </Link>
         </div>
         {!isLoggedIn && publicNav}
         {isLoggedIn && privateNav}
