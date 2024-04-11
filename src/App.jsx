@@ -10,6 +10,7 @@ import ProfilePage from "./pages/ProfilePage";
 import IsAnon from "./components/IsAnon";
 import IsPrivate from "./components/IsPrivate";
 import Loading from "./components/Loading";
+import FooterGeneral from "./components/FooterGeneral";
 import ArtworkDetailPage from "./pages/ArtworkDetailPage";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/profile/:id" element={ <ProfilePage />} />
         <Route path="/artwork/:id" element={ <ArtworkDetailPage />} />
       </Routes>
+      <FooterGeneral/>
     </>
   );
 }
