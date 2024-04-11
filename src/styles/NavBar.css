@@ -1,4 +1,7 @@
 .nav{
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 .nav-top {
@@ -10,9 +13,9 @@
   align-items: center;
   padding: 1rem;
   border-bottom: 2px solid black;
-  position: sticky;
+  /* position: sticky;
   top: 0;
-  left: 0;
+  left: 0; */
 }
 .nav-top-logo-container {
   width: 50px;
@@ -36,7 +39,6 @@
   justify-content: space-around;
   padding: 0.8rem;
   border-bottom: 2px solid black;
-  position: relative;
 }
 .nav-bottom-link{
   font-size: 1.4rem;
@@ -49,7 +51,7 @@
   display:flex;
   gap:0.4rem;
   position:absolute;
-  bottom:-60%;
+  bottom:-22%;
   /* in desktop version, bottom must be changed*/
   right:0;
   margin-right: 1rem;
