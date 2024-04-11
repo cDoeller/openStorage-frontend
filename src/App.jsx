@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage></SignUpPage>}></Route>
         <Route path="/login" element={<LoginPage></LoginPage>}></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/profile/:id" element={ <ProfilePage />} />
       </Routes>
     </>
   );
