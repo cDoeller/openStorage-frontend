@@ -3,6 +3,25 @@ import { Link } from "react-router-dom";
 import "../styles/HomePage.css";
 
 function HomePage() {
+  
+  const functionalityConetent = [
+    {
+      text: "browse through the storages of your favorite local artists",
+      img_url: "../../public/img/location.png",
+      id: 1
+    },
+    {
+      text: "filter your search by a variety of media and genres",
+      img_url: "../../public/img/media.png",
+      id: 2
+    },
+    {
+      text: "Find artworks with the right dimensions for your home",
+      img_url: "../../public/img/dimensions.png",
+      id: 3
+    },
+  ];
+
   return (
     <div className="landing-wrapper">
       {/* header */}
@@ -71,18 +90,22 @@ function HomePage() {
           We help art lovers support the local scene and find the perfect
           artwork for their home
         </p>
-        <div className="landing-functionality-section-bullet-wrapper">
-          <div className="landing-functionality-section-bullet-icon-wrapper">
-            <img
-              src="../../public/img/location.png"
-              alt=""
-              className="landing-functionality-section-bullet-icon"
-            />
-          </div>
-          <p className="landing-functionality-section-bullet-text">
-            browse through the storages of your favorite local artists
-          </p>
-        </div>
+        {functionalityConetent.map((oneFunctionality) => {
+          return (
+            <div className="landing-functionality-section-bullet-wrapper" key={oneFunctionality.id}>
+              <div className="landing-functionality-section-bullet-icon-wrapper">
+                <img
+                  src={oneFunctionality.img_url}
+                  alt=""
+                  className="landing-functionality-section-bullet-icon"
+                />
+              </div>
+              <p className="landing-functionality-section-bullet-text">
+                {oneFunctionality.text}
+              </p>
+            </div>
+          );
+        })}
       </section>
 
       {/* genre section */}

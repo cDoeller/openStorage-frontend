@@ -11,6 +11,7 @@ import IsAnon from "./components/IsAnon";
 import IsPrivate from "./components/IsPrivate";
 import Loading from "./components/Loading";
 import FooterGeneral from "./components/FooterGeneral";
+import ArtworkDetailPage from "./pages/ArtworkDetailPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         ></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/profile/:id" element={ <ProfilePage />} />
+        <Route path="/artwork/:id" element={ <ArtworkDetailPage />} />
       </Routes>
       <FooterGeneral/>
     </>
