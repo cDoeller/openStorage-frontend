@@ -112,7 +112,8 @@
   align-items: center;
 }
 .landing-functionality-section-bullet-icon-wrapper {
-  width: 25px;
+  width: 35px;
+  display: flex;
 }
 .landing-functionality-section-bullet-icon {
   width: 100%;
