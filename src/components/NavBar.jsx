@@ -35,11 +35,13 @@ function NavBar() {
   return (
     <nav className="nav">
       <div className="nav-logo-container">
-        <img
-          src="../../public/img/logo-placeholder-image.png"
-          alt="open-storage-logo"
-          className="nav-logo-img"
-        />
+        <Link to="/">
+          <img
+            src="../../public/img/logo-placeholder-image.png"
+            alt="open-storage-logo"
+            className="nav-logo-img"
+          />
+        </Link>
       </div>
       {!isLoggedIn && publicNav}
       {isLoggedIn && privateNav}

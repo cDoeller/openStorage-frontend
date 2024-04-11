@@ -14,6 +14,9 @@
   gap: 2rem;
 }
 .landing-header-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .landing-header-info-title {
   text-align: center;
@@ -21,6 +24,7 @@
 }
 .landing-header-info-text {
   text-align: center;
+  width: 60%;
 }
 .landing-header-image-wrapper {
   width: 100%;
