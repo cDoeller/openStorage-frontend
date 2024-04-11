@@ -1,30 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/NavBar.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
 function NavBar() {
+  const [showPopup, setShowPopup] = useState(false);
+
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
   const publicNav = (
-    <div className="nav-signup-login">
+    <div className="nav-top-signup-login">
       <Link to="/signup">
-        <h3 className="nav-signup-login-text"> Sign up </h3>
+        <h3 className="nav-top-signup-login-text"> Sign up </h3>
       </Link>
       <Link to="/login">
-        <h3 className="nav-signup-login-text"> Log In </h3>
+        <h3 className="nav-top-signup-login-text"> Log In </h3>
       </Link>
     </div>
   );
 
   const privateNav = (
-    <div className="nav-signup-login">
+    <div className="nav-top-signup-login">
       <Link to="/">
-        <h3 className="nav-signup-login-text"> {user && user.user_name} </h3>
+        <h3 className="nav-top-signup-login-text">{user && user.user_name}</h3>
       </Link>
-      <div className="nav-logo-container" onClick={logOutUser}>
+      <div className="nav-top-logo-container" onClick={logOutUser}>
         <img
-          className="nav-logo-img"
+          className="nav-top-logo-img"
           src="../../public/img/signout.png"
           alt=""
         />
@@ -32,19 +34,61 @@ function NavBar() {
     </div>
   );
 
+  const popup = (
+    <div className="nav-bottom-popup">
+      <Link to="#">
+        <button
+          onClick={togglePopup}
+          className="nav-bottom-popup-button nav-bottom-link"
+        >
+          Artist
+        </button>
+      </Link>
+      <Link to="#">
+        <button
+          onClick={togglePopup}
+          className="nav-bottom-popup-button nav-bottom-link"
+        >
+          Art Lover
+        </button>
+      </Link>
+    </div>
+  );
+
+  function togglePopup() {
+    if (showPopup) {
+      setShowPopup(false);
+    } else {
+      setShowPopup(true);
+    }
+  }
+
   return (
     <nav className="nav">
-      <div className="nav-logo-container">
-        <Link to="/">
+      <div className="nav-top">
+        <div className="nav-top-logo-container">
+    <Link to="/">
           <img
             src="../../public/img/logo-placeholder-image.png"
             alt="open-storage-logo"
-            className="nav-logo-img"
+            className="nav-top-logo-img"
           />
-        </Link>
+       </Link>
+        </div>
+        {!isLoggedIn && publicNav}
+        {isLoggedIn && privateNav}
       </div>
-      {!isLoggedIn && publicNav}
-      {isLoggedIn && privateNav}
+      <div className="nav-bottom">
+        <Link to="#">
+          <h3 className="nav-bottom-link">Artworks</h3>
+        </Link>
+        <div className="nav-bottom-link-container">
+          <h3 className="nav-bottom-link" onClick={togglePopup}>
+            Who are you?
+          </h3>
+          {showPopup && popup}
+        </div>
+      </div>
     </nav>
   );
 }
