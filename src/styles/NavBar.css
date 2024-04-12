@@ -55,7 +55,7 @@
   display:flex;
   gap:0.4rem;
   position:absolute;
-  bottom:-22%;
+  top:var(--navbarHeightMobile);
   /* in desktop version, bottom must be changed*/
   right:0;
   margin-right: 1rem;
@@ -63,7 +63,8 @@
 }
 .nav-bottom-popup-button{
   border-radius: 10px;
+  border: 2px solid black;
   padding: 0.4rem 0.8rem;
-  background-color: greenyellow;
+  background-color: white;
 }
 
