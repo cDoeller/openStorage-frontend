@@ -1,0 +1,42 @@
+.filterinterface-wrapper{
+    background-color: white;
+    height:calc(100dvh - var(--navbarHeightMobile));
+    width:100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.filterinterface-form{
+    display: flex;
+    flex-direction: column;
+    gap:1.4rem;
+}
+
+.filterinterface-form-label{
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+
+.filterinterface-form-input{
+    padding: 0.4rem 1rem;
+    border:none;
+    border-bottom: 2px solid black;
+}
+
+.filterinterface-form-dimension-input-wrapper{
+display: flex;
+justify-content: space-between;
+}
+
+.filterinterface-form-dimension-input{
+    width: 50px;
+    text-align: center;
+}
+
+.filterinterface-form-select{
+    padding: 1rem;
+    border:none;
+    border-bottom: 2px solid black;
+}

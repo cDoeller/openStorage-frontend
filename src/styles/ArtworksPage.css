@@ -1,4 +1,8 @@
 
+.artworks-content-wrapper{
+    display:none;
+}
+
 /* PAYMENT INFO */
 .artworks-paymentinfo-wrapper {
   display: flex;
