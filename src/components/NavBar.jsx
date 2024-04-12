@@ -79,7 +79,7 @@ function NavBar() {
         {isLoggedIn && privateNav}
       </div>
       <div className="nav-bottom">
-        <Link to="#">
+        <Link to="/artworks">
           <h3 className="nav-bottom-link">Artworks</h3>
         </Link>
         <div className="nav-bottom-link-container">
