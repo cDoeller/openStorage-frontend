@@ -1,7 +1,7 @@
 import axios from 'axios'
 
  
-class CitiesService {
+class CityService {
   constructor() {
     this.api = axios.create({
       baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5005'
@@ -36,6 +36,6 @@ class CitiesService {
 }
 
 
-const citiesService = new CitiesService()
+const cityService = new CityService()
 
-export default citiesService
+export default cityService
