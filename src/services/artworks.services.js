@@ -8,11 +8,12 @@ class ArtworksService {
     });
  
     // Automatically set JWT token in the headers for every request
-    this.api.interceptors.request.use(config => {
+    this.api.interceptors.request.use((config) => {
       // Retrieve the JWT token from the local storage
-      const storedToken = localStorage.getItem('authToken');
+      const storedToken = localStorage.getItem("authToken");
  
       if (storedToken) {
+        console.log("setting headers...", storedToken)
         config.headers = { Authorization: `Bearer ${storedToken}` };
       }
  
@@ -22,31 +23,31 @@ class ArtworksService {
  
   // POST /api/artworks
   createArtwork = requestBody => {
-    return this.api.post('/api/artwork', requestBody);
+    return this.api.post('/api/artworks', requestBody);
   };
  
   // GET /api/artworks
   getAllArtworks = () => {
-    return this.api.get('/api/artwork');
+    return this.api.get('/api/artworks');
   };
  
   // GET /api/artworks/:id
   getArtwork = id => {
-    return this.api.get(`/api/artwork/${id}`);
+    return this.api.get(`/api/artworks/${id}`);
   };
  
   // PUT /api/artworks/:id
   updateArtwork = (id, requestBody) => {
-    return this.api.put(`/api/artwork/${id}`, requestBody);
+    return this.api.put(`/api/artworks/${id}`, requestBody);
   };
  
   // DELETE /api/artworks/:id
   deleteArtwork = id => {
-    return this.api.delete(`/api/artwork/${id}`);
+    return this.api.delete(`/api/artworks/${id}`);
   };
 }
 
 
-const artworksService = new ArtworksService
+const artworksService = new ArtworksService()
 
-export default artworksService()
+export default artworksService

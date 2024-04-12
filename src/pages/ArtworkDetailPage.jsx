@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom'
 import { AuthContext } from '../context/auth.context'
 import '../styles/ArtworkDetails.css'
+import artworksService from '../services/artworks.services'
 
 function ArtworkDetailPage() {
 
@@ -12,16 +13,16 @@ const [artwork, setArtwork] = useState()
 
 const { user, isLoggedIn} = useContext(AuthContext)
 
-useEffect(()=>{
-    axios.get(`${import.meta.env.VITE_API_URL}/api/artworks/${id}`)
-    .then((response)=>{
-        console.log(response.data)
-        setArtwork(response.data)
 
+
+useEffect(()=>{
+
+    artworksService.getArtwork(id)
+    .then((response) => {
+        const oneArtwork = response.data
+        setArtwork(oneArtwork)
     })
-    .catch((err)=>{
-        console.log(err)
-    })
+    .catch((err)=> console.log(err))
 
     
 }, [id])
