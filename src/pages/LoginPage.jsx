@@ -1,13 +1,10 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
-import axios from "axios";
 import "../styles/Login.css";
 
 import { AuthContext } from "../context/auth.context";
-
-// christian@testmail.com
-// Ab123456
+import authService from "../services/auth.services";
 
 function LoginPage() {
   const [password, setPassword] = useState("");
@@ -25,8 +22,8 @@ function LoginPage() {
       password: password,
     };
 
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/api/auth/login`, body)
+    authService
+      .login(body)
       .then((response) => {
         // save token in local storage
         const token = response.data.authToken;
