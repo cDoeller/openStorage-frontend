@@ -1,12 +1,11 @@
 import { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import "../styles/Profile.css";
 import userService from "../services/user.services";
 import ArtworksScrollbar from "../components/ArtworksScrollbar";
 import UserProfileCard from "../components/UserProfileCard";
 
-function ProfilePage() {
+function PublicProfilePage() {
   const { isLoggedIn, user } = useContext(AuthContext);
 
   const [userInfo, setUserInfo] = useState(null);
@@ -32,9 +31,6 @@ function ProfilePage() {
 
       {isLoggedIn && userInfo && (
         <div className="profile-wrapper">
-          <div className="edit-link">
-            <Link to="/profile/edit-profile">Edit</Link>
-          </div>
           <UserProfileCard
             name={userInfo.real_name}
             img={userInfo.profile_img_url}
@@ -48,13 +44,7 @@ function ProfilePage() {
                 <h5>Artist Statement:</h5>
                 <p>{userInfo.artist_statement}</p>
               </div>
-
               <div className="artworks-wrapper">
-     
-                  <Link to="/profile/edit-artworks">
-                    <div className="edit-link">Edit</div>
-                  </Link>
-
                 <ArtworksScrollbar
                   userInfo={userInfo}
                   artworks={userInfo.artworks}
@@ -86,4 +76,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default PublicProfilePage;

@@ -14,6 +14,7 @@ import ArtworksPage from "./pages/ArtworksPage";
 import FooterGeneral from "./components/FooterGeneral";
 import ArtworkDetailPage from "./pages/ArtworkDetailPage";
 import HowToPage from "./pages/HowToPage";
+import EditProfilePage from "./pages/EditProfilePage";
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/profile" element={ <ProfilePage />} />
         <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
+        <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
+
       </Routes>
       <FooterGeneral/>
     </>
