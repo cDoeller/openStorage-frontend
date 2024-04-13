@@ -9,6 +9,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   --navbarHeightMobile: 155px;
+  --pink: rgb(251, 198, 254);
 }
 
 html,body,a, h1, h2, h3, p,ul,li,ol {

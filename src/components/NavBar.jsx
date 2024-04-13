@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
 function NavBar() {
-  const [showPopup, setShowPopup] = useState(false);
+  // const [showPopup, setShowPopup] = useState(false);
 
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
@@ -34,34 +34,34 @@ function NavBar() {
     </div>
   );
 
-  const popup = (
-    <div className="nav-bottom-popup">
-      <Link to="#">
-        <button
-          onClick={togglePopup}
-          className="nav-bottom-popup-button nav-bottom-link"
-        >
-          Artist
-        </button>
-      </Link>
-      <Link to="#">
-        <button
-          onClick={togglePopup}
-          className="nav-bottom-popup-button nav-bottom-link"
-        >
-          Art Lover
-        </button>
-      </Link>
-    </div>
-  );
+  // const popup = (
+  //   <div className="nav-bottom-popup">
+  //     <Link to="#">
+  //       <button
+  //         onClick={togglePopup}
+  //         className="nav-bottom-popup-button nav-bottom-link"
+  //       >
+  //         Artist
+  //       </button>
+  //     </Link>
+  //     <Link to="#">
+  //       <button
+  //         onClick={togglePopup}
+  //         className="nav-bottom-popup-button nav-bottom-link"
+  //       >
+  //         Art Lover
+  //       </button>
+  //     </Link>
+  //   </div>
+  // );
 
-  function togglePopup() {
-    if (showPopup) {
-      setShowPopup(false);
-    } else {
-      setShowPopup(true);
-    }
-  }
+  // function togglePopup() {
+  //   if (showPopup) {
+  //     setShowPopup(false);
+  //   } else {
+  //     setShowPopup(true);
+  //   }
+  // }
 
   return (
     <nav className="nav">
@@ -82,12 +82,12 @@ function NavBar() {
         <Link to="/artworks">
           <h3 className="nav-bottom-link">Artworks</h3>
         </Link>
-        <div className="nav-bottom-link-container">
-          <h3 className="nav-bottom-link" onClick={togglePopup}>
-            Who are you?
-          </h3>
-          {showPopup && popup}
-        </div>
+        {/* <div className="nav-bottom-link-container"> */}
+        <Link to="/manual">
+          <h3 className="nav-bottom-link">How it works</h3>
+        </Link>
+        {/* {showPopup && popup} */}
+        {/* </div> */}
       </div>
     </nav>
   );

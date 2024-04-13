@@ -13,6 +13,7 @@ import Loading from "./components/Loading";
 import ArtworksPage from "./pages/ArtworksPage";
 import FooterGeneral from "./components/FooterGeneral";
 import ArtworkDetailPage from "./pages/ArtworkDetailPage";
+import HowToPage from "./pages/HowToPage";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           }
         ></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/profile/:id" element={ <ProfilePage />} />
         <Route path="/artwork/:id" element={ <ArtworkDetailPage />} />
