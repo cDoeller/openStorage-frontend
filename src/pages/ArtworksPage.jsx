@@ -43,17 +43,6 @@ function ArtworksPage() {
       {/* ARTWORKS PAGE */}
       {!showInterface && (
         <>
-          {/* PAYMENT INFORMATION */}
-          <div className="artworks-paymentinfo-wrapper">
-            <div className="artworks-paymentinfo-icon-wrapper">
-              <img src="/img/handshake.png" alt="" />
-            </div>
-            <p className="artworks-paymentinfo-text">
-              Our rental fees are fixed: no matter how famous, large or
-              colourful, you pay €15 / month for each work of art!
-            </p>
-          </div>
-
           {/* ARTWORKS CARDS */}
           <div className="artworks-artwork-cards">
             {artworks &&
