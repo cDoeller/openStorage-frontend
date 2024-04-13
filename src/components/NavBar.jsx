@@ -21,7 +21,7 @@ function NavBar() {
 
   const privateNav = (
     <div className="nav-top-signup-login">
-      <Link to="/">
+      <Link to="/profile">
         <h3 className="nav-top-signup-login-text">{user && user.user_name}</h3>
       </Link>
       <div className="nav-top-logo-container" onClick={logOutUser}>

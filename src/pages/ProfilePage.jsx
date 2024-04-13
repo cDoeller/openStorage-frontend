@@ -1,30 +1,27 @@
-import axios from "axios";
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import "../styles/Profile.css";
+import userService from "../services/user.services";
 
 function ProfilePage() {
-  const { id } = useParams();
-
   const { isLoggedIn, user } = useContext(AuthContext);
 
-  const [userInfo, setUserInfo] = useState(user);
+  const [userInfo, setUserInfo] = useState(null);
 
   const storedToken = localStorage.getItem("authToken");
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/user/${id}`, {
-        headers: { Authorization: `Bearer ${storedToken}` },
-      })
-      .then((fetchedData) => {
-        setUserInfo(fetchedData.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id, storedToken]);
+    if (user) {
+      userService
+        .getUser(user._id)
+        .then((fetchedData) => {
+          setUserInfo(fetchedData.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [user, storedToken]);
 
   return (
     <div id="ProfilePage">
@@ -32,7 +29,6 @@ function ProfilePage() {
 
       {isLoggedIn && userInfo && (
         <div className="profile-wrapper">
-
           <div className="profile-card">
             <img
               src={userInfo.profile_img_url}
@@ -45,7 +41,7 @@ function ProfilePage() {
                 <p className="profile-type">Art-Lover</p>
               )}
               <p>
-                <span className="username-bold">{userInfo.user_name}</span>{" "}|{" "}
+                <span className="username-bold">{userInfo.user_name}</span> |{" "}
                 {userInfo.city}
               </p>
               <p>Tagline?</p>
@@ -54,44 +50,47 @@ function ProfilePage() {
 
           {userInfo.isArtist && (
             <div>
-            <div className="artist-statement-wrapper">
-              <h5>Artist Statement:</h5>
-              <p>{userInfo.artist_statement}</p>
-            </div>
-            <div>
-            <h5>Artworks</h5>
-            {/* {userInfo.artworks && 
-            userInfo.artworks.map((oneArtwork, index)=>{
-              return (
-                <div key={index} className="artwork-card-wrapper">
-      <div className="artwork-card-image-wrapper">
-        <img src={oneArtwork.images_url[0]} alt={oneArtwork.title} />
-      </div>
-      <div className="artwork-card-info-wrapper">
-        <div className="artwork-card-info-text-wrapper">
-          <p className="artwork-card-info-text-text">
-          {oneArtwork.title}
-          </p>
+              <div className="artist-statement-wrapper">
+                <h5>Artist Statement:</h5>
+                <p>{userInfo.artist_statement}</p>
+              </div>
+              <div className="artworks-section-profile">
+                <h5>Artworks</h5>
+                <div className="profile-artworks-scrollbar">
+                {userInfo.artworks &&
+                  userInfo.artworks.map((oneArtwork, index) => {
+                    return (
+                      <div key={index} className="profile-artwork-card-wrapper">
+                        <div className="profile-artwork-card-image-wrapper">
+                          <img
+                            src={oneArtwork.images_url[0]}
+                            alt={oneArtwork.title}
+                          />
+                        </div>
+                        <div className="profile-artwork-card-info-wrapper">
+                          <div className="profile-artwork-card-info-text-wrapper">
+                            <p className="profile-artwork-card-info-text-text">
+                              {oneArtwork.title}
+                            </p>
+                          </div>
+                          <div className="artwork-card-icon-wrapper">
+                            <img src="" alt="" />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
 
-        </div>
-        <div className="artwork-card-icon-wrapper">
-          <img src="" alt="" />
-        </div>
-      </div>
-    </div>
-              )
-            })} */}
-            </div>
-
+                </div>
+              </div>
             </div>
           )}
 
-          
-          <div className="loans-wrapper">
+          <div className="loans-section-profile">
             <h5>Current Loans</h5>
             <div className="loans-thumbs-wrapper"></div>
           </div>
-          <div className="loans-wrapper">
+          <div className="requests-section-profile">
             <h5>Pending Requests</h5>
             <div className="loans-thumbs-wrapper"></div>
           </div>

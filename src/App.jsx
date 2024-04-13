@@ -37,7 +37,7 @@ function App() {
         ></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
-        <Route path="/profile/:id" element={ <ProfilePage />} />
+        <Route path="/profile" element={ <ProfilePage />} />
         <Route path="/artwork/:id" element={ <ArtworkDetailPage />} />
       </Routes>
       <FooterGeneral/>
