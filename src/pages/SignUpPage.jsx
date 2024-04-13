@@ -53,7 +53,7 @@ function SignUpPage() {
   };
 
   return (
-    <div className="signup-page-wrapper">
+    <div className="signup-page-wrapper page-wrapper">
       <h1 className="signup-headline">Welcome to Open Storage</h1>
       <form
         action=""

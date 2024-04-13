@@ -40,7 +40,7 @@ function App() {
         <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/profile" element={ <ProfilePage />} />
-        <Route path="/artwork/:id" element={ <ArtworkDetailPage />} />
+        <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
       </Routes>
       <FooterGeneral/>
     </>

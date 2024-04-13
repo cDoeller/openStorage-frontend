@@ -18,3 +18,7 @@ html,body,a, h1, h2, h3, p,ul,li,ol {
   color: black;
   text-decoration: none;
 }
+
+.page-wrapper{
+  padding: 0 1rem;
+}
