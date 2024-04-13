@@ -45,7 +45,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="login-page-wrapper">
+    <div className="signup-page-wrapper">
       <h1 className="signup-headline">Welcome to Open Storage</h1>
       <form
         action=""
@@ -53,6 +53,7 @@ function LoginPage() {
           handleSubmit(e);
         }}
         className="signup-form"
+        id="login-form"
       >
         <label htmlFor="" className="signup-form-label">
           email

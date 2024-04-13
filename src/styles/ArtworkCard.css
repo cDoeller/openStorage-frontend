@@ -1,4 +1,7 @@
 .artwork-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap:0.5rem;
 }
 .artwork-card-image-wrapper {
   width: 100%;

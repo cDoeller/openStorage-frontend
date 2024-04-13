@@ -1,10 +1,14 @@
+
 .nav{
   position: sticky;
   top: 0;
   left: 0;
 }
+/* <---- HEIGHT NAV MOBILE == 90px + 65px >>>> 155px */
 
 .nav-top {
+  /* <---- HEIGHT TOP */
+  height: 90px;
   background-color: rgb(160, 144, 248);
   box-sizing: border-box;
   width: 100%;
@@ -13,9 +17,6 @@
   align-items: center;
   padding: 1rem;
   border-bottom: 2px solid black;
-  /* position: sticky;
-  top: 0;
-  left: 0; */
 }
 .nav-top-logo-container {
   width: 50px;
@@ -34,6 +35,9 @@
 }
 
 .nav-bottom{
+  /* <---- HEIGHT BOTTOM */
+  height: 65px;
+  box-sizing: border-box;
   background-color: rgb(252, 192, 255);
   display: flex;
   justify-content: space-around;
@@ -51,14 +55,16 @@
   display:flex;
   gap:0.4rem;
   position:absolute;
-  bottom:-22%;
+  top:var(--navbarHeightMobile);
   /* in desktop version, bottom must be changed*/
   right:0;
   margin-right: 1rem;
+  
 }
 .nav-bottom-popup-button{
   border-radius: 10px;
+  border: 2px solid black;
   padding: 0.4rem 0.8rem;
-  background-color: greenyellow;
+  background-color: white;
 }
 
