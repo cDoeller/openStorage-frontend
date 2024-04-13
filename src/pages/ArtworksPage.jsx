@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/ArtworksPage.css";
-import axios from "axios";
 import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
+import artworksService from "../services/artworks.services";
 
 function ArtworksPage() {
   const [artworks, setArtworks] = useState(null);
@@ -14,8 +14,8 @@ function ArtworksPage() {
   }
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/artworks`)
+    artworksService
+      .getAllArtworks()
       .then((response) => {
         console.log(response.data);
         setArtworks(response.data);
@@ -35,7 +35,10 @@ function ArtworksPage() {
           className="artworks-filterinterfacebutton-wrapper-inner"
         >
           <div className="artworks-filterinterfacebutton-icon-wrapper">
-            <img src={showInterface ? "/img/esc.png" : "/img/filter.png"} alt="" />
+            <img
+              src={showInterface ? "/img/esc.png" : "/img/filter.png"}
+              alt=""
+            />
           </div>
         </div>
       </div>
