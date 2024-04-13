@@ -35,12 +35,12 @@ class UserService {
  
   // UPDATE a user
   updateUser = (id, requestBody) => {
-    return this.api.put(`/api/user/${id}`, requestBody);
+    return this.api.put(`/api/user/${id}/update`, requestBody);
   };
  
   // DELETE a user
   deleteUser = id => {
-    return this.api.delete(`/api/user/${id}`);
+    return this.api.delete(`/api/user/${id}/delete`);
   };
 }
 

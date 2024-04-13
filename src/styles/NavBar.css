@@ -3,6 +3,7 @@
   position: sticky;
   top: 0;
   left: 0;
+  z-index:100;
 }
 /* <---- HEIGHT NAV MOBILE == 90px + 65px >>>> 155px */
 
