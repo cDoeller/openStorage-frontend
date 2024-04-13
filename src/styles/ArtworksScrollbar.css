@@ -1,0 +1,32 @@
+.artworks-section-profile{
+    display:flex;
+    flex-direction: column;
+}
+
+.profile-artworks-scrollbar{
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    gap:0.5rem;
+}
+
+.profile-artwork-card-wrapper{
+    display: flex;
+    flex-direction: column;
+    border: solid black 1px;
+}
+
+.profile-artwork-card-image-wrapper{
+   width:200px;
+}
+
+.profile-artwork-card-image-wrapper>img{
+    width:100%;
+
+ }
+
+.profile-artwork-card-info-wrapper{
+    margin:0 5px;
+    font-size: 12px;
+    font-weight: 600;
+}

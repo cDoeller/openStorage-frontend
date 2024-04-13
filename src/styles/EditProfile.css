@@ -1,0 +1,35 @@
+.edit-profile-input{
+    padding: 0.4rem 1rem;
+    border:none;
+    border-bottom: 2px solid black;
+    background-color: white;
+}
+.edit-profile-textarea{
+    width:80%;
+    height:100px;
+}
+.edit-profile-info-wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.edit-profile-img-wrapper{
+    width:40%;
+    border-radius:50%;
+    justify-self: flex-start;
+    padding-right: 30px;
+}
+
+.edit-profile-img-wrapper > img{
+    width:100%
+}
+
+.loans-section-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.requests-section-wrapper{
+    display: flex;
+    flex-direction: column;
+}
