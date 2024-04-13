@@ -1,12 +1,11 @@
 #ProfilePage{
     margin:12px;
-    height:100%;
 }
 
 .profile-wrapper{
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    /* min-height: 100vh; */
 }
 
 .profile-card{
@@ -41,7 +40,6 @@
 }
 
 .profile-artworks-scrollbar{
-
     display: flex;
     flex-direction: row;
     overflow-x: scroll;
@@ -49,7 +47,7 @@
 }
 
 .profile-artwork-card-wrapper{
-    width: 200px;
+    /* width:200px; */
     display: flex;
     flex-direction: column;
     border: solid black 1px;
@@ -61,6 +59,7 @@
 
 .profile-artwork-card-image-wrapper>img{
     width:100%;
+
  }
 
 .profile-artwork-card-info-wrapper{
