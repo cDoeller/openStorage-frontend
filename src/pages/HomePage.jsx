@@ -3,27 +3,26 @@ import { Link } from "react-router-dom";
 import "../styles/HomePage.css";
 
 function HomePage() {
-  
   const functionalityConetent = [
     {
       text: "browse through the storages of your favorite local artists",
       img_url: "../../public/img/location.png",
-      id: 1
+      id: 1,
     },
     {
       text: "filter your search by a variety of media and genres",
       img_url: "../../public/img/media.png",
-      id: 2
+      id: 2,
     },
     {
       text: "Find artworks with the right dimensions for your home",
       img_url: "../../public/img/dimensions.png",
-      id: 3
+      id: 3,
     },
   ];
 
   return (
-    <div className="landing-wrapper">
+    <div className="landing-wrapper page-wrapper">
       {/* header */}
       <header className="landing-header">
         <div className="landing-header-info-wrapper">
@@ -81,7 +80,9 @@ function HomePage() {
             <p className="landing-artworks-section-gallery-caption-right">{`>`}</p>
           </div>
         </div>
-        <button className="landing-artworks-section-button">ARTWORKS</button>
+        <Link to="/artworks">
+          <button className="landing-artworks-section-button">ARTWORKS</button>
+        </Link>
       </section>
 
       {/* functionality section */}
@@ -92,7 +93,10 @@ function HomePage() {
         </p>
         {functionalityConetent.map((oneFunctionality) => {
           return (
-            <div className="landing-functionality-section-bullet-wrapper" key={oneFunctionality.id}>
+            <div
+              className="landing-functionality-section-bullet-wrapper"
+              key={oneFunctionality.id}
+            >
               <div className="landing-functionality-section-bullet-icon-wrapper">
                 <img
                   src={oneFunctionality.img_url}

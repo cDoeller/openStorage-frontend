@@ -41,8 +41,9 @@ function App() {
         <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/profile" element={ <ProfilePage />} />
+        <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
         <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
-        <Route path="/artwork/:id" element={ <ArtworkDetailPage />} />
+
       </Routes>
       <FooterGeneral/>
     </>

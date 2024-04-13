@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/FilterInterface.css";
+import artworksService from "../services/artworks.services";
 
-function FilterInterface() {
+function FilterInterface(props) {
+  const { setArtworks } = props;
+
   const [city, setCity] = useState("");
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
@@ -16,7 +19,38 @@ function FilterInterface() {
     "Digital Art",
     "Abstract",
     "Figurative",
+    "Conceptual Art"
   ];
+
+  // Filtering
+  useEffect(() => {
+    let queryString = "?";
+    queryString += `city=${city}&`;
+    queryString += `medium=${medium}&`;
+    queryString += `genre=${genre}&`;
+    queryString += `dimensions-x=${dimensions.x}&`;
+    queryString += `dimensions-y=${dimensions.y}&`;
+    queryString += `dimensions-z=${dimensions.z}&`;
+    queryString += `artist=${artist}`;
+    // if (artist !== "") queryString += `artist=${artist}`;
+
+    artworksService
+      .getArtworkQuery(queryString)
+      .then((response) => {
+        console.log(response.data);
+        setArtworks(response.data);
+      })
+      .catch((err) => console.log(err));
+
+  }, [city, medium, genre, dimensions, artist]);
+
+  function resetAll() {
+    setCity("");
+    setMedium("");
+    setGenre("");
+    setDimensions({ x: 100, y: 100, z: 0 });
+    setArtist("");
+  } 
 
   return (
     <div className="filterinterface-wrapper">
@@ -132,6 +166,10 @@ function FilterInterface() {
             }}
           />
         </label>
+
+        <button type="button" onClick={resetAll} className="filterinterface-reset-button">
+          Reset
+        </button>
       </form>
     </div>
   );

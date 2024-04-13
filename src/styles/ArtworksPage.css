@@ -1,6 +1,11 @@
-
-.artworks-content-wrapper{
-    display:none;
+.artworks-filterinterface-hide {
+  display: none;
+}
+.artworks-filterinterface-show {
+  display: block;
+  width:100%;
+  position: fixed;
+  left: 0;
 }
 
 /* FILTER INTERFACE BUTTON */
@@ -12,6 +17,7 @@
 .artworks-filterinterfacebutton-wrapper-inner {
   position: fixed;
   top: var(--navbarHeightMobile);
+  right: 0;
   background-color: white;
   border-radius: 10px;
   border: 2px solid black;
@@ -19,6 +25,10 @@
   align-items: center;
   gap: 1rem;
   padding: 0.2rem 1rem;
+}
+#no-border-button {
+  border: none;
+  margin: 2px;
 }
 .artworks-filterinterfacebutton-icon-wrapper {
   width: 30px;

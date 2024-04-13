@@ -12,7 +12,7 @@ function HowToPage() {
   };
 
   return (
-    <div className="howto-page-wrapper">
+    <div className="howto-page-wrapper page-wrapper">
       {/* nav buttons */}
         <section className="howto-nav-button-wrapper">
             <button

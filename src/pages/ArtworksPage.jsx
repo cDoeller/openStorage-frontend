@@ -22,17 +22,27 @@ function ArtworksPage() {
       })
       .catch((err) => console.log(err));
   }, []);
-
+  
   return (
-    <>
+    <div className="page-wrapper">
+
       {/* FILTER INTERFACE */}
-      {showInterface && <FilterInterface />}
+      <div
+        className={
+          showInterface
+            ? "artworks-filterinterface-show"
+            : "artworks-filterinterface-hide"
+        }
+      >
+        <FilterInterface setArtworks={setArtworks} />
+      </div>
 
       {/* FILTER INTERFACE BUTTON */}
       <div className="artworks-filterinterfacebutton-wrapper">
         <div
           onClick={toggleFilterInterface}
           className="artworks-filterinterfacebutton-wrapper-inner"
+          id={showInterface ? "no-border-button" : ""}
         >
           <div className="artworks-filterinterfacebutton-icon-wrapper">
             <img
@@ -44,36 +54,32 @@ function ArtworksPage() {
       </div>
 
       {/* ARTWORKS PAGE */}
-      {!showInterface && (
-        <>
-          {/* ARTWORKS CARDS */}
-          <div className="artworks-artwork-cards">
-            {artworks &&
-              artworks.map((artwork) => {
-                return (
-                  <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
-                    <ArtworkCard
-                      name={artwork.artist.user_name}
-                      title={artwork.title}
-                      dimensions={
-                        artwork.dimensions.x +
-                        " x " +
-                        artwork.dimensions.y +
-                        (artwork.dimensions.z
-                          ? " x " + artwork.dimensions.z
-                          : "")
-                      }
-                      year={artwork.year}
-                      img={artwork.images_url[0]}
-                      medium={artwork.medium}
-                    />
-                  </Link>
-                );
-              })}
-          </div>
-        </>
-      )}
-    </>
+      <>
+        {/* ARTWORKS CARDS */}
+        <div className="artworks-artwork-cards">
+          {artworks &&
+            artworks.map((artwork) => {
+              return (
+                <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
+                  <ArtworkCard
+                    name={artwork.artist.user_name}
+                    title={artwork.title}
+                    dimensions={
+                      artwork.dimensions.x +
+                      " x " +
+                      artwork.dimensions.y +
+                      (artwork.dimensions.z ? " x " + artwork.dimensions.z : "")
+                    }
+                    year={artwork.year}
+                    img={artwork.images_url[0]}
+                    medium={artwork.medium}
+                  />
+                </Link>
+              );
+            })}
+        </div>
+      </>
+    </div>
   );
 }
 
