@@ -15,7 +15,7 @@ function AboutPage() {
 
         {/* HELP / SUSTAINABLE */}
         <div className="about-icon-wrapper">
-          <img src="/img/media.png" alt="" />
+          <img src="/img/about-sustainable.png" alt="" />
         </div>
         <p className="about-description-text">
           On one hand, we want to{" "}
@@ -25,12 +25,13 @@ function AboutPage() {
           an artist or art lover, to lower the hurdle of living with art in your
           everyday life. It is Important for us to find{" "}
           <span className="highlight">sustainable solutions</span> of sharing
-          art in local communities.
+          art in local communities and minimize the needs for
+          ressource-intensive packaging and transportation.
         </p>
 
         {/* WHO ARE WE? */}
         <div className="about-icon-wrapper">
-          <img src="/img/media.png" alt="" />
+          <img src="/img/about-idea.png" alt="" />
         </div>
         <p className="about-description-text">
           The idea for Open Storage arose from our own needs and experiences as
@@ -47,7 +48,7 @@ function AboutPage() {
 
         {/* OUR TARGET GROUP */}
         <div className="about-icon-wrapper">
-          <img src="/img/media.png" alt="" />
+          <img src="/img/about-targetgroup.png" alt="" />
         </div>
         <p className="about-description-text">
           With Open Storage, we are targeting artists who are not among the 1%
