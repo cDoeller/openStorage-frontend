@@ -27,7 +27,7 @@ function NavBar() {
       <div className="nav-top-logo-container" onClick={logOutUser}>
         <img
           className="nav-top-logo-img"
-          src="../../public/img/signout.png"
+          src="/img/signout.png"
           alt=""
         />
       </div>
@@ -69,7 +69,7 @@ function NavBar() {
         <div className="nav-top-logo-container">
           <Link to="/">
             <img
-              src="../../public/img/logo-placeholder-image.png"
+              src="/img/logo-V1.png"
               alt="open-storage-logo"
               className="nav-top-logo-img"
             />
