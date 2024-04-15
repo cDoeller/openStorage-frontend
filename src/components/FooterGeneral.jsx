@@ -3,10 +3,11 @@ import "../styles/FooterGeneral.css";
 import { Link, useLocation } from "react-router-dom";
 
 function FooterGeneral() {
-
-    const location = useLocation();
-    let { pathname } = location;
-    if (pathname === "/") pathname = "home"
+  // show where we are and get rid of "/"
+  const location = useLocation();
+  let { pathname } = location;
+  if (pathname === "/") pathname = "home";
+  pathname = pathname.replace("/", "");
 
   const navigationContent = [
     "Home",
@@ -21,7 +22,9 @@ function FooterGeneral() {
 
   return (
     <footer className="footer page-wrapper">
-      <h3 className="footer-general-headline">Open Storage {`> ` + pathname }</h3>
+      <h3 className="footer-general-headline">
+        Open Storage {`> ` + pathname}
+      </h3>
       {/* navigation list */}
       <div className="footer-general-navigation-container">
         {navigationContent.map((page) => {
