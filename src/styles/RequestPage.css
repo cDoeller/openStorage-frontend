@@ -1,0 +1,58 @@
+.request-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.request-headline {
+  margin: 2rem 0 0 0;
+}
+
+/* ARTWORK CARD */
+.request-artwork-wrapper {
+  border: 1px solid black;
+  display: flex;
+  gap: 1rem;
+}
+.request-artwork-image-wrapper {
+  width: 30%;
+}
+.request-artwork-image-wrapper > img {
+  width: 100%;
+}
+.request-artwork-info-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.request-artwork-info-text {
+}
+
+/*  REQUEST FORM */
+.request-artwork-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.request-artwork-form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.request-artwork-form-input {
+  padding: 0.4rem;
+}
+.request-artwork-form-date-wrapper {
+  display: flex;
+  gap: 2rem;
+}
+.request-artwork-form-input-date {
+}
+.request-artwork-form-select-option {
+}
+.request-artwork-form-textarea {
+  min-height: 5rem;
+  padding: 1rem;
+}
+.request-artwork-form-button {
+  padding: 1rem;
+}
