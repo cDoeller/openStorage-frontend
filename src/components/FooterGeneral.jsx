@@ -20,7 +20,7 @@ function FooterGeneral() {
   const linksCollection = ["FAQ", "AGB", "contact", "cookies", "imprint"];
 
   return (
-    <footer className="footer">
+    <footer className="footer page-wrapper">
       <h3 className="footer-general-headline">Open Storage {`> ` + pathname }</h3>
       {/* navigation list */}
       <div className="footer-general-navigation-container">
