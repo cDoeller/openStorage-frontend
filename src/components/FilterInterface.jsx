@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/FilterInterface.css";
 import artworksService from "../services/artworks.services";
+import userService from "../services/user.services";
 
 function FilterInterface(props) {
   const { setArtworks } = props;
@@ -10,6 +11,7 @@ function FilterInterface(props) {
   const [genre, setGenre] = useState("");
   const [dimensions, setDimensions] = useState({ x: 100, y: 100, z: 0 });
   const [artist, setArtist] = useState("");
+  const [allArtists, setAllArtists] = useState(null);
 
   const media = ["Photography", "Painting", "Installation", "Drawing"];
   const genres = [
@@ -19,8 +21,19 @@ function FilterInterface(props) {
     "Digital Art",
     "Abstract",
     "Figurative",
-    "Conceptual Art"
+    "Conceptual Art",
   ];
+
+  // get all artists in the beginning
+  useEffect(() => {
+    userService
+      .getAllArtists()
+      .then((response) => {
+        console.log(response.data);
+        setAllArtists(response.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   // Filtering
   useEffect(() => {
@@ -37,11 +50,10 @@ function FilterInterface(props) {
     artworksService
       .getArtworkQuery(queryString)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setArtworks(response.data);
       })
       .catch((err) => console.log(err));
-
   }, [city, medium, genre, dimensions, artist]);
 
   function resetAll() {
@@ -50,7 +62,7 @@ function FilterInterface(props) {
     setGenre("");
     setDimensions({ x: 100, y: 100, z: 0 });
     setArtist("");
-  } 
+  }
 
   return (
     <div className="filterinterface-wrapper">
@@ -157,17 +169,31 @@ function FilterInterface(props) {
 
         <label htmlFor="" className="filterinterface-form-label">
           Artist
-          <input
+          {/* <input
             className="filterinterface-form-input"
             type="text"
             value={artist}
             onChange={(e) => {
               setArtist(e.target.value);
             }}
-          />
+          /> */}
+          <select onChange={(e)=>{setArtist(e.target.value)}} name="" id="">
+            {allArtists &&
+              allArtists.map((artist) => {
+                return (
+                  <option key={artist._id} value={artist._id}>
+                    {artist.user_name}
+                  </option>
+                );
+              })}
+          </select>
         </label>
 
-        <button type="button" onClick={resetAll} className="filterinterface-reset-button">
+        <button
+          type="button"
+          onClick={resetAll}
+          className="filterinterface-reset-button"
+        >
           Reset
         </button>
       </form>
