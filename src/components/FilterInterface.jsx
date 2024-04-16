@@ -70,6 +70,36 @@ function FilterInterface(props) {
     setArtistName(selectedOption.label);
   }
 
+  // https://react-select.com/styles#inner-components
+  const selectStles = {
+    control: (baseStyles, state) => ({
+      ...baseStyles,
+      border: "none",
+      outline: "red",
+      borderRadius: "0",
+    }),
+    container: (baseStyles, state) => ({
+      ...baseStyles,
+      outline: "red",
+      border: "none",
+      borderRadius: "0",
+      borderBottom: "2px solid black",
+    }),
+    dropdownIndicator: (baseStyles, state) => ({
+      ...baseStyles,
+      border: "none",
+      outline: "none",
+      color: "black",
+    }),
+    menu: (baseStyles, state) => ({
+      ...baseStyles,
+      margin: "0",
+      borderRadius: "0",
+      maxHeight: "7rem",
+      overflow: "scroll",
+    }),
+  };
+
   return (
     <div className="filterinterface-wrapper">
       <form action="" className="filterinterface-form">
@@ -189,7 +219,8 @@ function FilterInterface(props) {
         <Select
           options={options}
           onChange={handleSelectChange}
-          value={{label:artistName}}
+          value={{ label: artistName }}
+          styles={selectStles}
         />
 
         {/* RESET BUTTON */}
