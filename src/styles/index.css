@@ -21,4 +21,14 @@ html,body,a, h1, h2, h3, p,ul,li,ol {
 
 .page-wrapper{
   padding: 0 1rem;
+  /* min-height: calc(100dvh - var(--navbarHeightMobile)) */
 }
+
+.highlight {
+  text-decoration-line: underline;
+  text-decoration-style: wavy; 
+  text-decoration-thickness:1.5px ;
+  /* text-decoration-color: var(--pink);  */
+  /* background-color: rgb(255, 220, 149); */
+}
+/* ---> {" "}<span className="highlight">TEXT</span> */
