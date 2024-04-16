@@ -29,7 +29,7 @@ useEffect(()=>{
 
 
   return (
-    <div className='ArtworkDetailsPage'>
+    <div className='ArtworkDetailsPage page-wrapper'>
         {artwork && (
             <div className='artwork-details-wrapper'>
             <h1>{artwork.title}</h1>

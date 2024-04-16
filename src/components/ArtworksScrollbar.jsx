@@ -1,4 +1,5 @@
 import "../styles/ArtworksScrollbar.css"
+import { Link } from "react-router-dom";
 
 function ArtworksScrollbar(props) {
 
@@ -14,6 +15,7 @@ function ArtworksScrollbar(props) {
       userInfo.artworks.map((oneArtwork, index) => {
         return (
           <div key={index} className="profile-artwork-card-wrapper">
+          <Link to={`/artworks/${oneArtwork._id}/edit`}>
             <div className="profile-artwork-card-image-wrapper">
               <img
                 src={oneArtwork.images_url[0]}
@@ -30,7 +32,9 @@ function ArtworksScrollbar(props) {
                 <img src="" alt="" />
               </div>
             </div>
+                  </Link>
           </div>
+                  
         );
       })}
 

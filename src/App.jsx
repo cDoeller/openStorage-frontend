@@ -17,6 +17,7 @@ import HowToPage from "./pages/HowToPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import RequestPage from "./pages/RequestPage";
 import AboutPage from "./pages/AboutPage";
+import EditArtworkPage from "./pages/EditArtworkPage";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/profile" element={ <ProfilePage />} />
         <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
+        <Route path="/artworks/:id/edit" element={ <EditArtworkPage />} />
         <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
         <Route path="/request" element={ <RequestPage />} />
 

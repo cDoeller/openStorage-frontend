@@ -61,7 +61,7 @@ function EditProfilePage() {
   }, [user, storedToken]);
 
   return (
-    <div id="ProfilePage page-wrapper">
+    <div id="ProfilePage" className="page-wrapper">
       <h1>Edit Profile</h1>
 
       {isLoggedIn && userInfo && (
