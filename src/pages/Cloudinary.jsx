@@ -36,5 +36,29 @@ export default Cloudinary;
 // 3) set state to image url
 // 4) store URL in Database via post request
 
+// many images: "files"
+
 // library documentation
 // https://www.npmjs.com/package/multer-storage-cloudinary
+
+
+// Image Resizing 
+
+// From:
+// https://res.cloudinary.com/
+// demo/image/upload/
+// balloons.jpg
+
+// To:
+// https://res.cloudinary.com/
+// demo/image/upload/
+// w_700,h_530,c_scale/
+// balloons.jpg
+
+// I was testing out, and i think the best way of using it would be something like:
+
+// https://res.cloudinary.com/demo/image/upload/w_400,c_scale/balloons.jpg
+
+// So you just set the width and it autoscales height
+// or the contrary
+// https://res.cloudinary.com/demo/image/upload/h_400,c_scale/balloons.jpg
