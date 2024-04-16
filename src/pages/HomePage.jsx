@@ -35,7 +35,7 @@ function HomePage() {
         <div className="landing-header-image-wrapper">
           <img
             className="landing-header-image"
-            src="../../public/img/living-room-artwork-2213465-hero-61361ba604da49818f8ce9996b12b183.jpg"
+            src="/img/living-room-artwork-2213465-hero-61361ba604da49818f8ce9996b12b183.jpg"
             alt=""
           />
         </div>
@@ -45,7 +45,7 @@ function HomePage() {
       <section className="landing-description-section">
         <div className="landing-description-section-logo-wrapper">
           <img
-            src="../../public/img/logo-placeholder-image.png"
+            src="/img/logo-V1.png"
             alt=""
             className="landing-description-section-logo-img"
           />
@@ -68,7 +68,7 @@ function HomePage() {
         <div className="landing-artworks-section-gallery-wrapper">
           <div className="landing-artworks-section-gallery-image-wrapper"></div>
           <img
-            src="../../public/img/christian-doeller-replay-pyramid-4.jpg"
+            src="/img/christian-doeller-replay-pyramid-4.jpg"
             alt=""
             className="landing-artworks-section-gallery-image-img"
           />
@@ -120,7 +120,7 @@ function HomePage() {
         <div className="landing-genre-section-bullet-wrapper">
           <div className="landing-genre-section-bullet-icon-wrapper">
             <img
-              src="../../public/img/star.png"
+              src="/img/star.png"
               alt=""
               className="landing-genre-section-bullet-icon"
             />
@@ -133,7 +133,7 @@ function HomePage() {
       <section className="landing-newsletter-section">
         <div className="landing-newsletter-section-icon-wrapper">
           <img
-            src="../../public/img/newsletter.png"
+            src="/img/newsletter.png"
             alt=""
             className="landing-newsletter-section-icon"
           />
