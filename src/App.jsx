@@ -15,6 +15,7 @@ import FooterGeneral from "./components/FooterGeneral";
 import ArtworkDetailPage from "./pages/ArtworkDetailPage";
 import HowToPage from "./pages/HowToPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import RequestPage from "./pages/RequestPage";
 import AboutPage from "./pages/AboutPage";
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/profile" element={ <ProfilePage />} />
         <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
         <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
+        <Route path="/request" element={ <RequestPage />} />
 
       </Routes>
       <FooterGeneral/>
