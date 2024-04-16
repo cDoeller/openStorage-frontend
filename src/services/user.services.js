@@ -26,6 +26,11 @@ class UserService {
   //   return this.api.get("/api/user");
   // };
 
+  // // GET Artist Search Query by name
+  // getArtistsByName = (query) => {
+  //   return this.api.get(`/api/user/artists/search?name=${query}`);
+  // };
+
   // GET all artists
   getAllArtists = () => {
     return this.api.get("/api/user/artists");

@@ -12,6 +12,7 @@ function FilterInterface(props) {
   const [dimensions, setDimensions] = useState({ x: 100, y: 100, z: 0 });
   const [artist, setArtist] = useState("");
   const [allArtists, setAllArtists] = useState(null);
+  const [suggestedArtists, setSuggestedArtists] = useState(null);
 
   const media = ["Photography", "Painting", "Installation", "Drawing"];
   const genres = [
@@ -35,6 +36,16 @@ function FilterInterface(props) {
       .catch((err) => console.log(err));
   }, []);
 
+  // find artist regex by name
+  // useState(() => {
+  //   userService
+  //     .getArtistsByName(artist)
+  //     .then(() => {})
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [artist]);
+
   // Filtering
   useEffect(() => {
     let queryString = "?";
@@ -54,7 +65,8 @@ function FilterInterface(props) {
         setArtworks(response.data);
       })
       .catch((err) => console.log(err));
-  }, [city, medium, genre, dimensions, artist]);
+  }, [city, medium, genre, dimensions]);
+  // ARTIST MISSING
 
   function resetAll() {
     setCity("");
@@ -120,6 +132,7 @@ function FilterInterface(props) {
           </select>
         </label>
 
+        {/* DIMENSIONS */}
         <label htmlFor="" className="filterinterface-form-label">
           Dimensions [cm]
           <div className="filterinterface-form-dimension-input-wrapper">
@@ -167,17 +180,50 @@ function FilterInterface(props) {
           </div>
         </label>
 
-        <label htmlFor="" className="filterinterface-form-label">
+        {/* ARTIST */}
+        <label
+          htmlFor=""
+          className="filterinterface-form-label filterinterface-form-input-autosuggest-label"
+        >
           Artist
-          {/* <input
+          <input
             className="filterinterface-form-input"
             type="text"
             value={artist}
+            autoComplete="on"
             onChange={(e) => {
               setArtist(e.target.value);
+              // handleSuggest();
             }}
-          /> */}
-          <select onChange={(e)=>{setArtist(e.target.value)}} name="" id="">
+            list="artistSearch"
+          />
+          <datalist id="artistSearch">
+            <option value="search" />
+            <option value="Artist2" />
+          </datalist>
+          {/* <div className="filterinterface-form-input-autosuggest-wrapper">
+            <ul className="filterinterface-form-input-autosuggest-ul">
+              <li className="filterinterface-form-input-autosuggest-li">
+                Artist
+              </li>
+              <li className="filterinterface-form-input-autosuggest-li">
+                Artist
+              </li>
+              <li className="filterinterface-form-input-autosuggest-li">
+                Artist
+              </li>
+              <li className="filterinterface-form-input-autosuggest-li">
+                Artist
+              </li>
+              <li className="filterinterface-form-input-autosuggest-li">
+                Artist
+              </li>
+              <li className="filterinterface-form-input-autosuggest-li">
+                Artist
+              </li>
+            </ul>
+          </div> */}
+          {/* <select onChange={(e)=>{setArtist(e.target.value)}} name="" id="">
             {allArtists &&
               allArtists.map((artist) => {
                 return (
@@ -186,7 +232,7 @@ function FilterInterface(props) {
                   </option>
                 );
               })}
-          </select>
+          </select> */}
         </label>
 
         <button
