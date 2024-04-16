@@ -50,10 +50,7 @@ function ProfilePage() {
               </div>
 
               <div className="artworks-wrapper">
-     
-                  <Link to="/profile/edit-artworks">
-                    <div className="edit-link">Edit</div>
-                  </Link>
+                    <div className="edit-link">Add Artwork</div>
 
                 <ArtworksScrollbar
                   userInfo={userInfo}

@@ -42,7 +42,7 @@ class ArtworksService {
 
   // PUT /api/artworks/:id
   updateArtwork = (id, requestBody) => {
-    return this.api.put(`/api/artworks/${id}`, requestBody);
+    return this.api.patch(`/api/artworks/${id}`, requestBody);
   };
 
   // DELETE /api/artworks/:id
