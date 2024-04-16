@@ -4,10 +4,12 @@ import "../styles/ArtworksPage.css";
 import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
 import artworksService from "../services/artworks.services";
+import userService from "../services/user.services";
 
 function ArtworksPage() {
   const [artworks, setArtworks] = useState(null);
   const [showInterface, setShowInterface] = useState(false);
+  const [allArtists, setAllArtists] = useState(null);
 
   function toggleFilterInterface() {
     setShowInterface(!showInterface);
@@ -20,12 +22,20 @@ function ArtworksPage() {
         console.log(response.data);
         setArtworks(response.data);
       })
+      .then(() => {
+        userService
+          .getAllArtists()
+          .then((response) => {
+            console.log(response.data);
+            setAllArtists(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
   }, []);
-  
+
   return (
     <div className="page-wrapper">
-
       {/* FILTER INTERFACE */}
       <div
         className={
@@ -34,7 +44,7 @@ function ArtworksPage() {
             : "artworks-filterinterface-hide"
         }
       >
-        <FilterInterface setArtworks={setArtworks} />
+        <FilterInterface setArtworks={setArtworks} allArtists={allArtists} />
       </div>
 
       {/* FILTER INTERFACE BUTTON */}
