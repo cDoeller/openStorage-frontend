@@ -4,25 +4,14 @@ import artworksService from "../services/artworks.services";
 import Select from "react-select";
 
 function FilterInterface(props) {
-  const { setArtworks, allArtists } = props;
+  const { setArtworks, allArtists, allCities } = props;
 
   const [city, setCity] = useState("");
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
   const [dimensions, setDimensions] = useState({ x: 100, y: 100, z: 0 });
   const [artistId, setArtistId] = useState("");
-  const [artistName, setArtistName] = useState("- type / select -");
-
-  const media = ["Photography", "Painting", "Installation", "Drawing"];
-  const genres = [
-    "Surreal",
-    "Dada",
-    "Minimalism",
-    "Digital Art",
-    "Abstract",
-    "Figurative",
-    "Conceptual Art",
-  ];
+  const [artistName, setArtistName] = useState("");
 
   // Filtering
   useEffect(() => {
@@ -36,6 +25,8 @@ function FilterInterface(props) {
     queryString += `dimensions-y=${dimensions.y}&`;
     queryString += `dimensions-z=${dimensions.z}&`;
     queryString += `artist=${artistId}`;
+
+    console.log(queryString);
 
     artworksService
       .getArtworkQuery(queryString)
@@ -51,25 +42,58 @@ function FilterInterface(props) {
     setMedium("");
     setGenre("");
     setDimensions({ x: 100, y: 100, z: 0 });
-    setArtistName("- type / select -");
+    setArtistName("");
     setArtistId("");
   }
 
-  // ** react-select for artists
-  let options = [{ value: "", label: "- type / select -" }];
-
-  // make options array { value: "vanilla", label: "Vanilla" },
+  // REACT SELECT OPTIONS
+  let mediaOptions = [
+    // { value: "", label: "- type / select -" },
+    { value: "Photography", label: "Photography" },
+    { value: "Painting", label: "Painting" },
+    { value: "Installation", label: "Installation" },
+    { value: "Drawing", label: "Drawing" },
+  ];
+  let genreOptions = [
+    // { value: "", label: "- type / select -" },
+    { value: "Surreal", label: "Surreal" },
+    { value: "Dada", label: "Dada" },
+    { value: "Minimalism", label: "Minimalism" },
+    { value: "Digital Art", label: "Digital Art" },
+    { value: "Abstract", label: "Abstract" },
+    { value: "Figurative", label: "Figurative" },
+    { value: "Conceptual Art", label: "Conceptual Art" },
+  ];
+  let cityOptions = [];
+  if (allCities) {
+    allCities.forEach((oneCity) => {
+      cityOptions.push({ value: oneCity.name, label: oneCity.name });
+    });
+  }
+  // artists: value = id
+  let artistOptions = [];
   if (allArtists) {
     allArtists.forEach((oneArtist) => {
-      options.push({ value: oneArtist._id, label: oneArtist.user_name });
+      artistOptions.push({ value: oneArtist._id, label: oneArtist.user_name });
     });
   }
 
-  function handleSelectChange(selectedOption) {
+  // REACT SELECT HANDLE SELECT FUNCTIONS
+  function handleMediaSelectChange(selectedOption) {
+    setMedium(selectedOption.value);
+  }
+  function handleGenreSelectChange(selectedOption) {
+    setGenre(selectedOption.value);
+  }
+  function handleArtistSelectChange(selectedOption) {
     setArtistId(selectedOption.value);
     setArtistName(selectedOption.label);
   }
+  function handleCitiesSelectChange(selectedOption) {
+    setCity(selectedOption.value);
+  }
 
+  // REACT SELECT STYLING
   // https://react-select.com/styles#inner-components
   const selectStles = {
     control: (baseStyles, state) => ({
@@ -106,58 +130,35 @@ function FilterInterface(props) {
         {/* CITY */}
         <label htmlFor="" className="filterinterface-form-label">
           City
-          <input
-            className="filterinterface-form-input"
-            type="text"
-            value={city}
-            onChange={(e) => {
-              setCity(e.target.value);
-            }}
-          />
         </label>
+        <Select
+          options={cityOptions}
+          onChange={handleCitiesSelectChange}
+          value={{ label: city }}
+          styles={selectStles}
+        />
 
         {/* MEDIUM */}
         <label htmlFor="" className="filterinterface-form-label">
           Medium
-          <select
-            className="filterinterface-form-input"
-            type="text"
-            value={medium}
-            onChange={(e) => {
-              setMedium(e.target.value);
-            }}
-          >
-            <option value={""}>-</option>
-            {media.map((medium) => {
-              return (
-                <option value={medium} key={medium}>
-                  {medium}
-                </option>
-              );
-            })}
-          </select>
         </label>
+        <Select
+          options={mediaOptions}
+          onChange={handleMediaSelectChange}
+          value={{ label: medium }}
+          styles={selectStles}
+        />
 
         {/* GENRE */}
         <label htmlFor="" className="filterinterface-form-label">
           Genre
-          <select
-            className="filterinterface-form-select"
-            value={genre}
-            onChange={(e) => {
-              setGenre(e.target.value);
-            }}
-          >
-            <option value={""}>-</option>
-            {genres.map((genre) => {
-              return (
-                <option value={genre} key={genre}>
-                  {genre}
-                </option>
-              );
-            })}
-          </select>
         </label>
+        <Select
+          options={genreOptions}
+          onChange={handleGenreSelectChange}
+          value={{ label: genre }}
+          styles={selectStles}
+        />
 
         {/* DIMENSIONS */}
         <label htmlFor="" className="filterinterface-form-label">
@@ -217,8 +218,8 @@ function FilterInterface(props) {
           Artist
         </label>
         <Select
-          options={options}
-          onChange={handleSelectChange}
+          options={artistOptions}
+          onChange={handleArtistSelectChange}
           value={{ label: artistName }}
           styles={selectStles}
         />

@@ -5,11 +5,13 @@ import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
 import artworksService from "../services/artworks.services";
 import userService from "../services/user.services";
+import cityService from "../services/city.services";
 
 function ArtworksPage() {
   const [artworks, setArtworks] = useState(null);
   const [showInterface, setShowInterface] = useState(false);
   const [allArtists, setAllArtists] = useState(null);
+  const [allCities, setAllCities] = useState(null);
 
   function toggleFilterInterface() {
     setShowInterface(!showInterface);
@@ -19,15 +21,24 @@ function ArtworksPage() {
     artworksService
       .getAllArtworks()
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setArtworks(response.data);
       })
       .then(() => {
         userService
           .getAllArtists()
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setAllArtists(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
+      .then(() => {
+        cityService
+          .getAllCities()
+          .then((response) => {
+            // console.log(response.data);
+            setAllCities(response.data);
           })
           .catch((err) => console.log(err));
       })
@@ -44,7 +55,11 @@ function ArtworksPage() {
             : "artworks-filterinterface-hide"
         }
       >
-        <FilterInterface setArtworks={setArtworks} allArtists={allArtists} />
+        <FilterInterface
+          setArtworks={setArtworks}
+          allArtists={allArtists}
+          allCities={allCities}
+        />
       </div>
 
       {/* FILTER INTERFACE BUTTON */}
