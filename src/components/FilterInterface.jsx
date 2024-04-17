@@ -18,13 +18,13 @@ function FilterInterface(props) {
     console.log(artistName);
 
     let queryString = "?";
-    queryString += `city=${city}&`;
-    queryString += `medium=${medium}&`;
-    queryString += `genre=${genre}&`;
-    if (dimensions.x) queryString += `dimensions-x=${dimensions.x}&`;
-    if (dimensions.y) queryString += `dimensions-y=${dimensions.y}&`;
-    if (dimensions.z) queryString += `dimensions-z=${dimensions.z}&`;
-    queryString += `artist=${artistId}`;
+    if (city) queryString += `city=${city}&`;
+    if (medium) queryString += `medium=${medium}&`;
+    if (genre) queryString += `genre=${genre}&`;
+    if (dimensions.x) queryString += `dimensions_x=${dimensions.x}&`;
+    if (dimensions.y) queryString += `dimensions_y=${dimensions.y}&`;
+    if (dimensions.z) queryString += `dimensions_z=${dimensions.z}&`;
+    if (artistId) queryString += `artist=${artistId}`;
 
     console.log(queryString);
 
