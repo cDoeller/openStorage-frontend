@@ -9,7 +9,7 @@ function FilterInterface(props) {
   const [city, setCity] = useState("");
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
-  const [dimensions, setDimensions] = useState({ x: 100, y: 100, z: 0 });
+  const [dimensions, setDimensions] = useState({ x: 0, y: 0, z: 0 });
   const [artistId, setArtistId] = useState("");
   const [artistName, setArtistName] = useState("");
 
@@ -21,9 +21,9 @@ function FilterInterface(props) {
     queryString += `city=${city}&`;
     queryString += `medium=${medium}&`;
     queryString += `genre=${genre}&`;
-    queryString += `dimensions-x=${dimensions.x}&`;
-    queryString += `dimensions-y=${dimensions.y}&`;
-    queryString += `dimensions-z=${dimensions.z}&`;
+    if (dimensions.x) queryString += `dimensions-x=${dimensions.x}&`;
+    if (dimensions.y) queryString += `dimensions-y=${dimensions.y}&`;
+    if (dimensions.z) queryString += `dimensions-z=${dimensions.z}&`;
     queryString += `artist=${artistId}`;
 
     console.log(queryString);
@@ -41,7 +41,7 @@ function FilterInterface(props) {
     setCity("");
     setMedium("");
     setGenre("");
-    setDimensions({ x: 100, y: 100, z: 0 });
+    setDimensions({ x: 0, y: 0, z: 0 });
     setArtistName("");
     setArtistId("");
   }
@@ -162,12 +162,12 @@ function FilterInterface(props) {
 
         {/* DIMENSIONS */}
         <label htmlFor="" className="filterinterface-form-label">
-          Dimensions [cm]
+          Max Dimensions [cm]
           <div className="filterinterface-form-dimension-input-wrapper">
             <input
               className="filterinterface-form-input filterinterface-form-dimension-input"
-              type="text"
-              value={dimensions.x}
+              type="number"
+              value={dimensions.x ? dimensions.x : ""}
               onChange={(e) => {
                 const newDim = {
                   x: e.target.value,
@@ -180,8 +180,8 @@ function FilterInterface(props) {
             x
             <input
               className="filterinterface-form-input filterinterface-form-dimension-input"
-              type="text"
-              value={dimensions.y}
+              type="number"
+              value={dimensions.y ? dimensions.y : ""}
               onChange={(e) => {
                 const newDim = {
                   x: dimensions.x,
@@ -194,8 +194,8 @@ function FilterInterface(props) {
             x
             <input
               className="filterinterface-form-input filterinterface-form-dimension-input"
-              type="text"
-              value={dimensions.z}
+              type="number"
+              value={dimensions.z ? dimensions.z : ""}
               onChange={(e) => {
                 const newDim = {
                   x: dimensions.x,
