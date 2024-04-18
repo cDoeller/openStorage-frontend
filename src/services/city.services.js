@@ -33,6 +33,11 @@ class CityService {
   };
  
 
+  // GET all cities
+  getAllCities = () => {
+    return this.api.get(`/api/city`);
+  };
+
 }
 
 
