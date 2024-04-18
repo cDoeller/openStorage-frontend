@@ -13,7 +13,9 @@ function EditArtworkPage() {
     const [title,setTitle] = useState("")
     const [year, setYear] = useState(2024)
     const [city, setCity] = useState("")
-    const [dimensions, setDimensions] = useState({})
+    const [dimensionsX, setDimensionsX] = useState(0)
+    const [dimensionsY, setDimensionsY] = useState(0)
+    const [dimensionsZ, setDimensionsZ] = useState(0)
     const [imagesUrl, setImagesUrl] = useState([])
     const [medium, setMedium] = useState("")
     const [genre, setGenre] = useState("")
@@ -38,7 +40,7 @@ function EditArtworkPage() {
             setTitle(initialArtwork.title)
             setYear(initialArtwork.year)
             setCity(initialArtwork.city)
-            setDimensions(initialArtwork.dimensions)
+            // setDimensions(initialArtwork.dimensions)
             setImagesUrl(initialArtwork.images_url)
             setMedium(initialArtwork.medium)
             setGenre(initialArtwork.genre)
@@ -56,7 +58,7 @@ function EditArtworkPage() {
             artist:artwork.artist,
             year:year,
             city:city,
-            dimensions:dimensions,
+            // dimensions:{{dimensionsX},{dimensionsY},dimensionsZ},
             images_url:imagesUrl,
             medium:medium,
             genre:genre,
@@ -86,12 +88,13 @@ function EditArtworkPage() {
                 <select name="city" onChange={(e)=>{setCity(e.target.value)}}>
                     <option value="Leipzig">Leipzig</option>
                 </select>
-                <label name="dimensions">Dimensions
-
+                <label name="dimensions">
+                Dimensions
+                {/* <input type="number" onChange={(e)=>{}} />x<input type="number" />y<input type="number" />z */}
                 </label>
                 <label name="images">Images
                 {imagesUrl.map((oneUrl)=>{
-                    <input type="url" value={oneUrl} />
+                    <input type="string" value={oneUrl} />
                 })}
 
                 </label>
