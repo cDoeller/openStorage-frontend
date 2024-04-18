@@ -6,7 +6,7 @@
 /* NAV BUTTONS */
 .howto-nav-button-wrapper {
   position: fixed;
-  left:0;
+  left: 0;
   width: 100%;
   height: 80px;
   box-sizing: border-box;
@@ -42,12 +42,24 @@
   gap: 1rem;
   width: 80%;
   padding: 2rem 0;
+  counter-reset: orderedlist;
 }
 .howto-for-li {
-  list-style-type: decimal;
-  list-style-position: outside;
-  margin-left: 2rem;
-  padding-left: 1rem;
+  display: grid;
+  grid-template-columns: 0 1fr;
+  /* gap: 1.75em; */
+  gap: 2.8em;
+  align-items: start;
+}
+.howto-for-li::before {
+  counter-increment: orderedlist;
+  content: counter(orderedlist);
+  border: 1px solid black;
+  width: 1.7rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  padding-left: 0.5rem;
+  margin-top:0.3rem;
 }
 
 /* PAYMENT INFO */
