@@ -108,19 +108,6 @@ function RequestPage() {
     </>
   );
 
-  // const pickupDetailsElement = (
-  //   <label htmlFor="" className="request-artwork-form-label">
-  //     Pickup Details
-  //     <input
-  //       value={pickupDetails}
-  //       onChange={(e) => setPickupDetails(e.target.value)}
-  //       type="text"
-  //       required
-  //       className="request-artwork-form-input"
-  //     ></input>
-  //   </label>
-  // );
-
   return (
     <div className="page-wrapper request-wrapper">
       <h3 className="request-headline">Request Details</h3>
