@@ -67,7 +67,7 @@ function FilterInterface(props) {
   let cityOptions = [];
   if (allCities) {
     allCities.forEach((oneCity) => {
-      cityOptions.push({ value: oneCity.name, label: oneCity.name });
+      cityOptions.push({ value: oneCity, label: oneCity });
     });
   }
   // artists: value = id
