@@ -5,7 +5,6 @@ import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
 import artworksService from "../services/artworks.services";
 import userService from "../services/user.services";
-import cityService from "../services/city.services";
 
 function ArtworksPage() {
   const [artworks, setArtworks] = useState(null);
@@ -34,8 +33,8 @@ function ArtworksPage() {
           .catch((err) => console.log(err));
       })
       .then(() => {
-        cityService
-          .getAllCities()
+        artworksService
+          .getArtworkCities()
           .then((response) => {
             // console.log(response.data);
             setAllCities(response.data);
