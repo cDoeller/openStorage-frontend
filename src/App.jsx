@@ -48,7 +48,7 @@ function App() {
         <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
         <Route path="/artworks/:id/edit" element={ <EditArtworkPage />} />
         <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
-        <Route path="/request" element={ <RequestPage />} />
+        <Route path="/request/:id" element={ <RequestPage />} />
 
       </Routes>
       <FooterGeneral/>
