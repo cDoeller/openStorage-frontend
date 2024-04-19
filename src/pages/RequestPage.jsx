@@ -7,8 +7,9 @@ import rentalsService from "../services/rentals.services";
 import userService from "../services/user.services";
 
 function RequestPage() {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(new Date().toJSON().slice(0, 10));
+  const [endDate, setEndDate] = useState(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+  const [minEndDate, setMinEndDate] = useState("");
   const [transportation, setTransportation] = useState("delivery");
   const [street, setStreet] = useState("");
   const [postalCode, setPostalCode] = useState("");
@@ -29,14 +30,12 @@ function RequestPage() {
       })
       .catch((err) => console.log(err));
 
-    // prefill delivery form
+    // * PREFILL DELIVERY FORM
     userService
       .getUser(user._id)
       .then((response) => {
-        console.log(response.data);
         if (response.data.contact) {
-          if (!response.data.contact.address) return
-          console.log(response.data.contact.address);
+          if (!response.data.contact.address) return;
           setStreet(response.data.contact.address.street);
           setCity(response.data.contact.address.city);
           setCountry(response.data.contact.address.country);
@@ -46,6 +45,22 @@ function RequestPage() {
       .catch((err) => console.log(err));
   }, [id, user]);
 
+  // * DATES TO PICK
+  const todayDate = new Date().toJSON().slice(0, 10);
+  function addTwoWeeks(date = new Date()) {
+    date.setDate(date.getDate() + 2 * 7);
+    return date;
+  }
+  useEffect(() => {
+    setMinEndDate(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+    const startDatePlusTwoWeeks = addTwoWeeks(new Date(startDate));
+    // if end date less than startdate + 2 weeks, set end date: startdate + 2 weeks
+    if (new Date(endDate).getTime() < startDatePlusTwoWeeks.getTime()) {
+      setEndDate(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+    }
+  }, [startDate]);
+
+  // * SUBMIT FORM
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -81,6 +96,7 @@ function RequestPage() {
     navigate("/profile");
   }
 
+  // * DELIVERY ELEMENT
   const deliveryDetailsElement = (
     <>
       <label htmlFor="" className="request-artwork-form-label">
@@ -145,9 +161,13 @@ function RequestPage() {
               </p>
             </div>
           </div>
-          <p className="request-artwork-info-text request-artwork-info-text-forSale">
-            {artwork.isForSale ? "✅ potentially for Sale" : ""}
-          </p>
+          {artwork.isForSale ? (
+            <p className="request-artwork-info-text request-artwork-info-text-forSale">
+              ✅ potentially for Sale
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       )}
 
@@ -161,6 +181,7 @@ function RequestPage() {
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               type="date"
+              min={todayDate}
               required
               className="request-artwork-form-input-date request-artwork-form-input"
             />
@@ -173,6 +194,7 @@ function RequestPage() {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               type="date"
+              min={minEndDate}
               required
               className="request-artwork-form-input-date request-artwork-form-input"
             />
