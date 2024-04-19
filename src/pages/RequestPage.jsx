@@ -4,6 +4,7 @@ import "../styles/RequestPage.css";
 import artworksService from "../services/artworks.services";
 import { AuthContext } from "../context/auth.context";
 import rentalsService from "../services/rentals.services";
+import userService from "../services/user.services";
 
 function RequestPage() {
   const [startDate, setStartDate] = useState("");
@@ -13,8 +14,6 @@ function RequestPage() {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-
-  // const [pickupDetails, setPickupDetails] = useState("");
   const [message, setMessage] = useState("");
   const [artwork, setArtwork] = useState(null);
 
@@ -29,7 +28,23 @@ function RequestPage() {
         setArtwork(response.data);
       })
       .catch((err) => console.log(err));
-  }, [id]);
+
+    // prefill delivery form
+    userService
+      .getUser(user._id)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.contact) {
+          if (!response.data.contact.address) return
+          console.log(response.data.contact.address);
+          setStreet(response.data.contact.address.street);
+          setCity(response.data.contact.address.city);
+          setCountry(response.data.contact.address.country);
+          setPostalCode(response.data.contact.address.postal_code);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [id, user]);
 
   function handleSubmit(e) {
     e.preventDefault();
