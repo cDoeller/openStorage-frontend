@@ -42,16 +42,22 @@ function App() {
         ></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
-        <Route path="/about" element={<AboutPage/>}></Route>
+        <Route path="/about" element={<AboutPage />}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
-        <Route path="/profile" element={ <ProfilePage />} />
-        <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
-        <Route path="/artworks/:id/edit" element={ <EditArtworkPage />} />
-        <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
-        <Route path="/request/:id" element={ <RequestPage />} />
-
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/artworks/:id" element={<ArtworkDetailPage />} />
+        <Route path="/artworks/:id/edit" element={<EditArtworkPage />} />
+        <Route path="/profile/edit-profile" element={<EditProfilePage />} />
+        <Route
+          path="/request/:id"
+          element={
+            <IsPrivate>
+              <RequestPage />
+            </IsPrivate>
+          }
+        />
       </Routes>
-      <FooterGeneral/>
+      <FooterGeneral />
     </>
   );
 }

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/RequestPage.css";
 import artworksService from "../services/artworks.services";
 import { AuthContext } from "../context/auth.context";
+import rentalsService from "../services/rentals.services";
 
 function RequestPage() {
   const [startDate, setStartDate] = useState("");
@@ -19,7 +20,7 @@ function RequestPage() {
 
   const { user } = useContext(AuthContext);
   const { id } = useParams();
-  const navigate = useNavigate ();
+  const navigate = useNavigate();
 
   useEffect(() => {
     artworksService
@@ -37,11 +38,11 @@ function RequestPage() {
     transportation === "pickup"
       ? (transportation_details = {})
       : (transportation_details = {
-        street: street,
-        postal_code: postalCode,
-        city: city,
-        country: country
-      });
+          street: street,
+          postal_code: postalCode,
+          city: city,
+          country: country,
+        });
 
     const newRequest = {
       artwork: artwork._id,
@@ -55,56 +56,58 @@ function RequestPage() {
       is_approved: false,
     };
 
-    console.log(newRequest);
+    rentalsService
+      .createRental(newRequest)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
 
-    // POST NEW REQUEST
-
-    // NAVIGATE
-    // navigate("/profile")
+    navigate("/profile");
   }
 
   const deliveryDetailsElement = (
     <>
-    <label htmlFor="" className="request-artwork-form-label">
-      Street / No.
-      <input
-        value={street}
-        onChange={(e) => setStreet(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
-    <label htmlFor="" className="request-artwork-form-label">
-      Postal Code
-      <input
-        value={postalCode}
-        onChange={(e) => setPostalCode(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
-    <label htmlFor="" className="request-artwork-form-label">
-      City
-      <input
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
-    <label htmlFor="" className="request-artwork-form-label">
-      Country
-      <input
-        value={country}
-        onChange={(e) => setCountry(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        Street / No.
+        <input
+          value={street}
+          onChange={(e) => setStreet(e.target.value)}
+          type="text"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        Postal Code
+        <input
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+          type="number"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        City
+        <input
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          type="text"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        Country
+        <input
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+          type="text"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
     </>
   );
 
@@ -187,9 +190,7 @@ function RequestPage() {
         </label>
 
         {/* Transportation Details*/}
-        {transportation === "delivery"
-          ? deliveryDetailsElement
-          : ""}
+        {transportation === "delivery" ? deliveryDetailsElement : ""}
 
         {/* Message*/}
         <label htmlFor="" className="request-artwork-form-label">

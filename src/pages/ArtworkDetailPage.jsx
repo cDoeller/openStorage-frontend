@@ -61,7 +61,11 @@ function ArtworkDetailPage() {
               </p>
             )}
           </div>
-          <Link to={`/request/${artwork._id}`}><button className="artwork-request-button">Request</button></Link>
+          {isLoggedIn && (
+            <Link to={`/request/${artwork._id}`}>
+              <button className="artwork-request-button">Request</button>
+            </Link>
+          )}
         </div>
       )}
     </div>
