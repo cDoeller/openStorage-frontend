@@ -36,6 +36,11 @@ class UserService {
     return this.api.get("/api/user/artists");
   };
 
+// GET only artists with artworks
+getAllArtistsWithWorks = () => {
+    return this.api.get(`/api/user/artists/works`);
+  };
+
   // GET one user
   getUser = (id) => {
     return this.api.get(`/api/user/${id}`);

@@ -25,7 +25,7 @@ function ArtworksPage() {
       })
       .then(() => {
         userService
-          .getAllArtists()
+          .getAllArtistsWithWorks()
           .then((response) => {
             // console.log(response.data);
             setAllArtists(response.data);
