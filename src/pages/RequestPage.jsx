@@ -74,7 +74,7 @@ function RequestPage() {
           country: country,
         });
 
-    const newRequest = {
+    const newRental = {
       artwork: artwork._id,
       user_borrowing: user._id,
       artist: artwork.artist._id,
@@ -87,7 +87,7 @@ function RequestPage() {
     };
 
     rentalsService
-      .createRental(newRequest)
+      .createRental(newRental)
       .then((response) => {
         console.log(response.data);
       })
