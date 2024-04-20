@@ -27,7 +27,7 @@ function ProfilePage() {
   }, [user, storedToken]);
 
   return (
-    <div id="ProfilePage page-wrapper">
+    <div id="ProfilePage" className="page-wrapper">
       <h1>Your Profile</h1>
 
       {isLoggedIn && userInfo && (
@@ -50,7 +50,8 @@ function ProfilePage() {
               </div>
 
               <div className="artworks-wrapper">
-                    <div className="edit-link">Add Artwork</div>
+                    <div className="edit-link"><Link to="/profile/create-artwork">+
+                    </Link></div>
 
                 <ArtworksScrollbar
                   userInfo={userInfo}
