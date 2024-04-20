@@ -2,6 +2,8 @@ import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/auth.context";
 import Select from "react-select";
 import cityService from "../services/city.services";
+import "../styles/CreateArtwork.css"
+import artworksService from "../services/artworks.services";
 
 function CreateArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -10,7 +12,7 @@ function CreateArtworkPage() {
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(new Date());
-  const [images, setImages] = useState([]);
+  const [imagesUrl, setImagesUrl] = useState([]);
   const [city, setCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
@@ -89,16 +91,55 @@ function CreateArtworkPage() {
     });
   }, []);
 
+  function handleDeleteImage(e,index){
+    e.preventDefault()
+    const copiedImages = [...imagesUrl]
+    copiedImages.splice(index, 1)
+    setImagesUrl(copiedImages)
+  }
+
+  function handleImageUpload(e){
+    e.preventDefault()
+    const copiedImages = [...imagesUrl, e.target.value]
+    setImagesUrl(copiedImages)
+    console.log(copiedImages)
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
+
+    const newArtwork = {
+        title:title,
+        year:year,
+        artist:user._id,
+        city:city,
+        dimensions:{
+            x:dimensionsX,
+            y:dimensionsY,
+            z:dimensionsZ
+        },
+        images_url:imagesUrl,
+        medium:medium,
+        genre:genre
+    }
+
+    artworksService.createArtwork(newArtwork)
+    .then((response)=>{
+        console.log("successfully created a new artwork")
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+
   }
 
   return (
     <div id="CreateArtworkPage" className="page-wrapper">
       <h1>Create Artwork</h1>
-      <form className="create-artwork-form">
+      <form onSubmit={(e)=>{handleSubmit(e)}} className="create-artwork-form">
         <label htmlFor="title">Title</label>
         <input
+        className="create-artwork-input"
           name="title"
           type="text"
           onChange={(e) => {
@@ -106,9 +147,10 @@ function CreateArtworkPage() {
           }}
         />
 
-        <h5>Year</h5>
+        <label htmlFor="year">Year</label>
         <input
-          className="edit-artwork-input"
+          className="create-artwork-input"
+          name="year"
           value={year}
           type="number"
           onChange={(e) => {
@@ -127,10 +169,10 @@ function CreateArtworkPage() {
           styles={selectStles}
         />
 
-        <h5>Dimensions</h5>
-        <div className="edit-dimensions">
+        <label htmlFor="">Dimensions</label>
+        <div className="create-dimensions-wrapper">
           <input
-            className="edit-artwork-input"
+            className="create-artwork-input"
             type="number"
             value={dimensionsX}
             onChange={(e) => {
@@ -139,7 +181,7 @@ function CreateArtworkPage() {
           />
           x
           <input
-            className="edit-artwork-input"
+            className="create-artwork-input"
             type="number"
             value={dimensionsY}
             onChange={(e) => {
@@ -148,7 +190,7 @@ function CreateArtworkPage() {
           />
           y
           <input
-            className="edit-artwork-input"
+            className="create-artwork-input"
             type="number"
             value={dimensionsZ}
             onChange={(e) => {
@@ -158,16 +200,17 @@ function CreateArtworkPage() {
           z
         </div>
 
-        <div className="artwork-details-img">
+        <div className="create-artwork-img-section">
           <label htmlFor="images">Images</label>
-          <input name="images" type="text" />
-          <button>Upload Image</button>
-          <div className="artwork-thumbnail-wrapper">
-            {images &&
-              images.map((oneImage, index) => {
+          <input name="images" type="url" />
+          <button onClick={(e)=>{handleImageUpload(e)}}>Upload Image</button>
+          <div className="create-artwork-thumbnail-wrapper">
+            {imagesUrl &&
+              imagesUrl.map((oneImage, index) => {
                 return (
-                  <div key={index} className="artwork-thumbnail">
+                  <div key={index} className="create-artwork-thumbnail">
                     <img src={oneImage} alt={title} />
+                    <button className="create-artwork-delete-img-button" onClick={(e,index)=>{handleDeleteImage(e,index)}}>x</button>
                   </div>
                 );
               })}
