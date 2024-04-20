@@ -50,7 +50,7 @@ function ProfilePage() {
               </div>
 
               <div className="artworks-wrapper">
-                    <div className="edit-link"><Link to="/profile/create-artwork">+
+                    <div className="add-artwork-button"><Link to="/artworks/create-artwork">+
                     </Link></div>
 
                 <ArtworksScrollbar
@@ -66,7 +66,8 @@ function ProfilePage() {
             <ArtworksScrollbar
               userInfo={userInfo}
               artworks={userInfo.artworks}
-              heading={"Current Loans"}
+              loans={userInfo.rentals_receiving}
+              heading={"Current Rentals"}
             />
             <div className="loans-thumbs-wrapper"></div>
           </div>
@@ -74,6 +75,7 @@ function ProfilePage() {
             <ArtworksScrollbar
               userInfo={userInfo}
               artworks={userInfo.artworks}
+              requests={userInfo.rentals_offering}
               heading={"Pending Requests"}
             />
             <div className="loans-thumbs-wrapper"></div>
