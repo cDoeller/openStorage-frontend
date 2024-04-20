@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'
 import { AuthContext } from "../context/auth.context";
 import Select from "react-select";
 import cityService from "../services/city.services";
@@ -7,6 +8,8 @@ import artworksService from "../services/artworks.services";
 
 function CreateArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
+
+  const navigate = useNavigate()
 
   const [cityOptions, setCityOptions] = useState();
 
@@ -19,6 +22,8 @@ function CreateArtworkPage() {
   const [dimensionsZ, setDimensionsZ] = useState(0);
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
+
+  const [imageToUpload, setImageToUpload] = useState("")
 
   // REACT SELECT OPTIONS
   let mediaOptions = [
@@ -98,9 +103,9 @@ function CreateArtworkPage() {
     setImagesUrl(copiedImages)
   }
 
-  function handleImageUpload(e){
+  function handleImagesUrl(e){
     e.preventDefault()
-    const copiedImages = [...imagesUrl, e.target.value]
+    const copiedImages = [imageToUpload,...imagesUrl]
     setImagesUrl(copiedImages)
     console.log(copiedImages)
   }
@@ -126,6 +131,8 @@ function CreateArtworkPage() {
     artworksService.createArtwork(newArtwork)
     .then((response)=>{
         console.log("successfully created a new artwork")
+        const newArtwork = response.data.newArtwork
+        navigate(`/artworks/${newArtwork._id}`)
     })
     .catch((err)=>{
         console.log(err)
@@ -202,15 +209,15 @@ function CreateArtworkPage() {
 
         <div className="create-artwork-img-section">
           <label htmlFor="images">Images</label>
-          <input name="images" type="url" />
-          <button onClick={(e)=>{handleImageUpload(e)}}>Upload Image</button>
+          <input name="images" onChange={(e)=>{setImageToUpload(e.target.value)}} type="url" />
+          <button onClick={(e)=>{handleImagesUrl(e)}}>Upload Image</button>
           <div className="create-artwork-thumbnail-wrapper">
             {imagesUrl &&
               imagesUrl.map((oneImage, index) => {
                 return (
-                  <div key={index} className="create-artwork-thumbnail">
+                  <div key={index} className="create-artwork-img-wrapper">
                     <img src={oneImage} alt={title} />
-                    <button className="create-artwork-delete-img-button" onClick={(e,index)=>{handleDeleteImage(e,index)}}>x</button>
+                    <button className="create-artwork-delete-img-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
                   </div>
                 );
               })}

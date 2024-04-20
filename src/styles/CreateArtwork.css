@@ -21,16 +21,19 @@
     text-align: center;
 }
 
-.create-artwork-img-section{
-    width:100%;
-}
 
-.create-artwork-thumbnail-wrapper{
-    width:100%;
-    display:flex;
-    flex-flow:row wrap;
-}
-
-.create-artwork-thumbnail{
-    width:100px;
-}
+.create-artwork-img-section {
+    height: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+  
+  .create-artwork-img-wrapper {
+    width: 150px;
+  }
+  
+  .create-artwork-img-wrapper > img {
+    width: 110%;
+  }
+  

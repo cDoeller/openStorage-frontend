@@ -47,9 +47,9 @@ function App() {
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/profile" element={ <ProfilePage />} />
         <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
+        <Route path="/artworks/:id/edit" element={ <EditArtworkPage />} />
+        <Route path="/artworks/create-artwork" element={ <CreateArtworkPage />} />
         <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
-        <Route path="/profile/edit-artwork/:id" element={ <EditArtworkPage />} />
-        <Route path="/profile/create-artwork" element={ <CreateArtworkPage />} />
           <Route
           path="/request/:id"
           element={
