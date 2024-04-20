@@ -2,6 +2,19 @@
     display:block;
 }
 
+.artwork-info{
+    position: relative;
+}
+.artwork-info-favorite{
+    position: absolute;
+    right: 0;
+    font-size: 1.2rem;
+}
+
+.artwork-info-text{
+    width: 75%;
+}
+
 .artwork-thumbnail-wrapper{
     display:flex;
     flex-direction: row;
