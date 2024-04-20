@@ -3,23 +3,24 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/RequestPage.css";
 import artworksService from "../services/artworks.services";
 import { AuthContext } from "../context/auth.context";
+import rentalsService from "../services/rentals.services";
+import userService from "../services/user.services";
 
 function RequestPage() {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(new Date().toJSON().slice(0, 10));
+  const [endDate, setEndDate] = useState(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+  const [minEndDate, setMinEndDate] = useState("");
   const [transportation, setTransportation] = useState("delivery");
   const [street, setStreet] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-
-  // const [pickupDetails, setPickupDetails] = useState("");
   const [message, setMessage] = useState("");
   const [artwork, setArtwork] = useState(null);
 
   const { user } = useContext(AuthContext);
   const { id } = useParams();
-  const navigate = useNavigate ();
+  const navigate = useNavigate();
 
   useEffect(() => {
     artworksService
@@ -28,8 +29,38 @@ function RequestPage() {
         setArtwork(response.data);
       })
       .catch((err) => console.log(err));
-  }, [id]);
 
+    // * PREFILL DELIVERY FORM
+    userService
+      .getUser(user._id)
+      .then((response) => {
+        if (response.data.contact) {
+          if (!response.data.contact.address) return;
+          setStreet(response.data.contact.address.street);
+          setCity(response.data.contact.address.city);
+          setCountry(response.data.contact.address.country);
+          setPostalCode(response.data.contact.address.postal_code);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [id, user]);
+
+  // * DATES TO PICK
+  const todayDate = new Date().toJSON().slice(0, 10);
+  function addTwoWeeks(date = new Date()) {
+    date.setDate(date.getDate() + 2 * 7);
+    return date;
+  }
+  useEffect(() => {
+    setMinEndDate(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+    const startDatePlusTwoWeeks = addTwoWeeks(new Date(startDate));
+    // if end date less than startdate + 2 weeks, set end date: startdate + 2 weeks
+    if (new Date(endDate).getTime() < startDatePlusTwoWeeks.getTime()) {
+      setEndDate(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+    }
+  }, [startDate]);
+
+  // * SUBMIT FORM
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -37,11 +68,11 @@ function RequestPage() {
     transportation === "pickup"
       ? (transportation_details = {})
       : (transportation_details = {
-        street: street,
-        postal_code: postalCode,
-        city: city,
-        country: country
-      });
+          street: street,
+          postal_code: postalCode,
+          city: city,
+          country: country,
+        });
 
     const newRequest = {
       artwork: artwork._id,
@@ -55,56 +86,59 @@ function RequestPage() {
       is_approved: false,
     };
 
-    console.log(newRequest);
+    rentalsService
+      .createRental(newRequest)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
 
-    // POST NEW REQUEST
-
-    // NAVIGATE
-    // navigate("/profile")
+    navigate("/profile");
   }
 
+  // * DELIVERY ELEMENT
   const deliveryDetailsElement = (
     <>
-    <label htmlFor="" className="request-artwork-form-label">
-      Street / No.
-      <input
-        value={street}
-        onChange={(e) => setStreet(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
-    <label htmlFor="" className="request-artwork-form-label">
-      Postal Code
-      <input
-        value={postalCode}
-        onChange={(e) => setPostalCode(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
-    <label htmlFor="" className="request-artwork-form-label">
-      City
-      <input
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
-    <label htmlFor="" className="request-artwork-form-label">
-      Country
-      <input
-        value={country}
-        onChange={(e) => setCountry(e.target.value)}
-        type="text"
-        required
-        className="request-artwork-form-input"
-      ></input>
-    </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        Street / No.
+        <input
+          value={street}
+          onChange={(e) => setStreet(e.target.value)}
+          type="text"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        Postal Code
+        <input
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+          type="number"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        City
+        <input
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          type="text"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
+      <label htmlFor="" className="request-artwork-form-label">
+        Country
+        <input
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+          type="text"
+          required
+          className="request-artwork-form-input"
+        ></input>
+      </label>
     </>
   );
 
@@ -127,9 +161,13 @@ function RequestPage() {
               </p>
             </div>
           </div>
-          <p className="request-artwork-info-text request-artwork-info-text-forSale">
-            {artwork.isForSale ? "✅ potentially for Sale" : ""}
-          </p>
+          {artwork.isForSale ? (
+            <p className="request-artwork-info-text request-artwork-info-text-forSale">
+              ✅ potentially for Sale
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       )}
 
@@ -143,6 +181,7 @@ function RequestPage() {
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               type="date"
+              min={todayDate}
               required
               className="request-artwork-form-input-date request-artwork-form-input"
             />
@@ -155,6 +194,7 @@ function RequestPage() {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               type="date"
+              min={minEndDate}
               required
               className="request-artwork-form-input-date request-artwork-form-input"
             />
@@ -187,9 +227,7 @@ function RequestPage() {
         </label>
 
         {/* Transportation Details*/}
-        {transportation === "delivery"
-          ? deliveryDetailsElement
-          : ""}
+        {transportation === "delivery" ? deliveryDetailsElement : ""}
 
         {/* Message*/}
         <label htmlFor="" className="request-artwork-form-label">
