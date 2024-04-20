@@ -18,6 +18,7 @@ import EditProfilePage from "./pages/EditProfilePage";
 import RequestPage from "./pages/RequestPage";
 import AboutPage from "./pages/AboutPage";
 import EditArtworkPage from "./pages/EditArtworkPage";
+import CreateArtworkPage from "./pages/CreateArtworkPage";
 
 function App() {
   return (
@@ -44,11 +45,12 @@ function App() {
         <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
         <Route path="/about" element={<AboutPage />}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/artworks/:id" element={<ArtworkDetailPage />} />
-        <Route path="/artworks/:id/edit" element={<EditArtworkPage />} />
-        <Route path="/profile/edit-profile" element={<EditProfilePage />} />
-        <Route
+        <Route path="/profile" element={ <ProfilePage />} />
+        <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
+        <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
+        <Route path="/profile/edit-artwork/:id" element={ <EditArtworkPage />} />
+        <Route path="/profile/create-artwork" element={ <CreateArtworkPage />} />
+          <Route
           path="/request/:id"
           element={
             <IsPrivate>

@@ -6,10 +6,10 @@ import "../styles/ArtworkDetails.css";
 import artworksService from "../services/artworks.services";
 
 function ArtworkDetailPage() {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const { id } = useParams();
-
   const [artwork, setArtwork] = useState();
-
   const { user, isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
@@ -21,6 +21,17 @@ function ArtworkDetailPage() {
       })
       .catch((err) => console.log(err));
   }, [id]);
+
+  function handleFavorite() {
+    setIsFavorite(!isFavorite);
+
+    if (isFavorite) {
+      // PUSH TO FAVORITES
+    } else {
+      // CHECK IF IN FAV
+      // IF YES REMOVE FROM FAV
+    }
+  }
 
   return (
     <div className="ArtworkDetailsPage page-wrapper">
@@ -47,19 +58,24 @@ function ArtworkDetailPage() {
             </div>
           </div>
           <div className="artwork-info">
-            <p>{artwork.artist.real_name}</p>
-            <p>{artwork.medium}</p>
-            {artwork.dimensions.z ? (
-              <p>
-                {artwork.dimensions.x} x {artwork.dimensions.y} x{" "}
-                {artwork.dimensions.z} cm, {artwork.year}
-              </p>
-            ) : (
-              <p>
-                {artwork.dimensions.x} x {artwork.dimensions.y} cm,{" "}
-                {artwork.year}
-              </p>
-            )}
+            <p className="artwork-info-favorite" onClick={handleFavorite}>
+              {isFavorite ? "★" : "☆"}
+            </p>
+            <div className="artwork-info-text">
+              <p>{artwork.artist.real_name}</p>
+              <p>{artwork.medium}</p>
+              {artwork.dimensions.z ? (
+                <p>
+                  {artwork.dimensions.x} x {artwork.dimensions.y} x{" "}
+                  {artwork.dimensions.z} cm, {artwork.year}
+                </p>
+              ) : (
+                <p>
+                  {artwork.dimensions.x} x {artwork.dimensions.y} cm,{" "}
+                  {artwork.year}
+                </p>
+              )}
+            </div>
           </div>
           {isLoggedIn && (
             <Link to={`/request/${artwork._id}`}>

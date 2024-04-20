@@ -26,7 +26,7 @@ function PublicProfilePage() {
   }, [user, storedToken]);
 
   return (
-    <div id="ProfilePage page-wrapper">
+    <div id="ProfilePage" className="page-wrapper">
       <h1>Your Profile</h1>
 
       {isLoggedIn && userInfo && (
