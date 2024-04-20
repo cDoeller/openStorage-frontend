@@ -56,7 +56,6 @@ function ArtworkDetailPage() {
       userService
         .updateFavorites(user._id, updateAddFav)
         .then((response) => {
-          console.log(response.data.favorites);
           setFavorites(response.data.favorites);
         })
         .catch((err) => {
@@ -70,7 +69,6 @@ function ArtworkDetailPage() {
       userService
         .updateFavorites(user._id, updateRemoveFav)
         .then((response) => {
-          console.log(response.data.favorites);
           setFavorites(response.data.favorites);
         })
         .catch((err) => {
