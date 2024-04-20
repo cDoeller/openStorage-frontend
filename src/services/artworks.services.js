@@ -30,6 +30,11 @@ class ArtworksService {
     return this.api.get("/api/artworks");
   };
 
+  // GET /api/artworks
+  getRecentArtworks = (amount) => {
+    return this.api.get(`/api/artworks/recent?amount=${amount}`);
+  };
+
   // GET /api/artworks/cities
   getArtworkCities = () => {
     return this.api.get("/api/artworks/cities");

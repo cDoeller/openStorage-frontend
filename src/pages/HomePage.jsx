@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/HomePage.css";
+import artworksService from "../services/artworks.services";
+import RecentArtworks from "../components/RecentArtworks";
 
 function HomePage() {
+  const [recentArtworks, setRecentArtworks] = useState(null);
+
+  useEffect(() => {
+    artworksService
+      .getRecentArtworks(5)
+      .then((response) => {
+        console.log(response.data);
+        setRecentArtworks(response.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const functionalityConetent = [
     {
       text: "browse through the storages of your favorite local artists",
@@ -65,21 +79,21 @@ function HomePage() {
 
       {/* artworks section */}
       <section className="landing-artworks-section">
-        <div className="landing-artworks-section-gallery-wrapper">
-          <div className="landing-artworks-section-gallery-image-wrapper"></div>
-          <img
-            src="/img/christian-doeller-replay-pyramid-4.jpg"
-            alt=""
-            className="landing-artworks-section-gallery-image-img"
-          />
-          <div className="landing-artworks-section-gallery-caption-wrapper">
-            <p className="landing-artworks-section-gallery-caption-left">{`<`}</p>
-            <p className="landing-artworks-section-gallery-caption-text">
-              Christian Doeller, Inkjet-Print <br /> 45 x 32 cm, 2018
-            </p>
-            <p className="landing-artworks-section-gallery-caption-right">{`>`}</p>
+        <h3 className="landing-artworks-section-headline">Recently Added</h3>
+
+        {recentArtworks && (
+          <div className="landing-artworks-section-gallery-wrapper">
+            {recentArtworks.map((artwork) => {
+              return (
+                <RecentArtworks
+                  artwork={artwork}
+                  key={artwork._id}
+                ></RecentArtworks>
+              );
+            })}
           </div>
-        </div>
+        )}
+
         <Link to="/artworks">
           <button className="landing-artworks-section-button">ARTWORKS</button>
         </Link>
