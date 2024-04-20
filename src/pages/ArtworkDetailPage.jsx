@@ -47,8 +47,37 @@ function ArtworkDetailPage() {
     setIsFavorite(!isFavorite);
   }
 
-  // check if clicked and inside , add or remove (patch)
-  useEffect(() => {}, [isFavorite]);
+  // check if clicked and inside & add or remove (using patch)
+  useEffect(() => {
+    if (!favorites || !artwork || !user) return;
+    if (isFavorite && !favorites.includes(artwork._id)) {
+      // add artwork to favorites
+      const updateAddFav = [...favorites, artwork._id];
+      userService
+        .updateFavorites(user._id, updateAddFav)
+        .then((response) => {
+          console.log(response.data.favorites);
+          setFavorites(response.data.favorites);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (!isFavorite && favorites.includes(artwork._id)) {
+      // remove artwork from fav
+      const updateRemoveFav = favorites.filter((fav) => {
+        return fav !== artwork._id;
+      });
+      userService
+        .updateFavorites(user._id, updateRemoveFav)
+        .then((response) => {
+          console.log(response.data.favorites);
+          setFavorites(response.data.favorites);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isFavorite]);
 
   return (
     <div className="ArtworkDetailsPage page-wrapper">

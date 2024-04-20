@@ -47,8 +47,8 @@ class UserService {
   }
 
   // UPDATE favorites
-  addFavorite = (id) =>{
-    return this.api.patch(`/api/user/${id}/favorites`);
+  updateFavorites = (id, favorites) =>{
+    return this.api.patch(`/api/user/${id}/favorites`, favorites);
   }
 
   // PATCH update a user
