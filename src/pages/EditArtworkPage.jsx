@@ -130,11 +130,19 @@ function EditArtworkPage() {
   function handleImageUpload(e) {
     e.preventDefault();
 
-    // make a cloudinary request
-    // receive and store the URL in the imagesURL array of the artwork
+    const copiedImages = [imageToUpload,...imagesUrl]
+    console.log(imageToUpload)
+    setImagesUrl(copiedImages)
   }
 
-  function handleDelete(e) {
+  function handleDeleteImage(e,index){
+    e.preventDefault()
+    const copiedImages = [...imagesUrl]
+    copiedImages.splice(index, 1)
+    setImagesUrl(copiedImages)
+  }
+
+  function handleDeleteArtwork(e) {
     e.preventDefault();
 
     // open a modal to confirm choice
@@ -177,23 +185,25 @@ function EditArtworkPage() {
 
       {isLoggedIn && artwork && (
         <form
+        className="edit-artwork-form"
           onSubmit={(e) => {
             handleSubmit(e);
           }}
         >
-          <div className="edit-artwork-details-wrapper">
-            <h5>Title</h5>
+            <label htmlFor="title">Title</label>
             <input
               className="edit-artwork-input"
+              name="title"
               value={title}
               type="text"
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
             />
-            <h5>Year</h5>
+            <label htmlFor="year">Year</label>
             <input
               className="edit-artwork-input"
+              name="year"
               value={year}
               type="number"
               onChange={(e) => {
@@ -212,7 +222,7 @@ function EditArtworkPage() {
               styles={selectStles}
             />
 
-            <h5>Dimensions</h5>
+            <label htmlFor="">Dimensions</label>
             <div className="edit-dimensions">
               <input
                 className="edit-artwork-input"
@@ -242,9 +252,7 @@ function EditArtworkPage() {
               />
               z
             </div>
-            <h5>Images</h5>
-            <label name="images">
-              Images
+            <label htmlFor="">Images</label>
               <input
                 className="edit-artwork-input"
                 type="text"
@@ -252,15 +260,18 @@ function EditArtworkPage() {
                   setImageToUpload(e.target.value);
                 }}
               />
-              <button onSubmit={handleImageUpload}>Upload Image</button>
-              {imagesUrl.map((oneUrl, index) => {
+              <button onClick={(e)=>handleImageUpload(e)}>Upload Image</button>
+              <div className="edit-artwork-img-section">
+              {imagesUrl && imagesUrl.map((oneUrl, index) => {
                 return (
-                  <div className="img-url-wrapper" key={index}>
-                    <img src={oneUrl} />
+                  <div className="edit-artwork-img-wrapper" key={index}>
+                    <img src={oneUrl} alt={title} />
+                    <button className="edit-artwork-img-delete-button" onClick={(e,index)=>{handleDeleteImage(e,index)}}>x</button>
                   </div>
                 );
               })}
-            </label>
+          </div>
+
             {/* MEDIUM */}
             <label htmlFor="" className="filterinterface-form-label">
               Medium
@@ -282,7 +293,6 @@ function EditArtworkPage() {
               value={{ label: genre }}
               styles={selectStles}
             />
-          </div>
           <button onSubmit={handleSubmit}>Submit Changes</button>
         </form>
       )}
