@@ -41,9 +41,19 @@ class UserService {
     return this.api.get(`/api/user/${id}`);
   };
 
-  // UPDATE a user
+  // GET all favorites
+  getFavorites = (id) =>{
+    return this.api.get(`/api/user/${id}/favorites`);
+  }
+
+  // UPDATE favorites
+  updateFavorites = (id, favorites) =>{
+    return this.api.patch(`/api/user/${id}/favorites`, favorites);
+  }
+
+  // PATCH update a user
   updateUser = (id, requestBody) => {
-    return this.api.put(`/api/user/${id}/update`, requestBody);
+    return this.api.patch(`/api/user/${id}/update`, requestBody);
   };
 
   // DELETE a user

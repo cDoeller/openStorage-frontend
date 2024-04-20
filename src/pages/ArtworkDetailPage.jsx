@@ -4,8 +4,10 @@ import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import "../styles/ArtworkDetails.css";
 import artworksService from "../services/artworks.services";
+import userService from "../services/user.services";
 
 function ArtworkDetailPage() {
+  const [favorites, setFavorites] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const { id } = useParams();
@@ -22,16 +24,58 @@ function ArtworkDetailPage() {
       .catch((err) => console.log(err));
   }, [id]);
 
+  // * FAVORITES
+  useEffect(() => {
+    if (user) {
+      userService
+        .getFavorites(user._id)
+        .then((response) => {
+          setFavorites(response.data.favorites);
+          return response.data.favorites;
+        })
+        .then((response) => {
+          if (!artwork) return;
+          if (response.includes(artwork._id)) {
+            setIsFavorite(true);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user, artwork]);
+
   function handleFavorite() {
     setIsFavorite(!isFavorite);
-
-    if (isFavorite) {
-      // PUSH TO FAVORITES
-    } else {
-      // CHECK IF IN FAV
-      // IF YES REMOVE FROM FAV
-    }
   }
+
+  // check if clicked and inside & add or remove (using patch)
+  useEffect(() => {
+    if (!favorites || !artwork || !user) return;
+    if (isFavorite && !favorites.includes(artwork._id)) {
+      // add artwork to favorites
+      const updateAddFav = [...favorites, artwork._id];
+      userService
+        .updateFavorites(user._id, updateAddFav)
+        .then((response) => {
+          setFavorites(response.data.favorites);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (!isFavorite && favorites.includes(artwork._id)) {
+      // remove artwork from fav
+      const updateRemoveFav = favorites.filter((fav) => {
+        return fav !== artwork._id;
+      });
+      userService
+        .updateFavorites(user._id, updateRemoveFav)
+        .then((response) => {
+          setFavorites(response.data.favorites);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isFavorite]);
 
   return (
     <div className="ArtworkDetailsPage page-wrapper">
