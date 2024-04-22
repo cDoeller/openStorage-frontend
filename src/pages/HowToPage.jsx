@@ -62,7 +62,7 @@ function HowToPage() {
         <h2 className="howto-for-headline">Open Storage for Artists</h2>
         <ol className="howto-for-ol">
           <li className="howto-for-li">
-            Sign Up and get verified for your personal Artist Account for *free
+            Sign Up and get verified for your personal Artist Account for free
           </li>
           <li className="howto-for-li">
             browse through your storage and choose works you would like to share
@@ -82,7 +82,7 @@ function HowToPage() {
         <h2 className="howto-for-headline">Open Storage for Art Lovers</h2>
         <ol className="howto-for-ol">
           <li className="howto-for-li">
-            Sign Up for your personal Art Lover Account *free
+            Sign Up for your personal Art Lover Account for free
           </li>
           <li className="howto-for-li">
             Brwose through our archive of local artists in your area and choose
@@ -104,7 +104,7 @@ function HowToPage() {
         </div>
         <p className="artworks-paymentinfo-text">
           Our rental fees are fixed: no matter how famous, large or colourful,
-          you pay €15 / month for each work of art!
+          you pay <span className="highlight">€15 / month</span> for each work of art!
         </p>
       </section>
     </div>
