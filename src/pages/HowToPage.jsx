@@ -1,46 +1,61 @@
 import React from "react";
 import "../styles/HowTo.css";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 function HowToPage() {
   const artistsRef = useRef(null);
-  const paymentRef = useRef(null);
   const artloversRef = useRef(null);
+  const paymentRef = useRef(null);
+  const currentRef = useRef(artistsRef);
 
   const handleClick = (refName) => {
-    refName.current?.scrollIntoView({ behavior: "smooth", block:"end"});
+    refName.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    currentRef.current = refName;
   };
+
+  // DISABLE SCROLLING BEHAVIOR ON THIS PAGE
+  useEffect(() => {
+    const preventDefaultScroll = (event) => {
+      event.preventDefault();
+    };
+    // add when mounted
+    window.addEventListener("wheel", preventDefaultScroll, { passive: false });
+    // remove when unmounted
+    return () => {
+      window.removeEventListener("wheel", preventDefaultScroll);
+    };
+  }, []);
 
   return (
     <div className="howto-page-wrapper page-wrapper">
       {/* nav buttons */}
-        <section className="howto-nav-button-wrapper">
-            <button
-              onClick={() => {
-                handleClick(artistsRef);
-              }}
-              className="howto-nav-button"
-            >
-              Artists
-            </button>
-            <button
-              onClick={() => {
-                handleClick(artloversRef);
-              }}
-              className="howto-nav-button"
-            >
-              Art Lovers
-            </button>
+      <section className="howto-nav-button-wrapper">
+        <button
+          onClick={() => {
+            handleClick(artistsRef);
+          }}
+          className="howto-nav-button"
+        >
+          Artists
+        </button>
+        <button
+          onClick={() => {
+            handleClick(artloversRef);
+          }}
+          className="howto-nav-button"
+        >
+          Art Lovers
+        </button>
 
-          <button
-            onClick={() => {
-              handleClick(paymentRef);
-            }}
-            className="howto-nav-button"
-          >
-            Payment
-          </button>
-        </section>
+        <button
+          onClick={() => {
+            handleClick(paymentRef);
+          }}
+          className="howto-nav-button"
+        >
+          Payment
+        </button>
+      </section>
 
       {/* FOR ARTISTS */}
       <section ref={artistsRef} className="howto-for-wrapper">
@@ -97,3 +112,23 @@ function HowToPage() {
 }
 
 export default HowToPage;
+
+
+//  trying to scroll automatically to next component
+// idea: call handleScroll in event listener for scrolling
+
+// const handleScroll = (event) => {
+//   event.preventDefault(); // Prevent the default scrolling behavior
+
+// find out if scrolled up or down
+//   const delta = Math.max(-1, Math.min(1, event.deltaY)); // Get the direction of the scroll (up or down)
+
+// *problem: how to know whats next or prev container?
+//   if (delta < 0) {
+//       // Scroll up - Go to the previous div container
+//       scrollToPreviousContainer();
+//   } else {
+//       // Scroll down - Go to the next div container
+//       scrollToNextContainer();
+//   }
+// };
