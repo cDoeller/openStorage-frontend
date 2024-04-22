@@ -10,15 +10,13 @@ function SignUpPage() {
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [passwordsMatching, setPasswordsMatching] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
-  const passwordError = (
+  const errorMessageElement = (
     <>
-      <h3 className="signup-password-error">
-        Your passwords do not match. <br /> please try again.
-      </h3>
+      <h3 className="signup-password-error">{errorMessage}</h3>
     </>
   );
 
@@ -26,12 +24,10 @@ function SignUpPage() {
     e.preventDefault();
 
     if (password !== repeatedPassword) {
-      setPasswordsMatching(false);
+      setErrorMessage("Passwords do not match.");
       setPassword("");
       setRepeatedPassword("");
       return;
-    } else {
-      setPasswordsMatching(true);
     }
 
     const newUser = {
@@ -41,15 +37,16 @@ function SignUpPage() {
     };
 
     // ******* TO DO: ERROR HANDLING
-    // axios
-    //   .post(`${import.meta.env.VITE_API_URL}/api/auth/signup`, newUser)
     authService
       .signup(newUser)
       .then((createdUser) => {
         console.log(createdUser);
         navigate("/login");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.response.data.message);
+        setErrorMessage(err.response.data.message);
+      });
   };
 
   return (
@@ -66,6 +63,7 @@ function SignUpPage() {
           user name
           <input
             type="text"
+            name="username"
             onChange={(e) => {
               setUserName(e.target.value);
             }}
@@ -78,6 +76,7 @@ function SignUpPage() {
           email
           <input
             type="email"
+            name="email"
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -90,6 +89,7 @@ function SignUpPage() {
           password
           <input
             type="password"
+            name="password"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -102,6 +102,7 @@ function SignUpPage() {
           repeat password
           <input
             type="password"
+            name="passwordRepeat"
             onChange={(e) => {
               setRepeatedPassword(e.target.value);
             }}
@@ -110,7 +111,7 @@ function SignUpPage() {
             className="signup-form-input"
           />
         </label>
-        {!passwordsMatching && passwordError}
+        {errorMessage && errorMessageElement}
         <button type="submit" className="signup-form-button">
           Sign Up
         </button>

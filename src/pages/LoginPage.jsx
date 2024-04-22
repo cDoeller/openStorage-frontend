@@ -56,6 +56,7 @@ function LoginPage() {
           email
           <input
             type="email"
+            name="email"
             onChange={(e) => {
               setEmail(e.target.value);
             }}
