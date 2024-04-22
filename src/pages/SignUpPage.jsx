@@ -16,7 +16,7 @@ function SignUpPage() {
 
   const errorMessageElement = (
     <>
-      <h3 className="signup-password-error">{errorMessage}</h3>
+      <h3 className="page-error-messages">{errorMessage}</h3>
     </>
   );
 

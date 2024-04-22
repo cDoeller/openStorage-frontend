@@ -8,7 +8,9 @@ import userService from "../services/user.services";
 
 function RequestPage() {
   const [startDate, setStartDate] = useState(new Date().toJSON().slice(0, 10));
-  const [endDate, setEndDate] = useState(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+  const [endDate, setEndDate] = useState(
+    addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10)
+  );
   const [minEndDate, setMinEndDate] = useState("");
   const [transportation, setTransportation] = useState("delivery");
   const [street, setStreet] = useState("");
@@ -17,6 +19,7 @@ function RequestPage() {
   const [country, setCountry] = useState("");
   const [message, setMessage] = useState("");
   const [artwork, setArtwork] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { user } = useContext(AuthContext);
   const { id } = useParams();
@@ -44,6 +47,11 @@ function RequestPage() {
       })
       .catch((err) => console.log(err));
   }, [id, user]);
+
+  // * ERROR MESSAGE ELEMENT
+  const errorMessageElement = (
+    <h3 className="page-error-messages">{errorMessage}</h3>
+  );
 
   // * DATES TO PICK
   const todayDate = new Date().toJSON().slice(0, 10);
@@ -86,14 +94,19 @@ function RequestPage() {
       is_approved: false,
     };
 
+    //  QUESTION HERE: NAVIGATE NEVER HIT?
     rentalsService
       .createRental(newRental)
       .then((response) => {
         console.log(response.data);
+        console.log("HELLO");
+        navigate("/profile");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrorMessage(err.response.data.message);
+        console.log(err);
+      });
 
-    navigate("/profile");
   }
 
   // * DELIVERY ELEMENT
@@ -238,6 +251,7 @@ function RequestPage() {
             className="request-artwork-form-textarea"
           ></textarea>
         </label>
+        {errorMessage && errorMessageElement}
         <button className="request-artwork-form-button" type="submit">
           Submit Request
         </button>
