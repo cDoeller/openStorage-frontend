@@ -6,12 +6,20 @@ function FooterGeneral() {
   // show where we are and get rid of "/"
   const location = useLocation();
   let { pathname } = location;
-  if (pathname === "/") pathname = "home";
-  pathname = pathname.replace("/", "");
+
+  pathname = cleanUpPathName(pathname);
+
+  function cleanUpPathName(path) {
+    if (path.lastIndexOf("/") > 0) path = path.slice(0, path.lastIndexOf("/"));
+    if (path === "/") path = "home";
+    path = path.replace("/", "");
+    return path
+  }
 
   const navigationContent = [
     "Home",
     "About",
+    "Manual",
     "Artworks",
     "Profile",
     "Sign up",
@@ -25,19 +33,21 @@ function FooterGeneral() {
       <h3 className="footer-general-headline">
         Open Storage {`> ` + pathname}
       </h3>
+      
       {/* navigation list */}
       <div className="footer-general-navigation-container">
         {navigationContent.map((page) => {
           return (
             <div key={page} className="footer-general-navigation-row">
-              <Link to={`${page.trim().toLowerCase()}`}>
-                <p className="footer-general-navigation-page">{page}</p>{" "}
+              <Link to={page==="Home" ? "/" : `/${page.toLowerCase().replace(/ /g, "")}`}>
+                <p className="footer-general-navigation-page">{page}</p>
               </Link>
               <p className="footer-general-navigation-arrow">{`>`}</p>
             </div>
           );
         })}
       </div>
+
       {/* follow us */}
       <div className="footer-general-follow-container">
         <p className="footer-general-follow-followus">Follow us</p>
@@ -53,6 +63,7 @@ function FooterGeneral() {
           </div>
         </div>
       </div>
+
       {/* links */}
       <ul className="footer-general-links-ul">
         {linksCollection.map((link) => {
