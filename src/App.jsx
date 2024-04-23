@@ -15,6 +15,7 @@ import ArtworkDetailPage from "./pages/ArtworkDetailPage";
 import HowToPage from "./pages/HowToPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import RequestPage from "./pages/RequestPage";
+import RequestDetailsPage from "./pages/RequestDetailsPage";
 import AboutPage from "./pages/AboutPage";
 import EditArtworkPage from "./pages/EditArtworkPage";
 import CreateArtworkPage from "./pages/CreateArtworkPage";
@@ -95,6 +96,15 @@ function App() {
             </IsPrivate>
           }
         />
+        <Route
+          path="/request/:id/details"
+          element={
+            <IsPrivate>
+              <RequestDetailsPage />
+            </IsPrivate>
+          }
+        />
+
       </Routes>
       <FooterGeneral />
     </>
