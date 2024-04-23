@@ -3,6 +3,7 @@ import "../styles/RequestDetailsPage.css";
 import "../styles/RequestPage.css";
 import { useParams, useNavigate } from "react-router-dom";
 import rentalsService from "../services/rentals.services";
+import artworksService from "../services/artworks.services";
 import { AuthContext } from "../context/auth.context";
 
 function RequestDetailsPage() {
@@ -32,6 +33,9 @@ function RequestDetailsPage() {
   //  * BUTTONS
   function renderActionButtons() {
     if (user._id === request.artist._id) {
+      if (request.artwork.is_borrowed) {
+        return cancelRentalElement;
+      }
       return acceptRejectButtonElement;
     }
     if (user._id === request.user_borrowing._id) {
@@ -80,6 +84,8 @@ function RequestDetailsPage() {
       <button
         onClick={() => {
           // THIS IS AN EXTRA
+          // NOTIFICATION 
+          // state: cancelled?
         }}
         className="request-button"
       >
@@ -107,7 +113,15 @@ function RequestDetailsPage() {
           setState(action);
         })
         .then(() => {
-          // update artwork is_borrowed
+          const borrowed = action === "rejected" ? false : true;
+          artworksService
+            .updateArtwork(request.artwork._id, { is_borrowed: borrowed })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .then(() => {
           navigate("/profile");
@@ -139,7 +153,7 @@ function RequestDetailsPage() {
                 </p>
               </div>
             </div>
-            {request.artwork.isForSale ? (
+            {request.artwork.is_for_sale ? (
               <p className="request-artwork-info-text request-artwork-info-text-forSale">
                 ✅ potentially for Sale
               </p>
