@@ -46,6 +46,11 @@ class RentalsService {
   updateRental = (id, requestBody) => {
     return this.api.patch(`/api/rentals/${id}`, requestBody);
   };
+
+  // DELETE RENTAL
+  deleteRental = (id) => {
+    return this.api.delete(`/api/rentals/${id}`);
+  };
 }
 
 const rentalsService = new RentalsService();
