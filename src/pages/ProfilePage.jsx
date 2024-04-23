@@ -51,8 +51,6 @@ function ProfilePage() {
               </div>
 
               <div className="artworks-wrapper">
-                    <div className="add-artwork-button"><Link to="/artworks/create-artwork">+
-                    </Link></div>
 
                 <ArtworksScrollbar
                   userInfo={userInfo}
