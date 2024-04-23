@@ -32,3 +32,12 @@ html,body,a, h1, h2, h3, p,ul,li,ol {
   /* background-color: rgb(255, 220, 149); */
 }
 /* ---> {" "}<span className="highlight">TEXT</span> */
+
+.page-error-messages{
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+  color: red;
+  background-color: rgb(255, 224, 224);
+  padding:1rem;
+}

@@ -9,6 +9,7 @@ import authService from "../services/auth.services";
 function LoginPage() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -37,9 +38,16 @@ function LoginPage() {
         navigate("/");
       })
       .catch((err) => {
+        setErrorMessage(err.response.data.message);
         console.log(err);
       });
   };
+
+  const errorMessageElement = (
+    <>
+      <h3 className="page-error-messages">{errorMessage}</h3>
+    </>
+  );
 
   return (
     <div className="signup-page-wrapper page-wrapper">
@@ -56,6 +64,7 @@ function LoginPage() {
           email
           <input
             type="email"
+            name="email"
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -76,6 +85,7 @@ function LoginPage() {
             className="signup-form-input"
           />
         </label>
+        {errorMessage && errorMessageElement}
         <button type="submit" className="signup-form-button">
           Log In
         </button>
