@@ -94,7 +94,6 @@ function RequestPage() {
       is_approved: false,
     };
 
-    //  QUESTION HERE: NAVIGATE NEVER HIT?
     rentalsService
       .createRental(newRental)
       .then((response) => {
