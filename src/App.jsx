@@ -89,7 +89,7 @@ function App() {
           }
         />
         <Route
-          path="/request/:id"
+          path="/artworks/:id/request"
           element={
             <IsPrivate>
               <RequestPage />
