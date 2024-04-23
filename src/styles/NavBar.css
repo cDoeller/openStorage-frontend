@@ -1,0 +1,71 @@
+
+.nav{
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index:100;
+}
+/* <---- HEIGHT NAV MOBILE == 90px + 65px >>>> 155px */
+
+.nav-top {
+  /* <---- HEIGHT TOP */
+  height: 90px;
+  background-color: rgb(160, 144, 248);
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 2px solid black;
+}
+.nav-top-logo-container {
+  width: 50px;
+  height: 50px;
+}
+.nav-top-logo-img {
+  width: 100%;
+}
+.nav-top-signup-login {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav-top-signup-login-text {
+  font-size: 1rem;
+}
+
+.nav-bottom{
+  /* <---- HEIGHT BOTTOM */
+  height: 65px;
+  box-sizing: border-box;
+  background-color: rgb(252, 192, 255);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.8rem;
+  border-bottom: 2px solid black;
+}
+.nav-bottom-link{
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.nav-bottom-link-container{
+  /* in desktop version, relative must be set here */
+}
+.nav-bottom-popup{
+  display:flex;
+  gap:0.4rem;
+  position:absolute;
+  top:var(--navbarHeightMobile);
+  /* in desktop version, bottom must be changed*/
+  right:0;
+  margin-right: 1rem;
+  
+}
+.nav-bottom-popup-button{
+  border-radius: 10px;
+  border: 2px solid black;
+  padding: 0.4rem 0.8rem;
+  background-color: white;
+}
+

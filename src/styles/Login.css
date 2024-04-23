@@ -1,0 +1,12 @@
+
+.login-bottom-link{
+    font-weight: 600;
+    text-align: center;
+}
+
+#login-form{
+    flex-grow: 0;
+    padding: 2rem 1rem;
+}
+
+  

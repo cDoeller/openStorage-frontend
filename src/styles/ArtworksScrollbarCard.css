@@ -1,0 +1,15 @@
+.profile-artwork-card-image-wrapper{
+    width:200px;
+ }
+ 
+ .profile-artwork-card-image-wrapper>img{
+     width:100%;
+ 
+  }
+ 
+ .profile-artwork-card-info-wrapper{
+     margin:0 5px;
+     font-size: 12px;
+     font-weight: 600;
+ }
+ 

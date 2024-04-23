@@ -1,0 +1,26 @@
+.artwork-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap:0.5rem;
+}
+.artwork-card-image-wrapper {
+  width: 100%;
+}
+.artwork-card-image-wrapper > img {
+  width: 100%;
+}
+.artwork-card-info-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.artwork-card-info-text-wrapper {
+}
+.artwork-card-info-text-text {
+}
+.artwork-card-icon-wrapper {
+  width: 40px;
+}
+.artwork-card-icon-wrapper > img {
+  width: 100%;
+}

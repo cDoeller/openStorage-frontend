@@ -1,0 +1,11 @@
+
+.profile-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-link{
+    position: absolute;
+    right:10px;
+    font-weight:600;
+}
