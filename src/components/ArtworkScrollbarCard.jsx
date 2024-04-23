@@ -1,13 +1,25 @@
 import { Link } from "react-router-dom";
-import "../styles/ArtworksScrollbar.css"
+import "../styles/ArtworksScrollbarCard.css"
+import { useState, useEffect } from "react";
 
 function ArtworkScrollbarCard(props) {
 
     const {title, img, heading, id} = props
 
+    const [linkName, setLinkName] = useState("")
+
+    useEffect(()=>{
+        if(heading==="Artworks"){
+            setLinkName("artworks")
+        }
+        else{
+            setLinkName("request")
+        }
+    }, [heading])
+
   return (
-    <div>
-        <Link to={`/artworks/${id}`}>
+    <>
+        <Link to={`/${linkName}/${id}`}>
             <div className="profile-artwork-card-image-wrapper">
               <img
                 src={img}
@@ -25,7 +37,7 @@ function ArtworkScrollbarCard(props) {
               </div>
             </div>
                   </Link>
-    </div>
+    </>
   )
 }
 

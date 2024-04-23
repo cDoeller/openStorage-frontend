@@ -9,13 +9,3 @@
     right:10px;
     font-weight:600;
 }
-
-.loans-section-wrapper{
-    display: flex;
-    flex-direction: column;
-}
-
-.requests-section-wrapper{
-    display: flex;
-    flex-direction: column;
-}
