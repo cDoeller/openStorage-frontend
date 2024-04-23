@@ -12,7 +12,6 @@ class UserService {
       const storedToken = localStorage.getItem("authToken");
 
       if (storedToken) {
-        console.log("setting headers...", storedToken);
         config.headers = { Authorization: `Bearer ${storedToken}` };
       }
 
