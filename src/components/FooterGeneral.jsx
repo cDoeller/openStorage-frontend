@@ -10,10 +10,9 @@ function FooterGeneral() {
   pathname = cleanUpPathName(pathname);
 
   function cleanUpPathName(path) {
-    if (path.lastIndexOf("/") > 0) path = path.slice(0, path.lastIndexOf("/"));
     if (path === "/") path = "home";
-    path = path.replace("/", "");
-    return path
+    path = path.split("/")[1];
+    return path;
   }
 
   const navigationContent = [
@@ -33,13 +32,19 @@ function FooterGeneral() {
       <h3 className="footer-general-headline">
         Open Storage {`> ` + pathname}
       </h3>
-      
+
       {/* navigation list */}
       <div className="footer-general-navigation-container">
         {navigationContent.map((page) => {
           return (
             <div key={page} className="footer-general-navigation-row">
-              <Link to={page==="Home" ? "/" : `/${page.toLowerCase().replace(/ /g, "")}`}>
+              <Link
+                to={
+                  page === "Home"
+                    ? "/"
+                    : `/${page.toLowerCase().replace(/ /g, "")}`
+                }
+              >
                 <p className="footer-general-navigation-page">{page}</p>
               </Link>
               <p className="footer-general-navigation-arrow">{`>`}</p>
