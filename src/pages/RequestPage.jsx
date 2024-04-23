@@ -6,10 +6,12 @@ import { AuthContext } from "../context/auth.context";
 import rentalsService from "../services/rentals.services";
 import userService from "../services/user.services";
 
+const minRentalWeeks = 4;
+
 function RequestPage() {
   const [startDate, setStartDate] = useState(new Date().toJSON().slice(0, 10));
   const [endDate, setEndDate] = useState(
-    addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10)
+    addMinWeeks(new Date(startDate)).toJSON().slice(0, 10)
   );
   const [minEndDate, setMinEndDate] = useState("");
   const [transportation, setTransportation] = useState("delivery");
@@ -55,16 +57,18 @@ function RequestPage() {
 
   // * DATES TO PICK
   const todayDate = new Date().toJSON().slice(0, 10);
-  function addTwoWeeks(date = new Date()) {
-    date.setDate(date.getDate() + 2 * 7);
+
+  function addMinWeeks(date = new Date()) {
+    date.setDate(date.getDate() + minRentalWeeks * 7);
     return date;
   }
+
   useEffect(() => {
-    setMinEndDate(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
-    const startDatePlusTwoWeeks = addTwoWeeks(new Date(startDate));
+    setMinEndDate(addMinWeeks(new Date(startDate)).toJSON().slice(0, 10));
+    const startDatePlusTwoWeeks = addMinWeeks(new Date(startDate));
     // if end date less than startdate + 2 weeks, set end date: startdate + 2 weeks
     if (new Date(endDate).getTime() < startDatePlusTwoWeeks.getTime()) {
-      setEndDate(addTwoWeeks(new Date(startDate)).toJSON().slice(0, 10));
+      setEndDate(addMinWeeks(new Date(startDate)).toJSON().slice(0, 10));
     }
   }, [startDate]);
 

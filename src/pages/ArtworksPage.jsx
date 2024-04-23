@@ -44,6 +44,25 @@ function ArtworksPage() {
       .catch((err) => console.log(err));
   }, []);
 
+  // disable scroll when filter page open
+  function disableScroll() {
+    const scrollTopPosition =
+      window.pageYOffset || document.documentElement.scrollTop;
+    window.onscroll = function () {
+      window.scrollTo(0,scrollTopPosition);
+    };
+  }
+  function enableScroll() {
+    window.onscroll = function () {};
+  }
+  useEffect(() => {
+    if (showInterface) {
+      disableScroll();
+    } else {
+      enableScroll();
+    }
+  }, [showInterface]);
+
   return (
     <div className="page-wrapper">
       {/* FILTER INTERFACE */}

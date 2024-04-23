@@ -6,7 +6,6 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
-
 import IsAnon from "./components/IsAnon";
 import IsPrivate from "./components/IsPrivate";
 import Loading from "./components/Loading";
@@ -19,12 +18,25 @@ import RequestPage from "./pages/RequestPage";
 import AboutPage from "./pages/AboutPage";
 import EditArtworkPage from "./pages/EditArtworkPage";
 import CreateArtworkPage from "./pages/CreateArtworkPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <>
+      {/* always srcoll to top of page when location changes */}
+      <ScrollToTop />
+      {/* all the visible things here --> */}
       <NavBar />
       <Routes>
+      
+        {/* PUBLIC ROUTES */}
+        <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
+        <Route path="/about" element={<AboutPage />}></Route>
+        <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
+        <Route path="/artworks/:id" element={<ArtworkDetailPage />} />
+
+        {/* ANON ROUTES */}
         <Route
           path="/signup"
           element={
@@ -41,16 +53,41 @@ function App() {
             </IsAnon>
           }
         ></Route>
-        <Route path="/" element={<HomePage></HomePage>}></Route>
-        <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
-        <Route path="/about" element={<AboutPage />}></Route>
-        <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
-        <Route path="/profile" element={ <ProfilePage />} />
-        <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
-        <Route path="/artworks/:id/edit" element={ <EditArtworkPage />} />
-        <Route path="/artworks/create-artwork" element={ <CreateArtworkPage />} />
-        <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
-          <Route
+
+        {/* PRIVATE ROUTES */}
+        <Route
+          path="/profile"
+          element={
+            <IsPrivate>
+              <ProfilePage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/artworks/:id/edit"
+          element={
+            <IsPrivate>
+              <EditArtworkPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/artworks/create-artwork"
+          element={
+            <IsPrivate>
+              <CreateArtworkPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/profile/edit-profile"
+          element={
+            <IsPrivate>
+              <EditProfilePage />
+            </IsPrivate>
+          }
+        />
+        <Route
           path="/request/:id"
           element={
             <IsPrivate>

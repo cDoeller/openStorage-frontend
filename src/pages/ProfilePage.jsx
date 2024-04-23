@@ -55,7 +55,7 @@ function ProfilePage() {
 
                 <ArtworksScrollbar
                   userInfo={userInfo}
-                  artworks={userInfo.artworks}
+                  contents={userInfo.artworks}
                   heading={"Artworks"}
                 ></ArtworksScrollbar>
               </div>
@@ -65,8 +65,7 @@ function ProfilePage() {
           <div className="loans-section-profile">
             <ArtworksScrollbar
               userInfo={userInfo}
-              artworks={userInfo.artworks}
-              loans={userInfo.rentals_receiving}
+              contents={userInfo.rentals.rentals_receiving}
               heading={"Current Rentals"}
             />
             <div className="loans-thumbs-wrapper"></div>
@@ -74,8 +73,7 @@ function ProfilePage() {
           <div className="requests-section-profile">
             <ArtworksScrollbar
               userInfo={userInfo}
-              artworks={userInfo.artworks}
-              requests={userInfo.rentals_offering}
+              contents={userInfo.rentals.rentals_offering}
               heading={"Pending Requests"}
             />
             <div className="loans-thumbs-wrapper"></div>
