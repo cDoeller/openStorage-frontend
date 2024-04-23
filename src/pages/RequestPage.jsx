@@ -99,7 +99,6 @@ function RequestPage() {
       .createRental(newRental)
       .then((response) => {
         console.log(response.data);
-        console.log("HELLO");
         navigate("/profile");
       })
       .catch((err) => {
