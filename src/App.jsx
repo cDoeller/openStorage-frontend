@@ -25,6 +25,15 @@ function App() {
     <>
       <NavBar />
       <Routes>
+      
+        {/* PUBLIC ROUTES */}
+        <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
+        <Route path="/about" element={<AboutPage />}></Route>
+        <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
+        <Route path="/artworks/:id" element={<ArtworkDetailPage />} />
+
+        {/* ANON ROUTES */}
         <Route
           path="/signup"
           element={
@@ -41,16 +50,41 @@ function App() {
             </IsAnon>
           }
         ></Route>
-        <Route path="/" element={<HomePage></HomePage>}></Route>
-        <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
-        <Route path="/about" element={<AboutPage />}></Route>
-        <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
-        <Route path="/profile" element={ <ProfilePage />} />
-        <Route path="/artworks/:id" element={ <ArtworkDetailPage />} />
-        <Route path="/artworks/:id/edit" element={ <EditArtworkPage />} />
-        <Route path="/artworks/create-artwork" element={ <CreateArtworkPage />} />
-        <Route path="/profile/edit-profile" element={ <EditProfilePage />} />
-          <Route
+
+        {/* PRIVATE ROUTES */}
+        <Route
+          path="/profile"
+          element={
+            <IsPrivate>
+              <ProfilePage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/artworks/:id/edit"
+          element={
+            <IsPrivate>
+              <EditArtworkPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/artworks/create-artwork"
+          element={
+            <IsPrivate>
+              <CreateArtworkPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/profile/edit-profile"
+          element={
+            <IsPrivate>
+              <EditProfilePage />
+            </IsPrivate>
+          }
+        />
+        <Route
           path="/request/:id"
           element={
             <IsPrivate>
