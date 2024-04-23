@@ -83,9 +83,9 @@ function RequestDetailsPage() {
     <div className="request-button-wrapper">
       <button
         onClick={() => {
-          // THIS IS AN EXTRA
-          // NOTIFICATION 
-          // state: cancelled?
+          // * THIS IS AN EXTRA
+          // * NOTIFICATION 
+          // * state: cancelled?
         }}
         className="request-button"
       >
@@ -113,6 +113,7 @@ function RequestDetailsPage() {
           setState(action);
         })
         .then(() => {
+          // * NOTIFICATION IF REJECTED, DELETED AFTER NOTIFICATION
           const borrowed = action === "rejected" ? false : true;
           artworksService
             .updateArtwork(request.artwork._id, { is_borrowed: borrowed })
