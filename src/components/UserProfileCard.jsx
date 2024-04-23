@@ -1,7 +1,7 @@
 import "../styles/UserProfileCard.css";
 
 function UserProfileCard(props) {
-  const { img, name, isArtist, city } = props;
+  const { img, name, isArtist, city, tagline } = props;
 
   return (
     <div className="profile-card">
@@ -17,7 +17,7 @@ function UserProfileCard(props) {
         <p>
           <span className="username-bold">{name}</span> | {city}
         </p>
-        <p>Tagline?</p>
+        <p>{tagline}</p>
       </div>
     </div>
   );

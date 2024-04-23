@@ -40,6 +40,7 @@ function ProfilePage() {
             img={userInfo.profile_img_url}
             isArtist={userInfo.isArtist}
             city={userInfo.city}
+            tagline={userInfo.tagline}
           />
 
           {userInfo.isArtist && (
