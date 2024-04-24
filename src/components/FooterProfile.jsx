@@ -23,17 +23,32 @@ function FooterProfile() {
   return (
     <>
       <div className="footer-profile-wrapper">
-        <Link to="#">
+        <Link
+          onClick={() => {
+            setShowMenu(false);
+          }}
+          to="#"
+        >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/star-icon.png" alt="" />
           </div>
         </Link>
-        <Link to="#">
+        <Link
+          onClick={() => {
+            setShowMenu(false);
+          }}
+          to="#"
+        >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/bell-icon.png" alt="" />
           </div>
         </Link>
-        <Link to="/faq">
+        <Link
+          onClick={() => {
+            setShowMenu(false);
+          }}
+          to="/faq"
+        >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/question-icon.png" alt="" />
           </div>
