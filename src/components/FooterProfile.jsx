@@ -33,7 +33,7 @@ function FooterProfile() {
             <img src="/img/bell-icon.png" alt="" />
           </div>
         </Link>
-        <Link to="#">
+        <Link to="/faq">
           <div className="footer-profile-icon-wrapper">
             <img src="/img/question-icon.png" alt="" />
           </div>

@@ -24,6 +24,7 @@ import EditArtworkPage from "./pages/EditArtworkPage";
 import CreateArtworkPage from "./pages/CreateArtworkPage";
 import ScrollToTop from "./components/ScrollToTop";
 import FooterProfile from "./components/FooterProfile";
+import FAQPage from "./pages/FAQPage";
 
 function App() {
   const { user, isLoggedIn } = useContext(AuthContext);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/about" element={<AboutPage />}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/artworks/:id" element={<ArtworkDetailPage />} />
+        <Route path="/faq" element={<FAQPage />} />
 
         {/* ANON ROUTES */}
         <Route

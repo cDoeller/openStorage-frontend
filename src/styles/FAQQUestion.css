@@ -1,0 +1,15 @@
+.faq-question-wrapper{
+    border: solid 1px black;
+}
+.faq-question-headline{
+    background-color: rgb(210, 210, 210);
+    padding: 1rem;
+}
+.faq-question-text{
+    padding: 1rem;
+    display: none;
+    border-top:solid 1px black;
+}
+.show{
+    display:block;
+}
