@@ -10,7 +10,7 @@ function FooterGeneral() {
   pathname = cleanUpPathName(pathname);
 
   function cleanUpPathName(path) {
-    if (path === "/") path = "home";
+    if (path === "/") path = "/home";
     path = path.split("/")[1];
     return path;
   }

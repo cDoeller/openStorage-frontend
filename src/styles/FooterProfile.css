@@ -1,0 +1,20 @@
+.footer-profile-wrapper{
+    background-color: var(--pink);
+    height: 80px;
+    width:100%;
+    position: sticky;
+    bottom:0;
+    left:0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 0.5rem;
+}
+.footer-profile-icon-wrapper{
+    width: 40px;
+}
+.footer-profile-icon-wrapper > img{
+    width: 100%;
+}
