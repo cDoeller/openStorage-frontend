@@ -15,7 +15,8 @@
     padding: 1rem;
     display: none;
     border:solid 1px black;
-    width: 80%;
+    width: 90%;
+    box-sizing: border-box;
 }
 .show{
     display:block;
