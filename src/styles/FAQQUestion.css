@@ -2,8 +2,9 @@
     border: solid 1px black;
 }
 .faq-question-headline{
-    background-color: rgb(210, 210, 210);
+    background-color: rgb(233, 233, 233);
     padding: 1rem;
+    font-weight: 500;
 }
 .faq-question-text{
     padding: 1rem;

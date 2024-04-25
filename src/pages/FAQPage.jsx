@@ -5,18 +5,20 @@ import FAQQuestion from "../components/FAQQuestion";
 function FAQPage() {
   return (
     <div className="page-wrapper mobile-dvh">
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
-      <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+      <div className="faq-questions-wrapper">
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+        <FAQQuestion question={"question"} answer={"answer"}></FAQQuestion>
+      </div>
     </div>
   );
 }
