@@ -10,7 +10,7 @@ function FooterGeneral() {
   pathname = cleanUpPathName(pathname);
 
   function cleanUpPathName(path) {
-    if (path === "/") path = "home";
+    if (path === "/") path = "/home";
     path = path.split("/")[1];
     return path;
   }
@@ -58,13 +58,13 @@ function FooterGeneral() {
         <p className="footer-general-follow-followus">Follow us</p>
         <div className="footer-general-follow-icons-container">
           <div className="footer-general-follow-icons-wrapper">
-            <img src="../../public/img/instagram.png" alt="" />
+            <img src="/img/instagram.png" alt="" />
           </div>
           <div className="footer-general-follow-icons-wrapper">
-            <img src="../../public/img/tiktok.png" alt="" />
+            <img src="/img/tiktok.png" alt="" />
           </div>
           <div className="footer-general-follow-icons-wrapper">
-            <img src="../../public/img/x.png" alt="" />
+            <img src="/img/x.png" alt="" />
           </div>
         </div>
       </div>

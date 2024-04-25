@@ -20,17 +20,17 @@ function HomePage() {
   const functionalityConetent = [
     {
       text: "browse through the storages of your favorite local artists",
-      img_url: "../../public/img/location.png",
+      img_url: "/img/location.png",
       id: 1,
     },
     {
       text: "filter your search by a variety of media and genres",
-      img_url: "../../public/img/media.png",
+      img_url: "/img/media.png",
       id: 2,
     },
     {
       text: "Find artworks with the right dimensions for your home",
-      img_url: "../../public/img/dimensions.png",
+      img_url: "/img/dimensions.png",
       id: 3,
     },
   ];

@@ -1,0 +1,23 @@
+.faq-question-wrapper{
+    border: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.faq-question-headline{
+    background-color: rgb(233, 233, 233);
+    padding: 1rem;
+    font-weight: 500;
+    width: 100%;
+    box-sizing: border-box;
+}
+.faq-question-text{
+    padding: 1rem;
+    display: none;
+    border:solid 1px black;
+    width: 90%;
+    box-sizing: border-box;
+}
+.show{
+    display:block;
+}
