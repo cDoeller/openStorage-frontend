@@ -25,6 +25,7 @@ import CreateArtworkPage from "./pages/CreateArtworkPage";
 import ScrollToTop from "./components/ScrollToTop";
 import FooterProfile from "./components/FooterProfile";
 import FAQPage from "./pages/FAQPage";
+import NotificationsPage from "./pages/NotificationsPage";
 
 function App() {
   const { user, isLoggedIn } = useContext(AuthContext);
@@ -111,11 +112,19 @@ function App() {
             </IsPrivate>
           }
         />
+        <Route
+          path="/notifications"
+          element={
+            <IsPrivate>
+              <NotificationsPage />
+            </IsPrivate>
+          }
+        />
       </Routes>
 
       <FooterGeneral />
-      <FooterProfile /> 
-    </> 
+      <FooterProfile />
+    </>
   );
 }
 

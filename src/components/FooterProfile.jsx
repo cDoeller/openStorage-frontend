@@ -37,7 +37,7 @@ function FooterProfile() {
           onClick={() => {
             setShowMenu(false);
           }}
-          to="#"
+          to="/notifications"
         >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/bell-icon.png" alt="" />
