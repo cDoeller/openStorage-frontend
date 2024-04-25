@@ -27,7 +27,7 @@ function ProfilePage() {
   }, [user, storedToken]);
 
   return (
-    <div id="ProfilePage" className="page-wrapper">
+    <div id="ProfilePage" className="page-wrapper mobile-dvh">
       <h1>Your Profile</h1>
 
       {isLoggedIn && userInfo && (

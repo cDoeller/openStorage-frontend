@@ -176,7 +176,7 @@ function RequestPage() {
               </p>
             </div>
           </div>
-          {artwork.isForSale ? (
+          {artwork.is_for_sale ? (
             <p className="request-artwork-info-text request-artwork-info-text-forSale">
               ✅ potentially for Sale
             </p>

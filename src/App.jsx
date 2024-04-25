@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "./styles/App.css";
 import { Routes, Route } from "react-router-dom";
+
+import { AuthContext } from "./context/auth.context";
+
 import NavBar from "./components/NavBar";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
@@ -20,8 +23,13 @@ import AboutPage from "./pages/AboutPage";
 import EditArtworkPage from "./pages/EditArtworkPage";
 import CreateArtworkPage from "./pages/CreateArtworkPage";
 import ScrollToTop from "./components/ScrollToTop";
+import FooterProfile from "./components/FooterProfile";
+import FAQPage from "./pages/FAQPage";
+import NotificationsPage from "./pages/NotificationsPage";
 
 function App() {
+  const { user, isLoggedIn } = useContext(AuthContext);
+
   return (
     <>
       {/* always srcoll to top of page when location changes */}
@@ -29,13 +37,13 @@ function App() {
       {/* all the visible things here --> */}
       <NavBar />
       <Routes>
-      
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/manual" element={<HowToPage></HowToPage>}></Route>
         <Route path="/about" element={<AboutPage />}></Route>
         <Route path="/artworks" element={<ArtworksPage></ArtworksPage>}></Route>
         <Route path="/artworks/:id" element={<ArtworkDetailPage />} />
+        <Route path="/faq" element={<FAQPage />} />
 
         {/* ANON ROUTES */}
         <Route
@@ -89,7 +97,7 @@ function App() {
           }
         />
         <Route
-          path="/request/:id"
+          path="/artworks/:id/request"
           element={
             <IsPrivate>
               <RequestPage />
@@ -104,9 +112,18 @@ function App() {
             </IsPrivate>
           }
         />
-
+        <Route
+          path="/notifications"
+          element={
+            <IsPrivate>
+              <NotificationsPage />
+            </IsPrivate>
+          }
+        />
       </Routes>
+
       <FooterGeneral />
+      <FooterProfile />
     </>
   );
 }

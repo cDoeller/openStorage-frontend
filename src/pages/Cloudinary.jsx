@@ -11,7 +11,7 @@ function Cloudinary() {
     // req.body to .create() method when creating a new movie in '/api/movies' POST route
     uploadData.append("imageUrl", e.target.files[0]);
     axios
-      .post("http://localhost:5005/api/upload", uploadData)
+      .post(`${import.meta.env.VITE_API_URL}/api/upload`, uploadData)
       .then((response) => {
         console.log("response is: ", response);
         // response carries "fileUrl" which we can use to update the state

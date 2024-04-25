@@ -31,9 +31,12 @@ function AuthProviderWrapper(props) {
           console.log("user logged in.");
         })
         .catch((err) => {
-          setIsLoggedIn(false);
-          setIsLoading(false);
-          setUser(null);
+          // setIsLoggedIn(false);
+          // setIsLoading(false);
+          // setUser(null);
+          console.log(err.response.data.message);
+          // if tokens dont match, logout user
+          logOutUser();
         });
       // B 2) no token available: user not logged in
     } else {
@@ -59,9 +62,13 @@ function AuthProviderWrapper(props) {
   }, []);
 
   // make states and functions available with context
-  return <AuthContext.Provider value={{ isLoggedIn, isLoading, user, authenticateUser, logOutUser }}>
-  {props.children}
-  </AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{ isLoggedIn, isLoading, user, authenticateUser, logOutUser }}
+    >
+      {props.children}
+    </AuthContext.Provider>
+  );
 }
 
 // export function and context

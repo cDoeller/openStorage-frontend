@@ -122,7 +122,7 @@ function ArtworkDetailPage() {
             </div>
           </div>
           {isLoggedIn && (
-            <Link to={`/request/${artwork._id}`}>
+            <Link to={`/artworks/${artwork._id}/request`}>
               <button className="artwork-request-button">Request</button>
             </Link>
           )}
