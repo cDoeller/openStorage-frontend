@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import {Link} from "react-router-dom"
 import "../styles/FavoritesPage.css";
 import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
@@ -25,12 +26,13 @@ function FavoritesPage() {
         {favorites &&
           favorites.map((artwork) => {
             return (
-              <ArtworkCardFavorites
-                key={artwork._id}
-                img={artwork.images_url[0]}
-                name={artwork.city}
-                title={artwork.title}
-              />
+              <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
+                <ArtworkCardFavorites
+                  img={artwork.images_url[0]}
+                  name={artwork.city}
+                  title={artwork.title}
+                />
+              </Link>
             );
           })}
       </div>
