@@ -1,9 +1,24 @@
 .favorites-wrapper {
-  column-count: 2; /* Set the number of columns */
-  column-gap: 1rem; /* Remove any gap between columns */
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  /* display: flex;
+  flex-wrap: wrap; */
 }
 
 /* 
+
+parent: 
+  column-count: 2;
+  column-gap: 1rem; 
+
+  items: 
+    break-inside: avoid; 
+    page-break-inside: avoid; 
+    display: inline-block; 
+    width: 100%; 
+    margin-bottom: 1rem;
 
 One popular way to create a masonry layout 
 is by using CSS columns. You can specify 
