@@ -30,8 +30,11 @@ function ArtworkDetailPage() {
       userService
         .getFavorites(user._id)
         .then((response) => {
-          setFavorites(response.data.favorites);
-          return response.data.favorites;
+          const favoritesArtworkIds = response.data.favorites.map((artwork)=>{
+            return(artwork._id);
+          })
+          setFavorites(favoritesArtworkIds);
+          return favoritesArtworkIds;
         })
         .then((response) => {
           if (!artwork) return;

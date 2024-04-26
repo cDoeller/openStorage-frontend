@@ -27,7 +27,7 @@ function FooterProfile() {
           onClick={() => {
             setShowMenu(false);
           }}
-          to="#"
+          to="/favorites"
         >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/star-icon.png" alt="" />

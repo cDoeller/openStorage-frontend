@@ -1,0 +1,19 @@
+.favorites-card-wrapper {
+  border: 1px solid black;
+  break-inside: avoid; /* Prevent items from being split between columns */
+  page-break-inside: avoid; /* For older browser compatibility */
+  display: inline-block; /* Ensure each item behaves like a block element */
+  width: 100%; /* Make sure items take up the full width of the column */
+  margin-bottom: 1rem;
+}
+.favorites-card-img-wrapper {
+  display: flex;
+}
+.favorites-card-img-wrapper > img {
+  width: 100%;
+}
+.favorites-card-info-wrapper {
+  padding: 0rem;
+}
+.favorites-card-info-text-wrapper {
+}

@@ -1,0 +1,27 @@
+.favorites-wrapper {
+  column-count: 2; /* Set the number of columns */
+  column-gap: 1rem; /* Remove any gap between columns */
+}
+
+/* 
+
+One popular way to create a masonry layout 
+is by using CSS columns. You can specify 
+the number of columns you want, and the browser 
+will automatically balance the content between 
+the columns, creating a seamless layout. 
+Here's an example of how you can modify your 
+CSS to achieve a masonry layout:
+
+By setting column-count: 2; 
+on your favorites-wrapper, you're 
+telling the browser to create a layout 
+with two columns. The items inside will 
+automatically flow into these columns 
+without any whitespace between them.
+
+Adding break-inside: avoid; to your 
+favorites-card-wrapper class prevents 
+individual items from being split between 
+columns, ensuring they display correctly.
+ */
