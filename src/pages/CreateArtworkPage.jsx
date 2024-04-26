@@ -25,6 +25,10 @@ function CreateArtworkPage() {
 
   const [imageToUpload, setImageToUpload] = useState("")
 
+
+
+
+
   // REACT SELECT OPTIONS
   let mediaOptions = [
     // { value: "", label: "- type / select -" },
@@ -142,7 +146,10 @@ function CreateArtworkPage() {
 
   return (
     <div id="CreateArtworkPage" className="page-wrapper">
+    <div className="create-artwork-heading-wrapper">
       <h1>Create Artwork</h1>
+      <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}> {"< Back"}</button>
+    </div>
       <form onSubmit={(e)=>{handleSubmit(e)}} className="create-artwork-form">
         <label htmlFor="title">Title</label>
         <input
