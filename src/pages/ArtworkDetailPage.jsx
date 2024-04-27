@@ -30,7 +30,7 @@ function ArtworkDetailPage() {
   function handleRequestButtonRender() {
     if (user && artwork) {
       if (user._id === artwork.artist._id) return;
-      if (artwork.isBorrowed === true) return;
+      if (artwork.is_borrowed === true) return;
       return requestButtonElement;
     }
   }
