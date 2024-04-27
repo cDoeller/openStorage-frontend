@@ -82,16 +82,7 @@ function HomePage() {
         <h3 className="landing-artworks-section-headline">Recently Added</h3>
 
         {recentArtworks && (
-          <div className="landing-artworks-section-gallery-wrapper">
-            {recentArtworks.map((artwork) => {
-              return (
-                <RecentArtworks
-                  artwork={artwork}
-                  key={artwork._id}
-                ></RecentArtworks>
-              );
-            })}
-          </div>
+          <RecentArtworks artworks={recentArtworks}></RecentArtworks>
         )}
 
         <Link to="/artworks">
