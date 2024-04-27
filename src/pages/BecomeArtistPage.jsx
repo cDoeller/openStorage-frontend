@@ -1,33 +1,36 @@
-import { useState, useContext, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
-import Select from "react-select";
+import userService from "../services/user.services";
 import cityService from "../services/city.services";
-import "../styles/CreateArtwork.css"
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
+import Select from "react-select";
+import "../styles/Forms.css";
 
-function CreateArtworkPage() {
-  const { isLoggedIn, user } = useContext(AuthContext);
+function BecomeArtistPage() {
+  const { user, isLoggedIn } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [cityOptions, setCityOptions] = useState();
+  const [artistStatement, setArtistStatement] = useState("");
+  const [realName, setRealName] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [postcode, setPostcode] = useState(null);
 
   const [title, setTitle] = useState("");
-  const [year, setYear] = useState(new Date());
-  // array for local file paths
-  const [localImagesUrl, setLocalImagesUrl] = useState([]);
-  const [city, setCity] = useState("");
+  const [year, setYear] = useState(2024);
+  const [imagesUrl, setImagesUrl] = useState([]);
+  const [imageToUpload, setImageToUpload] = useState("")
+  const [uploadedImages, setUploadedImages] = useState([])
+  const [artworkCity, setArtworkCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
   const [dimensionsZ, setDimensionsZ] = useState(0);
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
-
-  // adding and removing a single path of a file to be uploaded
-  const [imageToUpload, setImageToUpload] = useState("")
-  const [uploadedImages, setUploadedImages] = useState([])
 
   // REACT SELECT OPTIONS
   let mediaOptions = [
@@ -59,8 +62,10 @@ function CreateArtworkPage() {
     setCity(selectedOption.value);
   }
 
-  // REACT SELECT STYLING
-  // https://react-select.com/styles#inner-components
+  function handleArtworkCitiesSelectChange(selectedOption) {
+    setArtworkCity(selectedOption.value)
+  }
+
   const selectStles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
@@ -90,6 +95,8 @@ function CreateArtworkPage() {
     }),
   };
 
+  const [cityOptions, setCityOptions] = useState();
+
   useEffect(() => {
     cityService.getAllCities().then((response) => {
       let cityNames = response.data.map((oneCity) => {
@@ -100,6 +107,17 @@ function CreateArtworkPage() {
     });
   }, []);
 
+  useEffect(() => {
+    userService.getUser(user._id).then((response) => {
+      const initialData = response.data;
+      setRealName(initialData.real_name);
+      setStreet(initialData.contact.address.street);
+      setCity(initialData.contact.address.city);
+      setCountry(initialData.contact.address.country);
+      setPostcode(initialData.contact.address.postal_code);
+    });
+  }, [user]);
+
   function handleDeleteImage(e,index){
     e.preventDefault()
     const copiedImages = [...uploadedImages]
@@ -107,12 +125,15 @@ function CreateArtworkPage() {
     setUploadedImages(copiedImages)
   }
 
-  function handleImagesUrl(e){
+  function handleImagesUpload(e){
     e.preventDefault()
-
+    // const copiedImages = [imageToUpload,...localImagesUrl]
+    // setLocalImagesUrl(copiedImages)
+    // console.log(copiedImages)
     let uploadData = new FormData()
       uploadData.append("imageUrl", imageToUpload)
       
+      // performs the action of sending the data
       uploadService.uploadImage(uploadData)
         .then((response) => {
           console.log("response is: ", response);
@@ -124,31 +145,13 @@ function CreateArtworkPage() {
       
   }
 
-  // function handleFilesUpload(localImagesUrl) {
-  //   localImagesUrl.map((oneUrl)=>{
-  //     // creates the data to be sent to the uploader in the backend
-  //     let uploadData = new FormData()
-  //     uploadData.append("imageUrl", oneUrl)
-  //     console.log("empty uploadData", uploadData)
-      
-  //     // performs the action of sending the data
-  //     uploadService.uploadImage(uploadData)
-  //       .then((response) => {
-  //         console.log("response is: ", response);
-  //         // response carries "fileUrl" which we can use to update the state
-  //         let copiedArray = [...uploadedImages, response.data.fileUrl]
-  //         setUploadedImages(copiedArray)
-  //       })
-  //       .catch((err) => console.log("Error while uploading the file: ", err));
-  //     })
-  //     console.log("url array to be put into images_url", uploadedImages)
-  //     // return urlArray
-  //   }
-    
-
   function handleSubmit(e) {
     e.preventDefault();
 
+    // upload images to cloudinary
+    // handleFilesUpload(localImagesUrl)
+    // console.log("returned url array from file upload", uploadedImages)
+    // get the URLs back and put them into an array
 
     const newArtwork = {
         title:title,
@@ -178,17 +181,73 @@ function CreateArtworkPage() {
   }
 
   return (
-    <div id="CreateArtworkPage" className="page-wrapper">
-    <div className="create-artwork-heading-wrapper">
-      <h1>Create Artwork</h1>
-      <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}> {"< Back"}</button>
-    </div>
-      <form onSubmit={(e)=>{handleSubmit(e)}} className="create-artwork-form">
+    <div className="page-wrapper mobile-dvh">
+      <div className="heading-wrapper">
+        <h1>Become an Artist</h1>
+        <button
+          className="back-button"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
+          {"< Back"}
+        </button>
+      </div>
+      <form className="form" onSubmit={(e)=>{handleSubmit(e)}}>
+        <label htmlFor="real name">Real Name</label>
+        <input
+          className="input"
+          type="text"
+          name="real name"
+          value={realName}
+          onChange={(e) => {
+            setRealName(e.target.value);
+          }}
+        />
+
+        <label htmlFor="artist statement">Artist Statement</label>
+        <textarea
+          className="textarea"
+          name="artist statement"
+          value={artistStatement}
+          onChange={(e) => {
+            setArtistStatement(e.target.value);
+          }}
+          placeholder="Write a short description of your artistic practice"
+        />
+
+        <h4>Contact Information</h4>
+        <label htmlFor="street">Street name and number</label>
+        <input
+          name="street"
+          type="text"
+          className="input"
+          value={street}
+          onChange={(e) => {
+            setStreet(e.target.value);
+          }}
+        />
+
+        {/* City select */}
+        <Select
+          options={cityOptions}
+          onChange={handleCitiesSelectChange}
+          value={{ label: city }}
+          styles={selectStles}
+        />
+
+        <label htmlFor="">Country</label>
+
+        <label htmlFor="">Postal Code</label>
+
+        <h4>Upload Artwork</h4>
+
         <label htmlFor="title">Title</label>
         <input
-        className="create-artwork-input"
           name="title"
           type="text"
+          className="input"
           onChange={(e) => {
             setTitle(e.target.value);
           }}
@@ -196,10 +255,10 @@ function CreateArtworkPage() {
 
         <label htmlFor="year">Year</label>
         <input
-          className="create-artwork-input"
           name="year"
-          value={year}
           type="number"
+          className="input"
+          value={year}
           onChange={(e) => {
             setYear(e.target.value);
           }}
@@ -211,10 +270,23 @@ function CreateArtworkPage() {
             </label>
         <Select
           options={cityOptions}
-          onChange={handleCitiesSelectChange}
+          onChange={handleArtworkCitiesSelectChange}
           value={{ label: city }}
           styles={selectStles}
         />
+
+        <label htmlFor="">Images</label>
+        <input type="file" className="input" onChange={(e)=>{setImageToUpload(e.target.files[0])}} />
+        <button onClick={(e)=>{handleImagesUpload(e)}}>Upload Image</button>
+        {uploadedImages &&
+              uploadedImages.map((oneImage, index) => {
+                return (
+                  <div key={index} className="create-artwork-img-wrapper">
+                    <img src={oneImage} alt={title} />
+                    <button className="create-artwork-delete-img-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
+                  </div>
+                );
+              })}
 
         <label htmlFor="">Dimensions</label>
         <div className="create-dimensions-wrapper">
@@ -246,25 +318,8 @@ function CreateArtworkPage() {
           />
           z
         </div>
-
-        <div className="create-artwork-img-section">
-          <label htmlFor="images">Images</label>
-          <input name="images" onChange={(e)=>{setImageToUpload(e.target.files[0])}} type="file" />
-          <button onClick={(e)=>{handleImagesUrl(e)}}>Upload Image</button>
-          <div className="create-artwork-thumbnail-wrapper">
-            {uploadedImages &&
-              uploadedImages.map((oneImage, index) => {
-                return (
-                  <div key={index} className="create-artwork-img-wrapper">
-                    <img src={oneImage} alt={title} />
-                    <button className="create-artwork-delete-img-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
-                  </div>
-                );
-              })}
-          </div>
-        </div>
-         {/* MEDIUM */}
-         <label htmlFor="" className="filterinterface-form-label">
+        {/* MEDIUM */}
+        <label htmlFor="" className="filterinterface-form-label">
               Medium
             </label>
             <Select
@@ -284,10 +339,11 @@ function CreateArtworkPage() {
               value={{ label: genre }}
               styles={selectStles}
             />
+
             <button>Submit</button>
       </form>
     </div>
   );
 }
 
-export default CreateArtworkPage;
+export default BecomeArtistPage;

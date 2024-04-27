@@ -10,3 +10,22 @@
   border-bottom: 2px solid black;
   background-color: white;
 }
+
+.textarea{
+    width:100%;
+    height:100px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap:1.2rem;
+}
+
+.back-button{
+    border-style: none;
+    background:white;
+    font-size: 15px;
+    font-weight:600;
+    text-decoration: underline;
+  }
