@@ -181,7 +181,10 @@ function EditArtworkPage() {
 
   return (
     <div id="EditArtworkPage" className="page-wrapper">
+    <div className="edit-artwork-heading-wrapper">
       <h1>Edit Artwork</h1>
+      <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}>{"< Back"}</button>
+    </div>
 
       {isLoggedIn && artwork && (
         <form

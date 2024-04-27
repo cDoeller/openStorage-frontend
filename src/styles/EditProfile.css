@@ -1,8 +1,6 @@
-.edit-profile-input{
-    padding: 0.4rem 1rem;
-    border:none;
-    border-bottom: 2px solid black;
-    background-color: white;
+.profile-type{
+    font-size:20px;
+    color: rgb(149, 153, 157);
 }
 .edit-profile-textarea{
     width:80%;
@@ -11,6 +9,7 @@
 .edit-profile-info-wrapper{
     display: flex;
     flex-direction: row;
+    gap:1.2rem;
 }
 
 .edit-profile-img-wrapper{
@@ -24,6 +23,17 @@
     width:100%
 }
 
+.contact-wrapper{
+    display:flex;
+    flex-direction: column;
+    gap:1.2rem;
+}
+
+.address-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap:1.2rem;
+}
 .loans-section-wrapper{
     display: flex;
     flex-direction: column;
