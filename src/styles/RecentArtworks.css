@@ -1,0 +1,7 @@
+.recent-section-gallery-wrapper {
+  border: 1px solid black;
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  gap:0.5rem;
+}

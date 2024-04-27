@@ -27,6 +27,7 @@ import FooterProfile from "./components/FooterProfile";
 import FAQPage from "./pages/FAQPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import BecomeArtistPage from "./pages/BecomeArtistPage";
 
 function App() {
   const { user, isLoggedIn } = useContext(AuthContext);
@@ -123,6 +124,12 @@ function App() {
             </IsPrivate>
           }
         />
+        <Route 
+        path="/profile/become-artist" 
+        element={<IsPrivate>
+        <BecomeArtistPage />
+        </IsPrivate>}>
+        </Route>
         <Route
           path="/artworks/:id/request"
           element={

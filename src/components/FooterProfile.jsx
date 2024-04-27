@@ -7,8 +7,8 @@ function FooterProfile() {
 
   const profileMenuElement = (
     <div className="footer-profile-menu-wrapper">
-      <Link to="#">
-        <button className="footer-profile-menu-button">
+      <Link to="/profile/become-artist">
+        <button onClick={handleMenuClick} className="footer-profile-menu-button">
           Verify Artist Account
         </button>
       </Link>

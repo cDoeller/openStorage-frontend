@@ -1,8 +1,9 @@
 import { useEffect, useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import "../styles/EditProfile.css";
 import userService from "../services/user.services";
+import uploadService from "../services/file-upload.services";
 import "../styles/Forms.css"
 
 function EditProfilePage() {
@@ -14,6 +15,7 @@ function EditProfilePage() {
 
   const [realName, setRealName] = useState("");
   const [profileImg, setProfileImg] = useState("");
+  const [imageData ,setImageData] = useState("")
   const [tagline, setTagline] = useState("");
   const [city, setCity] = useState("");
   const [artistStatement, setArtistStatement] = useState("");
@@ -30,28 +32,17 @@ function EditProfilePage() {
   const [phoneNumber, setPhoneNumber] = useState(null);
 
   function handleProfileImg(e){
-    // console.log("The file to be uploaded is: ", e.target.files[0]);
-    // const uploadData = new FormData();
-    // // imageUrl => this name has to be the same as in the model since we pass
-    // // req.body to .create() method when creating a new movie in '/api/movies' POST route
-    // uploadData.append("imageUrl", e.target.files[0]);
-    // axios
-    //   .post(`${import.meta.env.VITE_API_URL}/api/upload`, uploadData)
-    //   .then((response) => {
-    //     console.log("response is: ", response);
-    //     // response carries "fileUrl" which we can use to update the state
-    //     setImageUrl(response.data.fileUrl);
-    //     // console.log(response.data.fileUrl);
-    //   })
-    //   .catch((err) => console.log("Error while uploading the file: ", err));
+    let imageToUpload = new FormData()
+    imageToUpload.append("images", e.target.files[0])
+
+    setImageData(imageToUpload)
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const updatedUser = {
+    let updatedUser = {
       real_name: realName,
-      profile_img_url: profileImg,
       artist_statement: artistStatement,
       city: city,
       contact: {
@@ -68,15 +59,21 @@ function EditProfilePage() {
       tagline: tagline,
     };
 
-    userService
-      .updateUser(userInfo._id, updatedUser)
-      .then((response) => {
-        console.log(response.data);
-        navigate("/profile");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    uploadService.uploadImage(imageData)
+    .then((response)=>{
+      let imageUrl = response.data.fileUrls[0]
+      updatedUser.profile_img_url = imageUrl
+      return userService.updateUser(userInfo._id, updatedUser)
+    })
+    .then((response) => {
+      console.log(response.data);
+      navigate("/profile");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+
   }
 
   useEffect(() => {
@@ -106,14 +103,14 @@ function EditProfilePage() {
   }, [user, storedToken]);
 
   return (
-    <div id="ProfilePage" className="page-wrapper">
+    <div id="ProfilePage" className="page-wrapper mobile-dvh">
     <div className="edit-profile heading-wrapper">
       <h1>Edit Profile</h1>
       <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}> {"< Back"}</button>
     </div>
 
       {isLoggedIn && userInfo && (
-        <form className="profile edit-form" onSubmit={handleSubmit}>
+        <form className="profile edit-form" onSubmit={(e)=>{handleSubmit(e)}}>
           <div className="edit-profile-info-wrapper">
             <div className="edit-profile-img-wrapper">
               <img src={profileImg} alt="profile image" />
