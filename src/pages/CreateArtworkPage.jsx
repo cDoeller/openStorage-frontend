@@ -120,26 +120,6 @@ function CreateArtworkPage() {
     setImageData(uploadData);
   }
 
-  // function handleFilesUpload(localImagesUrl) {
-  //   localImagesUrl.map((oneUrl)=>{
-  //     // creates the data to be sent to the uploader in the backend
-  //     let uploadData = new FormData()
-  //     uploadData.append("imageUrl", oneUrl)
-  //     console.log("empty uploadData", uploadData)
-
-  //     // performs the action of sending the data
-  //     uploadService.uploadImage(uploadData)
-  //       .then((response) => {
-  //         console.log("response is: ", response);
-  //         // response carries "fileUrl" which we can use to update the state
-  //         let copiedArray = [...uploadedImages, response.data.fileUrl]
-  //         setUploadedImages(copiedArray)
-  //       })
-  //       .catch((err) => console.log("Error while uploading the file: ", err));
-  //     })
-  //     console.log("url array to be put into images_url", uploadedImages)
-  //     // return urlArray
-  //   }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -153,7 +133,6 @@ function CreateArtworkPage() {
         y: dimensionsY,
         z: dimensionsZ,
       },
-      // images_url:uploadedImages,
       medium: medium,
       genre: genre,
     };
@@ -173,7 +152,7 @@ function CreateArtworkPage() {
         console.log("successfully created a new artwork");
         const newArtwork = response.data.newArtwork;
         console.log(newArtwork);
-        // navigate(`/artworks/${newArtwork._id}`)
+        navigate(`/artworks/${newArtwork._id}`)
       })
       .catch((err) => console.log("Error while uploading the file: ", err));
   }

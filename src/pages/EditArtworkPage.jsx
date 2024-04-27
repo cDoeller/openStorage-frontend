@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import artworksService from "../services/artworks.services";
+import uploadService from "../services/file-upload.services";
 import cityService from "../services/city.services";
 import { AuthContext } from "../context/auth.context";
 import "../styles/EditArtwork.css";
@@ -19,10 +20,11 @@ function EditArtworkPage() {
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
   const [dimensionsZ, setDimensionsZ] = useState(0);
+
   const [imagesUrl, setImagesUrl] = useState([]);
+  const [imageData, setImageData] = useState("")
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
-  const [imageToUpload, setImageToUpload] = useState("");
 
   const navigate = useNavigate();
 
@@ -127,12 +129,17 @@ function EditArtworkPage() {
       });
   }, [id]);
 
-  function handleImageUpload(e) {
+  function handleImagesUrl(e) {
     e.preventDefault();
 
-    const copiedImages = [imageToUpload,...imagesUrl]
-    console.log(imageToUpload)
-    setImagesUrl(copiedImages)
+
+    const files = e.target.files;
+    const uploadData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      uploadData.append("images", files[i]);
+    }
+
+    setImageData(uploadData);
   }
 
   function handleDeleteImage(e,index){
@@ -152,7 +159,7 @@ function EditArtworkPage() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const changedArtwork = {
+    let updatedArtwork = {
       title: title,
       artist: artwork.artist,
       year: year,
@@ -162,26 +169,51 @@ function EditArtworkPage() {
         y: dimensionsY,
         z: dimensionsZ,
       },
-      images_url: imagesUrl,
+      // images_url: imagesUrl,
       medium: medium,
       genre: genre,
       isForSale: artwork.isForSale,
     };
 
-    artworksService
-      .updateArtwork(id, changedArtwork)
-      .then((response) => {
-        console.log("successfully changed an artwork");
-        navigate("/profile");
+    console.log("imageData ", imageData)
+
+    if(imageData){
+      uploadService
+        .uploadImage(imageData)
+        .then((response) => {
+          let newImages = response.data.fileUrls
+          
+          console.log("response is: ", response.data.fileUrls);
+          
+          let allImagesArray = [...imagesUrl, ...newImages];
+          // setImagesUrl(copiedArray);
+          updatedArtwork.images_url = allImagesArray;
+          return artworksService.updateArtwork(artwork._id, updatedArtwork);
+        })
+        .then((response) => {
+          console.log("successfully updated an artwork with images");
+          console.log(response.data);
+          navigate(`/artworks/${artwork._id}`)
+        })
+        .catch((err) => console.log("Error while uploading the file: ", err));
+    }
+    else{
+      updatedArtwork.images_url = imagesUrl
+      artworksService.updateArtwork(artwork._id, updatedArtwork)
+      .then((response)=>{
+        console.log("successfully updated an artwork");
+          console.log(response.data);
+          navigate(`/artworks/${artwork._id}`)
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err)=>{
+        console.log("Error while uploading the file: ", err)
+      })
+    }
   }
 
   return (
     <div id="EditArtworkPage" className="page-wrapper">
-    <div className="edit-artwork-heading-wrapper">
+    <div className="heading-wrapper">
       <h1>Edit Artwork</h1>
       <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}>{"< Back"}</button>
     </div>
@@ -258,18 +290,19 @@ function EditArtworkPage() {
             <label htmlFor="">Images</label>
               <input
                 className="edit-artwork-input"
-                type="text"
+                type="file"
+                multiple
                 onChange={(e) => {
-                  setImageToUpload(e.target.value);
+                  handleImagesUrl(e);
                 }}
               />
-              <button onClick={(e)=>handleImageUpload(e)}>Upload Image</button>
+              {/* <button onClick={(e)=>handleImageUpload(e)}>Upload Image</button> */}
               <div className="edit-artwork-img-section">
               {imagesUrl && imagesUrl.map((oneUrl, index) => {
                 return (
                   <div className="edit-artwork-img-wrapper" key={index}>
                     <img src={oneUrl} alt={title} />
-                    <button className="edit-artwork-img-delete-button" onClick={(e,index)=>{handleDeleteImage(e,index)}}>x</button>
+                    <button className="edit-artwork-img-delete-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
                   </div>
                 );
               })}
