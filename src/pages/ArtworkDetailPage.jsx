@@ -26,6 +26,26 @@ function ArtworkDetailPage() {
       .catch((err) => console.log(err));
   }, [id]);
 
+  // * REQUEST BUTTON RENDER
+  function handleRequestButtonRender() {
+    if (user && artwork) {
+      if (user._id === artwork.artist._id) return;
+      if (artwork.isBorrowed === true) return;
+      return requestButtonElement;
+    }
+  }
+
+  let requestButtonElement = <></>;
+  artwork ? (
+    (requestButtonElement = (
+      <Link to={`/artworks/${artwork._id}/request`}>
+        <button className="artwork-request-button">Request</button>
+      </Link>
+    ))
+  ) : (
+    <></>
+  );
+
   // * FAVORITES
   useEffect(() => {
     if (user) {
@@ -135,17 +155,7 @@ function ArtworkDetailPage() {
               )}
             </div>
           </div>
-          {isLoggedIn && (
-            <>
-              {user._id === artwork.artist._id ? (
-                ""
-              ) : (
-                <Link to={`/artworks/${artwork._id}/request`}>
-                  <button className="artwork-request-button">Request</button>
-                </Link>
-              )}
-            </>
-          )}
+          {isLoggedIn && handleRequestButtonRender()}
         </div>
       )}
     </div>
