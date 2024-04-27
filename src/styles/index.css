@@ -9,39 +9,51 @@
   -moz-osx-font-smoothing: grayscale;
 
   --navbarHeightMobile: 155px;
+  --profileFooterHeightMobile: 80px;
+  --mobileInterfacesHeight: calc(
+    var(--navbarHeightMobile) + var(--profileFooterHeightMobile)
+  );
   --pink: rgb(251, 198, 254);
 }
 
-html,body,a, h1, h2, h3, p,ul,li,ol {
-  margin:0;
-  padding:0;
+html,
+body,
+a,
+h1,
+h2,
+h3,
+p,
+ul,
+li,
+ol {
+  margin: 0;
+  padding: 0;
   color: black;
   text-decoration: none;
 }
 
-.page-wrapper{
+.page-wrapper {
   padding: 0 1rem;
 }
 
-.mobile-dvh{
-    min-height: calc(100dvh - var(--navbarHeightMobile))
-
+.mobile-dvh {
+  min-height: calc(100dvh - var(--mobileInterfacesHeight));
 }
 
 .highlight {
   text-decoration-line: underline;
-  text-decoration-style: wavy; 
-  text-decoration-thickness:1.5px ;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 1.5px;
   /* text-decoration-color: var(--pink);  */
   /* background-color: rgb(255, 220, 149); */
 }
 /* ---> {" "}<span className="highlight">TEXT</span> */
 
-.page-error-messages{
+.page-error-messages {
   width: 100%;
   text-align: center;
   font-weight: 400;
   color: red;
   background-color: rgb(255, 224, 224);
-  padding:1rem;
+  padding: 1rem;
 }
