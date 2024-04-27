@@ -1,3 +1,17 @@
+.create-artwork-heading-wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.back-button{
+  border-style: none;
+  background:white;
+  font-size: 15px;
+  font-weight:600;
+  text-decoration: underline;
+}
+
 .create-artwork-form{
     display: flex;
   flex-direction: column;

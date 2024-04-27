@@ -13,7 +13,7 @@ function ArtworksScrollbar(props) {
     <div className="artworks-scrollbar-container">
       <div className="artworks-scrollbar-heading">
         <p className="scrollbar-heading">{heading}</p>
-        {heading === "Artworks" && isLoggedIn && (
+        {heading === "Artworks" && isLoggedIn &&  (
           <Link className="create-artwork-link" to={`/artworks/create-artwork`}>
             <div className="create-artwork-button">
             <p>+</p>
@@ -27,6 +27,7 @@ function ArtworksScrollbar(props) {
             return (
               <div key={index} className="profile-artwork-card-wrapper">
                 <ArtworkScrollbarCard
+                heading = {heading}
                   title={oneRental.title}
                   id={oneRental._id}
                   img={oneRental.images_url[0]}

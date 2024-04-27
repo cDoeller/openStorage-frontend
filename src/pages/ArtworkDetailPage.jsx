@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import "../styles/ArtworkDetails.css";
 import artworksService from "../services/artworks.services";
@@ -13,6 +13,8 @@ function ArtworkDetailPage() {
   const { id } = useParams();
   const [artwork, setArtwork] = useState();
   const { user, isLoggedIn } = useContext(AuthContext);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     artworksService
@@ -85,6 +87,7 @@ function ArtworkDetailPage() {
       {artwork && (
         <div className="artwork-details-wrapper">
           <h1>{artwork.title}</h1>
+          <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}>{"< Back"}</button>
 
           <div className="artwork-details-img">
             <img
