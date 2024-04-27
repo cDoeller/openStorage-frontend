@@ -29,8 +29,10 @@ function FavoritesPage() {
               <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
                 <ArtworkCardFavorites
                   img={artwork.images_url[0]}
-                  name={artwork.city}
+                  name={artwork.artist.real_name}
                   title={artwork.title}
+                  year={artwork.year}
+                  medium={artwork.medium}
                 />
               </Link>
             );
