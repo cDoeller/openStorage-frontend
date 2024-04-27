@@ -40,6 +40,10 @@ ol {
   min-height: calc(100dvh - var(--mobileInterfacesHeight));
 }
 
+.mobile-dvh-general {
+  min-height: calc(100dvh - var(--navbarHeightMobile));
+}
+
 .highlight {
   text-decoration-line: underline;
   text-decoration-style: wavy;

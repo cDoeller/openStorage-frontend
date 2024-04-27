@@ -7,6 +7,9 @@ import artworksService from "../services/artworks.services";
 import userService from "../services/user.services";
 
 function ArtworkDetailPage() {
+  const [currentImage, setCurrentImage] = useState(
+    "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
+  );
   const [favorites, setFavorites] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [userRentals, setUserRentals] = useState(null);
@@ -69,23 +72,23 @@ function ArtworkDetailPage() {
   }
 
   const rentingWorkElement = (
-    <p className="artwork-request-message">Artwork Requested</p>
+    <p className="artwork-details-request-message">Artwork Requested</p>
   );
 
   let requestButtonElement = <></>;
   if (artwork) {
     requestButtonElement = (
       <Link to={`/artworks/${artwork._id}/request`}>
-        <button className="artwork-request-button">Request</button>
+        <button className="artwork-details-request-button">Request</button>
       </Link>
     );
   }
-  
+
   let editButtonElement = <></>;
   if (artwork) {
     editButtonElement = (
       <Link to={`/profile/edit-artwork/${artwork._id}`}>
-        <button className="artwork-request-button">Edit</button>
+        <button className="artwork-details-request-button">Edit</button>
       </Link>
     );
   }
@@ -146,59 +149,84 @@ function ArtworkDetailPage() {
     }
   }, [isFavorite]);
 
+  // * IMAGE GALLERY
+  function handleImageClick(imageUrl) {
+    setCurrentImage(imageUrl);
+  }
+
   return (
-    <div className="ArtworkDetailsPage page-wrapper">
+    <div className="page-wrapper mobile-dvh-general">
       {artwork && (
         <div className="artwork-details-wrapper">
-          <h1>{artwork.title}</h1>
-          <button
-            className="back-button"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(-1);
-            }}
-          >
-            {"< Back"}
-          </button>
+          <div className="artwork-details-title-wrapper">
+            <h1>{artwork.title}</h1>
+            <button
+              className="back-button"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
+              }}
+            >
+              {"< Back"}
+            </button>
+          </div>
 
-          <div className="artwork-details-img">
-            <img
-              src={artwork.images_url[0]}
-              alt={artwork.title}
-              style={{ width: "100%" }}
-            />
-            <div className="artwork-thumbnail-wrapper">
+          {/* ARTWORK IMAGES */}
+
+          <div className="artwork-details-images-wrapper">
+            <div className="artwork-details-images-main">
+              <img
+                src={currentImage}
+                alt={artwork.title}
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="artwork-details-thumbnail-wrapper">
               {artwork.images_url.map((oneArtwork, index) => {
-                if (index !== 0) {
-                  return (
-                    <div key={index} className="artwork-thumbnail">
-                      <img src={oneArtwork} alt={artwork.title} />
-                    </div>
-                  );
-                }
+                return (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      handleImageClick(oneArtwork);
+                      // console.log(oneArtwork)
+                    }}
+                    className="artwork-details-thumbnail"
+                  >
+                    <img src={oneArtwork} alt={artwork.title} />
+                  </div>
+                );
               })}
             </div>
           </div>
-          <div className="artwork-info">
-            <p className="artwork-info-favorite" onClick={handleFavorite}>
+
+          {/* ARTWORK INFO */}
+          <div className="artwork-details-info-wrapper">
+            <p
+              className="artwork-details-info-favorite"
+              onClick={handleFavorite}
+            >
               {isFavorite ? "★" : "☆"}
             </p>
-            <div className="artwork-info-text">
-              <p>{artwork.artist.real_name}</p>
-              <p>{artwork.medium}</p>
+            <div className="artwork-details-info-wrapper">
+              <p className="artwork-details-info-text">
+                {artwork.artist.real_name}
+              </p>
+              <p className="artwork-details-info-text">{artwork.medium}</p>
               {artwork.dimensions.z ? (
-                <p>
+                <p className="artwork-details-info-text">
                   {artwork.dimensions.x} x {artwork.dimensions.y} x{" "}
                   {artwork.dimensions.z} cm, {artwork.year}
                 </p>
               ) : (
-                <p>
+                <p className="artwork-details-info-text">
                   {artwork.dimensions.x} x {artwork.dimensions.y} cm,{" "}
                   {artwork.year}
                 </p>
               )}
             </div>
           </div>
+
+          {/* ARTWORK BUTTON BOTTOM */}
           {isLoggedIn && handleRequestButtonRender()}
         </div>
       )}
