@@ -40,7 +40,14 @@ ol {
   min-height: calc(100dvh - var(--mobileInterfacesHeight));
 }
 
+.mobile-dvh-general {
+  min-height: calc(100dvh - var(--navbarHeightMobile));
+}
 
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
 
 .highlight {
   text-decoration-line: underline;

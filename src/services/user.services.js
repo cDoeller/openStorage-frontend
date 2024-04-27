@@ -50,6 +50,10 @@ getAllArtistsWithWorks = () => {
     return this.api.get(`/api/user/${id}/favorites`);
   }
 
+  getAllRentalsUser = (id) => {
+    return this.api.get(`/api/user/${id}/rentals`);
+  }
+
   // UPDATE favorites
   updateFavorites = (id, favorites) =>{
     return this.api.patch(`/api/user/${id}/favorites`, favorites);
