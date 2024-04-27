@@ -152,6 +152,9 @@ function App() {
           element={
             <IsPrivate>
               <FavoritesPage />
+              </IsPrivate>
+          }
+        />
         <Route
           path="/profile/faq"
           element={
