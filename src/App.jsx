@@ -100,7 +100,7 @@ function App() {
           }
         />
         <Route
-          path="/artworks/:id/edit"
+          path="/profile/edit-artwork/:id/"
           element={
             <IsPrivate>
               <EditArtworkPage />
@@ -108,7 +108,7 @@ function App() {
           }
         />
         <Route
-          path="/artworks/create-artwork"
+          path="/profile/create-artwork"
           element={
             <IsPrivate>
               <CreateArtworkPage />

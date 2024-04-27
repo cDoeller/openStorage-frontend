@@ -51,9 +51,9 @@ function ArtworkDetailPage() {
   // * REQUEST BUTTON RENDER
   function handleRequestButtonRender() {
     if (user && artwork && userRentals) {
-      if (user._id === artwork.artist._id) return;
-      if (artwork.is_borrowed === true) return;
+      if (user._id === artwork.artist._id) return editButtonElement;
       if (checkIdMatching()) return rentingWorkElement;
+      if (artwork.is_borrowed === true) return;
       return requestButtonElement;
     }
   }
@@ -73,15 +73,22 @@ function ArtworkDetailPage() {
   );
 
   let requestButtonElement = <></>;
-  artwork ? (
-    (requestButtonElement = (
+  if (artwork) {
+    requestButtonElement = (
       <Link to={`/artworks/${artwork._id}/request`}>
         <button className="artwork-request-button">Request</button>
       </Link>
-    ))
-  ) : (
-    <></>
-  );
+    );
+  }
+  
+  let editButtonElement = <></>;
+  if (artwork) {
+    editButtonElement = (
+      <Link to={`/profile/edit-artwork/${artwork._id}`}>
+        <button className="artwork-request-button">Edit</button>
+      </Link>
+    );
+  }
 
   // * FAVORITES
   useEffect(() => {
