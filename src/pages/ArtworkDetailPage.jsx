@@ -14,7 +14,7 @@ function ArtworkDetailPage() {
   const [artwork, setArtwork] = useState();
   const { user, isLoggedIn } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     artworksService
@@ -32,9 +32,9 @@ function ArtworkDetailPage() {
       userService
         .getFavorites(user._id)
         .then((response) => {
-          const favoritesArtworkIds = response.data.favorites.map((artwork)=>{
-            return(artwork._id);
-          })
+          const favoritesArtworkIds = response.data.favorites.map((artwork) => {
+            return artwork._id;
+          });
           setFavorites(favoritesArtworkIds);
           return favoritesArtworkIds;
         })
@@ -87,7 +87,15 @@ function ArtworkDetailPage() {
       {artwork && (
         <div className="artwork-details-wrapper">
           <h1>{artwork.title}</h1>
-          <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}>{"< Back"}</button>
+          <button
+            className="back-button"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(-1);
+            }}
+          >
+            {"< Back"}
+          </button>
 
           <div className="artwork-details-img">
             <img
@@ -128,9 +136,15 @@ function ArtworkDetailPage() {
             </div>
           </div>
           {isLoggedIn && (
-            <Link to={`/artworks/${artwork._id}/request`}>
-              <button className="artwork-request-button">Request</button>
-            </Link>
+            <>
+              {user._id === artwork.artist._id ? (
+                ""
+              ) : (
+                <Link to={`/artworks/${artwork._id}/request`}>
+                  <button className="artwork-request-button">Request</button>
+                </Link>
+              )}
+            </>
           )}
         </div>
       )}
