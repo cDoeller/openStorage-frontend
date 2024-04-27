@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/FooterProfile.css";
 
 function FooterProfile() {
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   const profileMenuElement = (
     <div className="footer-profile-menu-wrapper">
@@ -47,7 +47,7 @@ function FooterProfile() {
           onClick={() => {
             setShowMenu(false);
           }}
-          to="/faq"
+          to="/profile/faq"
         >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/question-icon.png" alt="" />
