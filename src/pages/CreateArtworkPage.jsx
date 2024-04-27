@@ -5,6 +5,8 @@ import Select from "react-select";
 import cityService from "../services/city.services";
 import "../styles/CreateArtwork.css"
 import artworksService from "../services/artworks.services";
+import fileUploadServices from "../services/file-upload.services";
+import uploadService from "../services/file-upload.services";
 
 function CreateArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -15,7 +17,8 @@ function CreateArtworkPage() {
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(new Date());
-  const [imagesUrl, setImagesUrl] = useState([]);
+  // array for local file paths
+  const [localImagesUrl, setLocalImagesUrl] = useState([]);
   const [city, setCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
@@ -23,11 +26,9 @@ function CreateArtworkPage() {
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
 
+  // adding and removing a single path of a file to be uploaded
   const [imageToUpload, setImageToUpload] = useState("")
-
-
-
-
+  const [uploadedImages, setUploadedImages] = useState([])
 
   // REACT SELECT OPTIONS
   let mediaOptions = [
@@ -95,27 +96,68 @@ function CreateArtworkPage() {
       let cityNames = response.data.map((oneCity) => {
         return { value: oneCity.name, label: oneCity.name };
       });
-      console.log(cityNames);
+      // console.log(cityNames);
       setCityOptions(cityNames);
     });
   }, []);
 
   function handleDeleteImage(e,index){
     e.preventDefault()
-    const copiedImages = [...imagesUrl]
+    const copiedImages = [...localImagesUrl]
     copiedImages.splice(index, 1)
-    setImagesUrl(copiedImages)
+    setLocalImagesUrl(copiedImages)
   }
 
   function handleImagesUrl(e){
     e.preventDefault()
-    const copiedImages = [imageToUpload,...imagesUrl]
-    setImagesUrl(copiedImages)
-    console.log(copiedImages)
+    // const copiedImages = [imageToUpload,...localImagesUrl]
+    // setLocalImagesUrl(copiedImages)
+    // console.log(copiedImages)
+    let uploadData = new FormData()
+      uploadData.append("imageUrl", imageToUpload)
+      console.log("empty uploadData", uploadData)
+      
+      // performs the action of sending the data
+      uploadService.uploadImage(uploadData)
+        .then((response) => {
+          console.log("response is: ", response);
+          // response carries "fileUrl" which we can use to update the state
+          let copiedArray = [...uploadedImages, response.data.fileUrl]
+          setUploadedImages(copiedArray)
+        })
+        .catch((err) => console.log("Error while uploading the file: ", err));
+      
   }
+
+  // function handleFilesUpload(localImagesUrl) {
+  //   localImagesUrl.map((oneUrl)=>{
+  //     // creates the data to be sent to the uploader in the backend
+  //     let uploadData = new FormData()
+  //     uploadData.append("imageUrl", oneUrl)
+  //     console.log("empty uploadData", uploadData)
+      
+  //     // performs the action of sending the data
+  //     uploadService.uploadImage(uploadData)
+  //       .then((response) => {
+  //         console.log("response is: ", response);
+  //         // response carries "fileUrl" which we can use to update the state
+  //         let copiedArray = [...uploadedImages, response.data.fileUrl]
+  //         setUploadedImages(copiedArray)
+  //       })
+  //       .catch((err) => console.log("Error while uploading the file: ", err));
+  //     })
+  //     console.log("url array to be put into images_url", uploadedImages)
+  //     // return urlArray
+  //   }
+    
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    // upload images to cloudinary
+    // handleFilesUpload(localImagesUrl)
+    // console.log("returned url array from file upload", uploadedImages)
+    // get the URLs back and put them into an array
 
     const newArtwork = {
         title:title,
@@ -127,7 +169,7 @@ function CreateArtworkPage() {
             y:dimensionsY,
             z:dimensionsZ
         },
-        images_url:imagesUrl,
+        images_url:uploadedImages,
         medium:medium,
         genre:genre
     }
@@ -216,11 +258,11 @@ function CreateArtworkPage() {
 
         <div className="create-artwork-img-section">
           <label htmlFor="images">Images</label>
-          <input name="images" onChange={(e)=>{setImageToUpload(e.target.value)}} type="url" />
+          <input name="images" onChange={(e)=>{setImageToUpload(e.target.files[0])}} type="file" />
           <button onClick={(e)=>{handleImagesUrl(e)}}>Upload Image</button>
           <div className="create-artwork-thumbnail-wrapper">
-            {imagesUrl &&
-              imagesUrl.map((oneImage, index) => {
+            {uploadedImages &&
+              uploadedImages.map((oneImage, index) => {
                 return (
                   <div key={index} className="create-artwork-img-wrapper">
                     <img src={oneImage} alt={title} />
