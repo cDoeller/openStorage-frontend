@@ -23,6 +23,7 @@ function BecomeArtistPage() {
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(2024);
   const [imagesUrl, setImagesUrl] = useState([]);
+  const [imageData, setImageData] = useState("")
   const [imageToUpload, setImageToUpload] = useState("")
   const [uploadedImages, setUploadedImages] = useState([])
   const [artworkCity, setArtworkCity] = useState("");
@@ -127,64 +128,58 @@ function BecomeArtistPage() {
 
   function handleImagesUpload(e){
     e.preventDefault()
-    // const copiedImages = [imageToUpload,...localImagesUrl]
-    // setLocalImagesUrl(copiedImages)
-    // console.log(copiedImages)
-    let uploadData = new FormData()
-      uploadData.append("imageUrl", imageToUpload)
+    
+    const files = e.target.files;
+    const uploadData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      uploadData.append("images", files[i]);
+    }
+
+    setImageData(uploadData);
       
-      // performs the action of sending the data
-      uploadService.uploadImage(uploadData)
-        .then((response) => {
-          console.log("response is: ", response);
-          // response carries "fileUrl" which we can use to update the state
-          let copiedArray = [...uploadedImages, response.data.fileUrl]
-          setUploadedImages(copiedArray)
-        })
-        .catch((err) => console.log("Error while uploading the file: ", err));
       
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    // upload images to cloudinary
-    // handleFilesUpload(localImagesUrl)
-    // console.log("returned url array from file upload", uploadedImages)
-    // get the URLs back and put them into an array
 
-    const newArtwork = {
+    let newArtwork = {
         title:title,
         year:year,
         artist:user._id,
-        city:city,
+        city:artworkCity,
         dimensions:{
             x:dimensionsX,
             y:dimensionsY,
             z:dimensionsZ
         },
-        images_url:uploadedImages,
         medium:medium,
         genre:genre
     }
 
-    userService.updateUser(user._id, {isArtist:true})
-    .then((response)=>{
-        console.log(response.data)
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
-
-    artworksService.createArtwork(newArtwork)
-    .then((response)=>{
-        console.log("successfully created a new artwork")
-        const newArtwork = response.data.newArtwork
-        navigate(`/artworks/${newArtwork._id}`)
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+      // performs the action of sending the data
+      uploadService.uploadImage(imageData)
+        .then((response) => {
+            newArtwork.images_url = response.data.fileUrls
+          console.log("response is: ", response);
+          // response carries "fileUrl" which we can use to update the state
+          let copiedArray = [...uploadedImages, response.data.fileUrls]
+          setUploadedImages(copiedArray)
+          return artworksService.createArtwork(newArtwork)
+          .then((response)=>{
+            console.log("successfully created a new artwork")
+            console.log(response.data)
+            return userService.updateUser(user._id, {isArtist:true})
+            
+        })
+        .then((response)=>{
+            console.log("Successfully made the user an artist", response.data)
+            navigate(`/profile`)
+        })
+        })
+        .catch((err) => console.log("Error while verifying artist: ", err));
+    
 
   }
 
@@ -284,8 +279,8 @@ function BecomeArtistPage() {
         />
 
         <label htmlFor="">Images</label>
-        <input type="file" className="input" onChange={(e)=>{setImageToUpload(e.target.files[0])}} />
-        <button onClick={(e)=>{handleImagesUpload(e)}}>Upload Image</button>
+        <input type="file" multiple className="input" onChange={(e)=>{handleImagesUpload(e)}} />
+        {/* <button onClick={(e)=>{handleImagesUpload(e)}}>Upload Image</button> */}
         {uploadedImages &&
               uploadedImages.map((oneImage, index) => {
                 return (

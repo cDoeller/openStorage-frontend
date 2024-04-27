@@ -17,7 +17,7 @@ function CreateArtworkPage() {
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(new Date());
   // array for local file paths
-  const [localImagesUrl, setLocalImagesUrl] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [imageData, setImageData] = useState("");
   const [city, setCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
@@ -111,13 +111,12 @@ function CreateArtworkPage() {
   function handleImagesUrl(e) {
     e.preventDefault();
 
-    const files = e.target.files;
-    const uploadData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      uploadData.append("images", files[i]);
-    }
+    const files = Array.from(e.target.files);
+    setImageData(files);
+    const previews = files.map((file) => URL.createObjectURL(file));
+    console.log(previews)
+    setImagePreviews(previews);
 
-    setImageData(uploadData);
   }
 
 
@@ -142,8 +141,8 @@ function CreateArtworkPage() {
       .then((response) => {
         newArtwork.images_url = response.data.fileUrls;
 
-        console.log("response is: ", response);
-        // response carries "fileUrl" which we can use to update the state
+        // console.log("response is: ", response);
+        
         let copiedArray = [...uploadedImages, response.data.fileUrls];
         setUploadedImages(copiedArray);
         return artworksService.createArtwork(newArtwork);
@@ -259,22 +258,9 @@ function CreateArtworkPage() {
             Upload Image
           </button> */}
           <div className="create-artwork-thumbnail-wrapper">
-            {uploadedImages &&
-              uploadedImages.map((oneImage, index) => {
-                return (
-                  <div key={index} className="create-artwork-img-wrapper">
-                    <img src={oneImage} alt={title} />
-                    <button
-                      className="create-artwork-delete-img-button"
-                      onClick={(e) => {
-                        handleDeleteImage(e, index);
-                      }}
-                    >
-                      x
-                    </button>
-                  </div>
-                );
-              })}
+          {imagePreviews.map((preview, index) => (
+          <img key={index} src={preview} alt={`Preview ${index}`} style={{ maxWidth: "200px", maxHeight: "200px" }} />
+        ))}
           </div>
         </div>
         {/* MEDIUM */}
