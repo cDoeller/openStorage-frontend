@@ -1,0 +1,23 @@
+.recent-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    height: 100%;
+}
+.recent-card-image-wrapper {
+    width: 250px;
+    height: 200px;
+    overflow: hidden;
+}
+.recent-card-image-img {
+    width: 130%;
+    position: relative;
+    left:-15%;
+}
+.recent-card-caption-wrapper {
+}
+.recent-card-caption-info-wrapper {
+    padding: 0.4rem;
+}
+.recent-card-caption-text {
+}
