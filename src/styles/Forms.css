@@ -1,0 +1,12 @@
+.heading-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.input {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-bottom: 2px solid black;
+  background-color: white;
+}
