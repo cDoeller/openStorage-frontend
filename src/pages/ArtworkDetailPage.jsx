@@ -26,6 +26,7 @@ function ArtworkDetailPage() {
       .then((response) => {
         const oneArtwork = response.data;
         setArtwork(oneArtwork);
+        setCurrentImage(oneArtwork.images_url[0]);
       })
       .catch((err) => console.log(err));
   }, [id]);
@@ -155,7 +156,7 @@ function ArtworkDetailPage() {
   }
 
   return (
-    <div className="page-wrapper mobile-dvh-general">
+    <div className="page-wrapper mobile-dvh-general flex-column">
       {artwork && (
         <div className="artwork-details-wrapper">
           <div className="artwork-details-title-wrapper">
