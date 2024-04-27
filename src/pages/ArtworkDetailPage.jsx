@@ -9,6 +9,7 @@ import userService from "../services/user.services";
 function ArtworkDetailPage() {
   const [favorites, setFavorites] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [userRentals, setUserRentals] = useState(null);
 
   const { id } = useParams();
   const [artwork, setArtwork] = useState();
@@ -26,14 +27,50 @@ function ArtworkDetailPage() {
       .catch((err) => console.log(err));
   }, [id]);
 
+  useEffect(() => {
+    if (user) {
+      userService
+        .getAllRentalsUser(user._id)
+        .then((response) => {
+          console.log(id);
+          // console.log(response.data.rentals.rentals_receiving);
+          // setUserRentals(response.data.rentals.rentals_receiving);
+          return response.data.rentals.rentals_receiving;
+        })
+        .then((response) => {
+          const rentalArtworksIds = response.map((oneRental) => {
+            return { artwork_id: oneRental.artwork, state: oneRental.state };
+          });
+          console.log(rentalArtworksIds);
+          setUserRentals(rentalArtworksIds);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+
   // * REQUEST BUTTON RENDER
   function handleRequestButtonRender() {
-    if (user && artwork) {
+    if (user && artwork && userRentals) {
       if (user._id === artwork.artist._id) return;
       if (artwork.is_borrowed === true) return;
+      if (checkIdMatching()) return rentingWorkElement;
       return requestButtonElement;
     }
   }
+
+  function checkIdMatching() {
+    let matching = false;
+    userRentals.forEach((rental) => {
+      if (rental.artwork_id === id) {
+        matching = true;
+      }
+    });
+    return matching;
+  }
+
+  const rentingWorkElement = (
+    <p className="artwork-request-message">Artwork Requested</p>
+  );
 
   let requestButtonElement = <></>;
   artwork ? (
