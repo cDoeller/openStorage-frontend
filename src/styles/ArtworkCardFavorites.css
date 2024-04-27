@@ -1,0 +1,20 @@
+.favorites-card-wrapper {
+  border: 1px solid black;
+
+}
+.favorites-card-img-wrapper {
+  overflow: hidden;
+  /* display: flex; */
+  height: 140px;
+}
+.favorites-card-img-wrapper > img {
+  width: 130%;
+  position: relative;
+  left: -15%;
+}
+.favorites-card-info-wrapper {
+  padding: 0.5rem;
+
+}
+.favorites-card-info-text-wrapper {
+}

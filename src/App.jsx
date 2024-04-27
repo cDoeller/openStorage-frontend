@@ -26,6 +26,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import FooterProfile from "./components/FooterProfile";
 import FAQPage from "./pages/FAQPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import FavoritesPage from "./pages/FavoritesPage";
 
 function App() {
   const { user, isLoggedIn } = useContext(AuthContext);
@@ -146,6 +147,11 @@ function App() {
             </IsPrivate>
           }
         />
+                <Route
+          path="/favorites"
+          element={
+            <IsPrivate>
+              <FavoritesPage />
         <Route
           path="/profile/faq"
           element={
