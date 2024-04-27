@@ -168,6 +168,14 @@ function BecomeArtistPage() {
         genre:genre
     }
 
+    userService.updateUser(user._id, {isArtist:true})
+    .then((response)=>{
+        console.log(response.data)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+
     artworksService.createArtwork(newArtwork)
     .then((response)=>{
         console.log("successfully created a new artwork")
