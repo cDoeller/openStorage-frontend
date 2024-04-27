@@ -10,3 +10,15 @@
   border-bottom: 2px solid black;
   background-color: white;
 }
+
+.textarea{
+    width:100%;
+    height:100px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap:1.2rem;
+}
+
