@@ -50,11 +50,6 @@ class UserService {
     return this.api.get(`/api/user/${id}/favorites`);
   };
 
-  // GET all notifications
-  getNotifications = (id) => {
-    return this.api.get(`/api/user/${id}/notifications`);
-  };
-
   getAllRentalsUser = (id) => {
     return this.api.get(`/api/user/${id}/rentals`);
   };
@@ -72,6 +67,24 @@ class UserService {
   // DELETE a user
   deleteUser = (id) => {
     return this.api.delete(`/api/user/${id}/delete`);
+  };
+
+  // NOTIFICATIONS
+  // POST one notification in sub-schema
+  createNotification = (user_id, notification) => {
+    return this.api.post(`/api/user/${user_id}/notifications`, notification);
+  }
+
+  // GET all notifications of one user
+  getNotifications = (id) => {
+    return this.api.get(`/api/user/${id}/notifications`);
+  };
+
+  // DELETE a notification
+  deleteNotification = (user_id, notification_id) => {
+    return this.api.get(
+      `/api/user/${user_id}/notifications/${notification_id}`
+    );
   };
 }
 

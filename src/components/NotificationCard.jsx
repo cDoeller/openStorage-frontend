@@ -7,13 +7,18 @@ function NotificationCard(props) {
 
   console.log(notification);
 
+function handleOkayClick () {
+
+}
+
+
   const notificationTitle = getNotificationTitle();
   function getNotificationTitle() {
     if (notification) {
       switch (notification.type) {
         case "new-request":
           return <>New Request</>;
-        case "extend-request":
+        case "change-request":
           return <>User Request</>;
         case "confirm":
           return <>Please Note</>;
@@ -31,7 +36,7 @@ function NotificationCard(props) {
               <button className="notification-card-button">SHOW REQUEST</button>
             </Link>
           );
-        case "extend-request":
+        case "change-request":
           return (
             <>
               <button className="notification-card-button">ACCEPT</button>
@@ -39,7 +44,7 @@ function NotificationCard(props) {
             </>
           );
         case "confirm":
-          return <button className="notification-card-button">OKAY</button>;
+          return <button onClick={handleOkayClick} className="notification-card-button">OKAY</button>;
       }
     }
   }
@@ -56,7 +61,7 @@ function NotificationCard(props) {
               the button below to view the request!
             </>
           );
-        case "extend-request":
+        case "change-request":
           return (
             <>
               User {notification.request.user_borrowing.user_name} would like to
@@ -76,7 +81,7 @@ function NotificationCard(props) {
             </>
           );
         case "confirm":
-          return <>Please Note</>;
+          return <>{notification.message}</>;
       }
     }
   }
