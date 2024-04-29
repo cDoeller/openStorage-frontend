@@ -1,18 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/FooterProfile.css";
+import { AuthContext } from "../context/auth.context";
+import userService from "../services/user.services";
 
 function FooterProfile() {
   const [showMenu, setShowMenu] = useState(false);
+  const [isArtist, setIsArtist] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      userService
+        .getUser(user._id)
+        .then((response) => {
+          console.log(response.data);
+          setIsArtist(response.data.isArtist);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
 
   const profileMenuElement = (
     <div className="footer-profile-menu-wrapper">
+      {isArtist ? (
+        ""
+      ) : (
+        <Link to="/profile/become-artist">
+          <button
+            onClick={handleMenuClick}
+            className="footer-profile-menu-button"
+          >
+            Verify Artist Account
+          </button>
+        </Link>
+      )}
       <Link to="/profile/become-artist">
-        <button onClick={handleMenuClick} className="footer-profile-menu-button">
-          Verify Artist Account
+        <button
+          onClick={handleMenuClick}
+          className="footer-profile-menu-button"
+        >
+          Delete Account
         </button>
       </Link>
-      {/* <button className="footer-profile-menu-button">Another Button</button> */}
     </div>
   );
 
