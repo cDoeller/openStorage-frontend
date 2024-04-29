@@ -25,6 +25,14 @@ function Notifications() {
   return (
     <div className="page-wrapper mobile-dvh">
       <div className="notifications-wrapper">
+        {(!notifications || notifications.length === 0) && (
+          <div div className="notifications-none-wrapper">
+            <div className="notifications-none-icon-wrapper">
+              <img src="/img/bell-icon.png" alt="" />
+            </div>
+            <h3 className="notifications-none-text">No Notifications Available</h3>
+          </div>
+        )}
         {notifications &&
           notifications.map((notification) => {
             return (
@@ -32,7 +40,7 @@ function Notifications() {
                 key={notification._id}
                 notification={notification}
                 setNotifications={setNotifications}
-                userId = {user._id}
+                userId={user._id}
               />
             );
           })}

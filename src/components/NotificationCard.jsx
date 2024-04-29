@@ -6,19 +6,7 @@ import userService from "../services/user.services";
 function NotificationCard(props) {
   const { notification, setNotifications, userId } = props;
 
-  // console.log(notification);
-
-  function handleOkayClick() {
-    // delete notification
-    userService
-      .deleteNotification(userId, notification._id)
-      .then((response) => {
-        // console.log(response.data.notifications);
-        setNotifications(response.data.notifications);
-      })
-      .catch((err) => console.log(err));
-  }
-
+  // NOTIFICATION TITLE
   const notificationTitle = getNotificationTitle();
   function getNotificationTitle() {
     if (notification) {
@@ -31,6 +19,18 @@ function NotificationCard(props) {
           return <>Please Note</>;
       }
     }
+  }
+
+  // NOTIFICATION BUTTON TYPE AND FUNCTIONALITY
+  function handleOkayClick() {
+    // delete notification
+    userService
+      .deleteNotification(userId, notification._id)
+      .then((response) => {
+        // console.log(response.data.notifications);
+        setNotifications(response.data.notifications);
+      })
+      .catch((err) => console.log(err));
   }
 
   const notificationButton = getNotificationButton();
@@ -63,6 +63,7 @@ function NotificationCard(props) {
     }
   }
 
+  // NOTIFICATION TEXT CONTENT
   const notificationText = getNotificationText();
   function getNotificationText() {
     if (notification) {
@@ -100,6 +101,7 @@ function NotificationCard(props) {
     }
   }
 
+  // JSX
   return (
     <div className="notification-card-wrapper">
       {notification && (
