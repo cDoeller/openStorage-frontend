@@ -31,6 +31,8 @@ function Notifications() {
               <NotificationCard
                 key={notification._id}
                 notification={notification}
+                setNotifications={setNotifications}
+                userId = {user._id}
               />
             );
           })}

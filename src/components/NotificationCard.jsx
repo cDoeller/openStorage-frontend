@@ -1,16 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/NotificationCard.css";
+import userService from "../services/user.services";
 
 function NotificationCard(props) {
-  const { notification } = props;
+  const { notification, setNotifications, userId } = props;
 
-  console.log(notification);
+  // console.log(notification);
 
-function handleOkayClick () {
-
-}
-
+  function handleOkayClick() {
+    // delete notification
+    userService
+      .deleteNotification(userId, notification._id)
+      .then((response) => {
+        // console.log(response.data.notifications);
+        setNotifications(response.data.notifications);
+      })
+      .catch((err) => console.log(err));
+  }
 
   const notificationTitle = getNotificationTitle();
   function getNotificationTitle() {
@@ -44,7 +51,14 @@ function handleOkayClick () {
             </>
           );
         case "confirm":
-          return <button onClick={handleOkayClick} className="notification-card-button">OKAY</button>;
+          return (
+            <button
+              onClick={handleOkayClick}
+              className="notification-card-button"
+            >
+              OKAY
+            </button>
+          );
       }
     }
   }

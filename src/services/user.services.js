@@ -81,9 +81,9 @@ class UserService {
   };
 
   // DELETE a notification
-  deleteNotification = (user_id, notification_id) => {
-    return this.api.get(
-      `/api/user/${user_id}/notifications/${notification_id}`
+  deleteNotification = (_id, notification_id) => {
+    return this.api.delete(
+      `/api/user/${_id}/notifications/${notification_id}`
     );
   };
 }
