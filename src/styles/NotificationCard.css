@@ -51,5 +51,10 @@
   margin-bottom: 1rem;
 }
 .new {
-  background-color: rgb(255, 223, 223);
+  background-color: rgb(192, 255, 172);
+}
+.notification-card-link {
+  /* text-decoration: underline; */
+  color: rgb(0, 13, 255);
+  /* background-color: rgb(192, 241, 255); */
 }
