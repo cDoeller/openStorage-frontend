@@ -23,7 +23,7 @@ function Notifications() {
   }, [user]);
 
   return (
-    <div className="page-wrapper mobile-dvh">
+    <div className={"page-wrapper mobile-dvh " + ((!notifications || notifications.length === 0) &&"flex-column")}>
       <div className="notifications-wrapper">
         {(!notifications || notifications.length === 0) && (
           <div div className="notifications-none-wrapper">

@@ -98,17 +98,25 @@ function RequestPage() {
       is_approved: false,
     };
 
+    // create rental and notification
     rentalsService
       .createRental(newRental)
       .then((response) => {
         console.log(response.data);
+        const newNotification = {
+          type: "new-request",
+          request: response.data._id,
+        };
+        // create notification for artist
+        return userService.createNotification(artwork.artist._id, newNotification);
+      })
+      .then(() => {
         navigate("/profile");
       })
       .catch((err) => {
         setErrorMessage(err.response.data.message);
         console.log(err);
       });
-
   }
 
   // * DELIVERY ELEMENT
