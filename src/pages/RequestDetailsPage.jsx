@@ -9,6 +9,7 @@ import { AuthContext } from "../context/auth.context";
 function RequestDetailsPage() {
   const [request, setRequest] = useState(null);
   const [state, setState] = useState("");
+  const [message, setMessage] = useState("");
 
   const { user } = useContext(AuthContext);
   const { id } = useParams();
@@ -48,24 +49,35 @@ function RequestDetailsPage() {
 
   //   button elements
   const acceptRejectButtonElement = (
-    <div className="request-button-wrapper">
-      <button
-        onClick={() => {
-          handleButtonClick("accepted");
-        }}
-        className="request-button accepted"
-      >
-        accept
-      </button>
-      <button
-        onClick={() => {
-          handleButtonClick("rejected");
-        }}
-        className="request-button rejected"
-      >
-        reject
-      </button>
-    </div>
+    <>
+      <label htmlFor="">
+        Message (optional)
+        <textarea
+          className="request-message-textarea"
+          name=""
+          id=""
+          onChange={(e)=>{setMessage(e.target.value)}}
+        ></textarea>
+      </label>
+      <div className="request-button-wrapper">
+        <button
+          onClick={() => {
+            handleButtonClick("accepted");
+          }}
+          className="request-button accepted"
+        >
+          accept
+        </button>
+        <button
+          onClick={() => {
+            handleButtonClick("rejected");
+          }}
+          className="request-button rejected"
+        >
+          reject
+        </button>
+      </div>
+    </>
   );
   const cancelRequestElement = (
     <div className="request-button-wrapper">
@@ -84,7 +96,7 @@ function RequestDetailsPage() {
       <button
         onClick={() => {
           // * THIS IS AN EXTRA
-          // * NOTIFICATION 
+          // * NOTIFICATION
           // * state: cancelled?
         }}
         className="request-button"
@@ -95,6 +107,7 @@ function RequestDetailsPage() {
   );
 
   // button cancel / reject / accept functionality
+  // message <--------- continue here and tidy up
   function handleButtonClick(action) {
     if (action === "cancelled") {
       rentalsService
