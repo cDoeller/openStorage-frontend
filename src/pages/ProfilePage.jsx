@@ -62,20 +62,19 @@ function ProfilePage() {
           )}
 
           <div className="loans-section-profile">
+          {console.log("user info rentals: ", userInfo.rentals)}
             <ArtworksScrollbar
               userInfo={userInfo}
               contents={userInfo.rentals.rentals_receiving}
               heading={"Current Rentals"}
             />
-            <div className="loans-thumbs-wrapper"></div>
           </div>
           <div className="requests-section-profile">
             <ArtworksScrollbar
               userInfo={userInfo}
-              contents={userInfo.rentals.rentals_offering}
+              contents={userInfo.rentals.rentals_receiving}
               heading={"Pending Requests"}
             />
-            <div className="loans-thumbs-wrapper"></div>
           </div>
         </div>
       )}
