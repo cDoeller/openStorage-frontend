@@ -10,9 +10,12 @@
     overflow: hidden;
 }
 .recent-card-image-img {
-    width: 130%;
+    /* width: 130%;
     position: relative;
-    left:-15%;
+    left:-15%; */
+    width:100%;
+    height:100%;
+    object-fit: cover;
 }
 .recent-card-caption-wrapper {
 }
