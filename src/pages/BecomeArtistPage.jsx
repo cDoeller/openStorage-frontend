@@ -52,6 +52,13 @@ function BecomeArtistPage() {
     { value: "Conceptual Art", label: "Conceptual Art" },
   ];
 
+  let countryOptions = [
+    { value: "Germany", label: "Germany"},
+    { value: "United States", label: "United States"}
+  ]
+
+  const [cityOptions, setCityOptions] = useState();
+  
   // REACT SELECT HANDLE SELECT FUNCTIONS
   function handleMediaSelectChange(selectedOption) {
     setMedium(selectedOption.value);
@@ -62,9 +69,11 @@ function BecomeArtistPage() {
   function handleCitiesSelectChange(selectedOption) {
     setCity(selectedOption.value);
   }
-
   function handleArtworkCitiesSelectChange(selectedOption) {
     setArtworkCity(selectedOption.value)
+  }
+  function handleCountrySelectChange(selectedOption) {
+    setCountry(selectedOption.value)
   }
 
   const selectStles = {
@@ -95,8 +104,6 @@ function BecomeArtistPage() {
       overflow: "scroll",
     }),
   };
-
-  const [cityOptions, setCityOptions] = useState();
 
   useEffect(() => {
     cityService.getAllCities().then((response) => {
@@ -232,7 +239,7 @@ function BecomeArtistPage() {
           }}
         />
 
-        {/* City select */}
+        <label htmlFor="">City</label>
         <Select
           options={cityOptions}
           onChange={handleCitiesSelectChange}
@@ -241,8 +248,15 @@ function BecomeArtistPage() {
         />
 
         <label htmlFor="">Country</label>
+        <Select 
+          options={countryOptions}
+          onChange={handleCountrySelectChange}
+          value={{label: country}}
+          styles={selectStles}
+        />
 
         <label htmlFor="">Postal Code</label>
+        <input type="number" minLength={5} maxLength={5} value={postcode} onChange={(e)=>{setPostcode(e.target.value)}} />
 
         <h4>Upload Artwork</h4>
 
