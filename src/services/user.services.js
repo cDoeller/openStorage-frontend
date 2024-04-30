@@ -35,8 +35,8 @@ class UserService {
     return this.api.get("/api/user/artists");
   };
 
-// GET only artists with artworks
-getAllArtistsWithWorks = () => {
+  // GET only artists with artworks
+  getAllArtistsWithWorks = () => {
     return this.api.get(`/api/user/artists/works`);
   };
 
@@ -46,18 +46,18 @@ getAllArtistsWithWorks = () => {
   };
 
   // GET all favorites
-  getFavorites = (id) =>{
+  getFavorites = (id) => {
     return this.api.get(`/api/user/${id}/favorites`);
-  }
+  };
 
   getAllRentalsUser = (id) => {
     return this.api.get(`/api/user/${id}/rentals`);
-  }
+  };
 
   // UPDATE favorites
-  updateFavorites = (id, favorites) =>{
+  updateFavorites = (id, favorites) => {
     return this.api.patch(`/api/user/${id}/favorites`, favorites);
-  }
+  };
 
   // PATCH update a user
   updateUser = (id, requestBody) => {
@@ -67,6 +67,24 @@ getAllArtistsWithWorks = () => {
   // DELETE a user
   deleteUser = (id) => {
     return this.api.delete(`/api/user/${id}/delete`);
+  };
+
+  // NOTIFICATIONS
+  // POST one notification in sub-schema
+  createNotification = (user_id, notification) => {
+    return this.api.post(`/api/user/${user_id}/notifications`, notification);
+  }
+
+  // GET all notifications of one user
+  getNotifications = (id) => {
+    return this.api.get(`/api/user/${id}/notifications`);
+  };
+
+  // DELETE a notification
+  deleteNotification = (_id, notification_id) => {
+    return this.api.delete(
+      `/api/user/${_id}/notifications/${notification_id}`
+    );
   };
 }
 

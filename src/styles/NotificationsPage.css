@@ -1,7 +1,28 @@
-.notifications-wrapper{
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    justify-content: center;
+.notifications-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  flex-grow: 1;
+}
+.notifications-none-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  background-color: rgb(233, 233, 233);
+  gap: 1rem;
+  padding: 1rem 1rem 2rem 1rem;
+  border-radius: 20px;
+}
+.notifications-none-text {
+  font-weight: 400;
+}
+.notifications-none-icon-wrapper {
+  width: 25px;
+  height: fit-content;
+  display: flex;
+}
+.notifications-none-icon-wrapper > img {
+  width: 100%;
 }
