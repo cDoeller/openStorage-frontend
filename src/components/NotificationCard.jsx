@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/NotificationCard.css";
 import userService from "../services/user.services";
 
 function NotificationCard(props) {
   const { notification, setNotifications, userId } = props;
+
+  useEffect(() => {
+    if (notification.request.state === "cancelled") {
+      const updatedNotification = {
+        message: `The Request for your Artwork ${notification.request.artwork.title} from user ${notification.request.user_borrowing.user_name} has been cancelled.`,
+        type: "confirm",
+      };
+      userService
+        .updateNotification(userId, notification._id, updatedNotification)
+        .then(() => {})
+        .catch((err) => console.log(err));
+    }
+  }, [notification, userId]);
 
   // NOTIFICATION TITLE
   const notificationTitle = getNotificationTitle();

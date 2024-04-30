@@ -18,6 +18,10 @@
     background-color: rgb(253, 202, 202);
     color: red;
 }
+.cancelled{
+    background-color: rgb(214, 214, 214);
+    color: red;
+}
 
 /* REQUEST INFOS */
 .request-details-request-infos-headline{

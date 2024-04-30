@@ -15,7 +15,7 @@ function Notifications() {
       userService
         .getNotifications(user._id)
         .then((response) => {
-          // console.log(response.data.notifications);
+          console.log(response.data.notifications);
           setNotifications(response.data.notifications);
         })
         .catch((err) => console.log(err));
@@ -26,7 +26,7 @@ function Notifications() {
     <div className={"page-wrapper mobile-dvh " + ((!notifications || notifications.length === 0) &&"flex-column")}>
       <div className="notifications-wrapper">
         {(!notifications || notifications.length === 0) && (
-          <div div className="notifications-none-wrapper">
+          <div className="notifications-none-wrapper">
             <div className="notifications-none-icon-wrapper">
               <img src="/img/bell-icon.png" alt="" />
             </div>

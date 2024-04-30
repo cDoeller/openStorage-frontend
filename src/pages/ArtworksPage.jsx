@@ -105,7 +105,7 @@ function ArtworksPage() {
               return (
                 <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
                   <ArtworkCard
-                    name={artwork.artist.user_name}
+                    name={artwork.artist.real_name}
                     title={artwork.title}
                     dimensions={
                       artwork.dimensions.x +
