@@ -209,6 +209,7 @@ function BecomeArtistPage() {
         <input
           className="input"
           type="text"
+          required
           name="real name"
           value={realName}
           onChange={(e) => {
@@ -220,6 +221,7 @@ function BecomeArtistPage() {
         <textarea
           className="textarea"
           name="artist statement"
+          required
           value={artistStatement}
           onChange={(e) => {
             setArtistStatement(e.target.value);
@@ -232,6 +234,7 @@ function BecomeArtistPage() {
         <input
           name="street"
           type="text"
+          required
           className="input"
           value={street}
           onChange={(e) => {
@@ -241,6 +244,7 @@ function BecomeArtistPage() {
 
         <label htmlFor="">City</label>
         <Select
+        required
           options={cityOptions}
           onChange={handleCitiesSelectChange}
           value={{ label: city }}
@@ -249,6 +253,7 @@ function BecomeArtistPage() {
 
         <label htmlFor="">Country</label>
         <Select 
+        required
           options={countryOptions}
           onChange={handleCountrySelectChange}
           value={{label: country}}
@@ -256,7 +261,7 @@ function BecomeArtistPage() {
         />
 
         <label htmlFor="">Postal Code</label>
-        <input type="number" minLength={5} maxLength={5} value={postcode} onChange={(e)=>{setPostcode(e.target.value)}} />
+        <input type="text" required minLength={5} maxLength={5} value={postcode} onChange={(e)=>{setPostcode(e.target.value)}} />
 
         <h4>Upload Artwork</h4>
 
@@ -264,6 +269,7 @@ function BecomeArtistPage() {
         <input
           name="title"
           type="text"
+          required
           className="input"
           onChange={(e) => {
             setTitle(e.target.value);
@@ -274,6 +280,7 @@ function BecomeArtistPage() {
         <input
           name="year"
           type="number"
+          required
           className="input"
           value={year}
           onChange={(e) => {
@@ -286,6 +293,7 @@ function BecomeArtistPage() {
               City
             </label>
         <Select
+        required
           options={cityOptions}
           onChange={handleArtworkCitiesSelectChange}
           value={{ label: city }}
@@ -293,7 +301,7 @@ function BecomeArtistPage() {
         />
 
         <label htmlFor="">Images</label>
-        <input type="file" multiple className="input" onChange={(e)=>{handleImagesUpload(e)}} />
+        <input type="file" required multiple className="input" onChange={(e)=>{handleImagesUpload(e)}} />
         {/* <button onClick={(e)=>{handleImagesUpload(e)}}>Upload Image</button> */}
         {uploadedImages &&
               uploadedImages.map((oneImage, index) => {
@@ -310,6 +318,7 @@ function BecomeArtistPage() {
           <input
             className="create-artwork-input"
             type="number"
+            required
             value={dimensionsX}
             onChange={(e) => {
               setDimensionsX(e.target.value);
@@ -319,6 +328,7 @@ function BecomeArtistPage() {
           <input
             className="create-artwork-input"
             type="number"
+            required
             value={dimensionsY}
             onChange={(e) => {
               setDimensionsY(e.target.value);
@@ -340,6 +350,7 @@ function BecomeArtistPage() {
               Medium
             </label>
             <Select
+            required
               options={mediaOptions}
               onChange={handleMediaSelectChange}
               value={{ label: medium }}
@@ -351,6 +362,7 @@ function BecomeArtistPage() {
               Genre
             </label>
             <Select
+            required
               options={genreOptions}
               onChange={handleGenreSelectChange}
               value={{ label: genre }}

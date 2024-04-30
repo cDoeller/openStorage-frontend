@@ -12,18 +12,20 @@ function ArtworksScrollbar(props) {
   const [artworksArray, setArtworksArray] = useState([])
 
   useEffect(()=>{
-    let filteredContents = contents.filter((element)=>{
+    let filteredContents = contents.map((element)=>{
       if(heading==="Artworks"){
-        console.log(element)
+        console.log("artwork", element)
         return element
       }
-      if(heading==="Current Rentals" || heading === "Pending Requests"){
+      if(heading==="Current Rentals"){
         console.log("rentals", element)
-        if(element.status === "accepted"){
+        if(element.state === "accepted"){
           console.log("rented: ", element)
           return element.artwork
         }
-        if(element.status === "pending"){
+      }
+      if(heading==="Pending Requests"){
+        if(element.state === "pending"){
           console.log("pending: ", element)
           return element.artwork
         }
@@ -51,16 +53,19 @@ function ArtworksScrollbar(props) {
       <div className="profile-artworks-scrollbar">
         {artworksArray &&
           artworksArray.map((oneArtwork, index) => {
+            if(oneArtwork){
             return (
               <div key={index} className="profile-artwork-card-wrapper">
                 <ArtworkScrollbarCard
                 heading = {heading}
                   title={oneArtwork.title}
-                  id={oneArtwork._id}
-                  img={oneArtwork.images_url[0]}
+                  id={contents[index]._id}
+                  img={oneArtwork.images_url}
                 />
               </div>
             );
+
+            }
           })}
       </div>
     </div>

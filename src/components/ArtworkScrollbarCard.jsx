@@ -10,31 +10,31 @@ function ArtworkScrollbarCard(props) {
 
     useEffect(()=>{
         if(heading==="Artworks"){
-            setLinkName("artworks")
+            setLinkName(`artworks/${id}`)
         }
         else{
-            setLinkName("request")
+            setLinkName(`request/${id}/details`)
         }
-    }, [heading])
+    }, [heading, id])
 
   return (
     <>
-        <Link to={`/${linkName}/${id}`}>
-            <div className="profile-artwork-card-image-wrapper">
+        <Link to={`/${linkName}`}>
+            <div className="scrollbar-artwork-card-image-wrapper">
               <img
-                src={img}
-                alt={title}
+                src={img[0]? img[0] : "#"}
+                alt={title? title: ""}
               />
             </div>
-            <div className="profile-artwork-card-info-wrapper">
-              <div className="profile-artwork-card-info-text-wrapper">
-                <p className="profile-artwork-card-info-text-text">
-                  {title}
+            <div className="scrollbar-artwork-card-info-wrapper">
+              <div className="scrollbar-artwork-card-info-text-wrapper">
+                <p className="scrollbar-artwork-card-info-text-text">
+                  {title? title : ""}
                 </p>
               </div>
-              <div className="artwork-card-icon-wrapper">
+              {/* <div className="artwork-card-icon-wrapper">
                 <img src="" alt="" />
-              </div>
+              </div> */}
             </div>
                   </Link>
     </>
