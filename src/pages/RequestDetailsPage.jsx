@@ -4,6 +4,7 @@ import "../styles/RequestPage.css";
 import { useParams, useNavigate } from "react-router-dom";
 import rentalsService from "../services/rentals.services";
 import artworksService from "../services/artworks.services";
+import userService from "../services/user.services";
 import { AuthContext } from "../context/auth.context";
 
 function RequestDetailsPage() {
@@ -33,16 +34,26 @@ function RequestDetailsPage() {
 
   //  * BUTTONS
   function renderActionButtons() {
+    // if user is the artist
     if (user._id === request.artist._id) {
+      // 1) if work is rented, show "cancel rental" button
       if (request.artwork.is_borrowed) {
         return cancelRentalElement;
       }
+      // 2) if work is free, show "accept/reject" buttons
+      if (request.state === "cancelled") {
+        return "";
+      }
+      // 3) if work is free, show "accept/reject" buttons
       return acceptRejectButtonElement;
     }
+    // if user is the borrower
     if (user._id === request.user_borrowing._id) {
+      // 3) if work is rented, show "cancel rental" button
       if (request.artwork.is_borrowed) {
         return cancelRentalElement;
       }
+      // 4) if work is free, show "cancel request" button
       return cancelRequestElement;
     }
   }
@@ -51,18 +62,20 @@ function RequestDetailsPage() {
   const acceptRejectButtonElement = (
     <>
       <label htmlFor="">
-        Message (optional)
+        Message
         <textarea
           className="request-message-textarea"
           name=""
           id=""
-          onChange={(e)=>{setMessage(e.target.value)}}
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
         ></textarea>
       </label>
       <div className="request-button-wrapper">
         <button
           onClick={() => {
-            handleButtonClick("accepted");
+            handleButtonClick("request-accepted");
           }}
           className="request-button accepted"
         >
@@ -70,7 +83,7 @@ function RequestDetailsPage() {
         </button>
         <button
           onClick={() => {
-            handleButtonClick("rejected");
+            handleButtonClick("request-rejected");
           }}
           className="request-button rejected"
         >
@@ -79,11 +92,12 @@ function RequestDetailsPage() {
       </div>
     </>
   );
+
   const cancelRequestElement = (
     <div className="request-button-wrapper">
       <button
         onClick={() => {
-          handleButtonClick("cancelled");
+          handleButtonClick("request-cancelled");
         }}
         className="request-button"
       >
@@ -91,13 +105,23 @@ function RequestDetailsPage() {
       </button>
     </div>
   );
+
   const cancelRentalElement = (
     <div className="request-button-wrapper">
+      <label htmlFor="">
+        Message
+        <textarea
+          className="request-message-textarea"
+          name=""
+          id=""
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
+        ></textarea>
+      </label>
       <button
         onClick={() => {
-          // * THIS IS AN EXTRA
-          // * NOTIFICATION
-          // * state: cancelled?
+          handleButtonClick("retnal-cancelled");
         }}
         className="request-button"
       >
@@ -108,34 +132,31 @@ function RequestDetailsPage() {
 
   // button cancel / reject / accept functionality
   // message <--------- continue here and tidy up
+  // request-accepted
+  // request-rejected
+  // request-cancelled
+  // retnal-cancelled
+  // enum: ["new-request", "change-request", "confirm"]
+
   function handleButtonClick(action) {
-    if (action === "cancelled") {
-      rentalsService
-        .deleteRental(id)
-        .then(() => {
-          navigate("/profile");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      rentalsService
-        .updateRental(id, { state: action })
+    // 1) request-cancelled
+    if (action === "request-cancelled") {
+      // 1.1) make a notification to the artist
+      const cancelledNotification = {
+        type: "confirm",
+        request: request._id,
+        message: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
+      };
+      console.log(cancelledNotification);
+      userService
+        .createNotification(request.artist._id, cancelledNotification)
         .then((response) => {
-          console.log(response.data);
-          setState(action);
-        })
-        .then(() => {
-          // * NOTIFICATION IF REJECTED, DELETED AFTER NOTIFICATION
-          const borrowed = action === "rejected" ? false : true;
-          artworksService
-            .updateArtwork(request.artwork._id, { is_borrowed: borrowed })
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          console.log(response);
+          // 1.2) update the request to be cancelled <-------
+          // NOTIFICATION WILL CHANGE, CONDITIONAL RENDER
+          return rentalsService.updateRental(request._id, {
+            state: "cancelled",
+          });
         })
         .then(() => {
           navigate("/profile");
@@ -143,7 +164,33 @@ function RequestDetailsPage() {
         .catch((err) => {
           console.log(err);
         });
+      return;
     }
+
+    rentalsService
+      .updateRental(id, { state: action })
+      .then((response) => {
+        console.log(response.data);
+        setState(action);
+      })
+      .then(() => {
+        // * NOTIFICATION IF REJECTED, DELETED AFTER NOTIFICATION
+        const borrowed = action === "rejected" ? false : true;
+        artworksService
+          .updateArtwork(request.artwork._id, { is_borrowed: borrowed })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -160,7 +207,7 @@ function RequestDetailsPage() {
               </div>
               <div className="request-artwork-info-wrapper">
                 <p className="request-artwork-info-text">
-                  {request.artist.user_name}
+                  {request.artist.real_name}
                 </p>
                 <p className="request-artwork-info-text">
                   {request.artwork.title}, {request.artwork.year}
@@ -236,7 +283,7 @@ function RequestDetailsPage() {
                 Message
               </h3>
               <p className="request-details-request-infos-text">
-                {request.user_borrowing.user_name}
+                {request.message}
               </p>
             </>
           )}
