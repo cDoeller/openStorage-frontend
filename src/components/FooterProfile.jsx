@@ -1,18 +1,54 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/FooterProfile.css";
+import { AuthContext } from "../context/auth.context";
+import userService from "../services/user.services";
+import Popup from "./Popup";
 
 function FooterProfile() {
   const [showMenu, setShowMenu] = useState(false);
+  const [isArtist, setIsArtist] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
+  const { user, logOutUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      userService
+        .getUser(user._id)
+        .then((response) => {
+          console.log(response.data);
+          setIsArtist(response.data.isArtist);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+
+  // * "MORE" - MENU ELEMENTS
   const profileMenuElement = (
     <div className="footer-profile-menu-wrapper">
-      <Link to="/profile/become-artist">
-        <button onClick={handleMenuClick} className="footer-profile-menu-button">
-          Verify Artist Account
-        </button>
-      </Link>
-      {/* <button className="footer-profile-menu-button">Another Button</button> */}
+      {isArtist ? (
+        ""
+      ) : (
+        <Link to="/profile/become-artist">
+          <button
+            onClick={handleMenuClick}
+            className="footer-profile-menu-button"
+          >
+            Verify Artist Account
+          </button>
+        </Link>
+      )}
+      <button
+        onClick={() => {
+          setShowPopup(true);
+          handleMenuClick();
+        }}
+        className="footer-profile-menu-button"
+      >
+        Delete Account
+      </button>
     </div>
   );
 
@@ -20,8 +56,37 @@ function FooterProfile() {
     setShowMenu(!showMenu);
   }
 
+  // * DELETE ACCOUNT
+  function handleDeleteAccount() {
+    if (user) {
+      userService
+        .deleteUser(user._id)
+        .then((response) => {
+          logOutUser();
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
+  // data for popup
+  const deletePopupHeadline = "Delete Account";
+  const deletePopupText =
+    "Are you sure you want to delete your account, all your artworks and personal information be deleted from our data base?";
+  const deletePopupButton = (
+    <button onClick={handleDeleteAccount} className="popup-button">
+      OK
+    </button>
+  );
+
   return (
     <>
+      <Popup
+        showPopup={showPopup}
+        setShowPopup={setShowPopup}
+        headline={deletePopupHeadline}
+        text={deletePopupText}
+        button={deletePopupButton}
+      />
       <div className="footer-profile-wrapper">
         <Link
           onClick={() => {
