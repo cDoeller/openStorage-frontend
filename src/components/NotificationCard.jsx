@@ -75,56 +75,16 @@ function NotificationCard(props) {
   const notificationText = getNotificationText();
   function getNotificationText() {
     if (notification) {
-      switch (notification.type) {
-        case "new-rental":
-          return (
-            <>
-              <p className="notification-card-text">
-                {notification.text}
-              </p>
-              {notification.message && (
-                <p className="notification-card-text">
-                  The artist has left you a message:{" "}
-                  <i>{notification.message}</i>
-                </p>
-              )}
-            </>
-          );
-        case "new-request":
-          return (
-            <>
-              <p className="notification-card-text">
-                User {notification.request.user_borrowing.user_name} would like
-                to rent your artwork {notification.request.artwork.title} –
-                click on the button below to view the request!
-              </p>
-            </>
-          );
-        case "change-request":
-          return (
-            <>
-              {/* <p className="notification-card-text"></p>
-              User {notification.request.user_borrowing.user_name} would like to
-              change the{" "}
-              <Link
-                className="notification-card-link"
-                to={`/request/${notification.request._id}/details`}
-              >
-                rental agreement
-              </Link>{" "}
-              for your artwork {notification.request.artwork.title}.
-              {notification.message && (
-                <p className="notification-card-text">
-                  "{notification.message}"
-                </p>
-              )} */}
-            </>
-          );
-        case "confirm":
-          return (
-            <p className="notification-card-text">{notification.message}</p>
-          );
-      }
+      return (
+        <>
+          <p className="notification-card-text">{notification.text}</p>
+          {notification.message && (
+            <p className="notification-card-text">
+              The artist has left you a message: <i>{notification.message}</i>
+            </p>
+          )}
+        </>
+      );
     }
   }
 

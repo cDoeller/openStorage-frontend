@@ -120,7 +120,7 @@ function RequestDetailsPage() {
     const rejectedNotification = {
       type: "confirm",
       request: request._id,
-      text: "rejected",
+      text: `The artist has rejected your request for the artwork ${request.artwork.title}.`,
       message: message,
     };
     userService
