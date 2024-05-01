@@ -56,8 +56,11 @@ function ArtworkDetailPage() {
   function handleRequestButtonRender() {
     if (user && artwork && userRentals) {
       if (user._id === artwork.artist._id) return editButtonElement;
-      if (checkIdMatching()) return rentingWorkElement;
-      if (artwork.is_borrowed === true) return;
+      if (checkIdMatching()) {
+        if (artwork.is_borrowed) return rentingWorkElement;
+        return requestedWorkElement;
+      }
+      if (artwork.is_borrowed) return;
       return requestButtonElement;
     }
   }
@@ -72,8 +75,12 @@ function ArtworkDetailPage() {
     return matching;
   }
 
+  const requestedWorkElement = (
+    <p className="artwork-details-request-message">Currently Requested</p>
+  );
+
   const rentingWorkElement = (
-    <p className="artwork-details-request-message">Artwork Requested</p>
+    <p className="artwork-details-request-message">Currently Renting</p>
   );
 
   let requestButtonElement = <></>;
