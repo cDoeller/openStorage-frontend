@@ -110,9 +110,48 @@ function RequestDetailsPage() {
         acceptRequest();
         return;
       case "rejected":
-        console.log("rejected");
+        rejectRequest();
         return;
     }
+  }
+
+  function rejectRequest() {
+    // 1) make new notification for borrower
+    const rejectedNotification = {
+      type: "confirm",
+      request: request._id,
+      text: "rejected",
+      message: message,
+    };
+    userService
+      .createNotification(request.user_borrowing._id, rejectedNotification)
+      .then((response) => {
+        // 2) get and delete the notification for new request in artist
+        return userService.getNotificationForRequest(
+          request.artist._id,
+          request._id
+        );
+      })
+      .then((response) => {
+        return userService.deleteNotification(
+          request.artist._id,
+          response.data._id
+        );
+      })
+      .then(() => {
+        // 3) change the rental state
+        return rentalsService.updateRental(request._id, { state: "rejected" });
+      })
+      // .then(() => {
+      //   // 4) change the artwork is_borrowed value
+      //   return artworksService.updateArtwork(request.artwork._id, {
+      //     is_borrowed: true,
+      //   });
+      // })
+      // .then(() => {
+      //   navigate("/profile");
+      // })
+      .catch((err) => console.log(err));
   }
 
   function acceptRequest() {
@@ -120,6 +159,7 @@ function RequestDetailsPage() {
     const acceptedNotification = {
       type: "new-rental",
       request: request._id,
+      text: `Congratulations – You are now renting the artwork ${request.artwork.title}!`,
       message: message,
     };
     userService
@@ -158,7 +198,8 @@ function RequestDetailsPage() {
     const updatedNotification = {
       type: "confirm",
       request: request._id,
-      message: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
+      text: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
+      message: "",
     };
     // 2) find corresponding notification in artist
     userService
