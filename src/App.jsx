@@ -124,12 +124,14 @@ function App() {
             </IsPrivate>
           }
         />
-        <Route 
-        path="/profile/become-artist" 
-        element={<IsPrivate>
-        <BecomeArtistPage />
-        </IsPrivate>}>
-        </Route>
+        <Route
+          path="/profile/become-artist"
+          element={
+            <IsPrivate>
+              <BecomeArtistPage />
+            </IsPrivate>
+          }
+        ></Route>
         <Route
           path="/artworks/:id/request"
           element={
@@ -154,12 +156,12 @@ function App() {
             </IsPrivate>
           }
         />
-                <Route
+        <Route
           path="/favorites"
           element={
             <IsPrivate>
               <FavoritesPage />
-              </IsPrivate>
+            </IsPrivate>
           }
         />
         <Route

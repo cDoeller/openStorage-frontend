@@ -60,7 +60,7 @@ function ArtworkDetailPage() {
         if (artwork.is_borrowed) return rentingWorkElement;
         return requestedWorkElement;
       }
-      if (artwork.is_borrowed) return;
+      if (artwork.is_borrowed) return notAvailableElement;
       return requestButtonElement;
     }
   }
@@ -74,6 +74,10 @@ function ArtworkDetailPage() {
     });
     return matching;
   }
+
+  const notAvailableElement = (
+    <p className="artwork-details-request-message">Currently Not Available</p>
+  );
 
   const requestedWorkElement = (
     <p className="artwork-details-request-message">Currently Requested</p>
