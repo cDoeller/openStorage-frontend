@@ -102,7 +102,7 @@ function RequestPage() {
     rentalsService
       .createRental(newRental)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         const newNotification = {
           type: "new-request",
           request: response.data._id,

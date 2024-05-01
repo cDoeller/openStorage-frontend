@@ -20,7 +20,7 @@ function RequestDetailsPage() {
     rentalsService
       .getRental(id)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setRequest(response.data);
         return response.data;
       })
@@ -32,34 +32,32 @@ function RequestDetailsPage() {
       });
   }, [id]);
 
-  //  * BUTTONS
-  function renderActionButtons() {
-    // if user is the artist
-    if (user._id === request.artist._id) {
-      // 1) if work is rented, show "cancel rental" button
-      if (request.artwork.is_borrowed) {
-        return cancelRentalElement;
-      }
-      // 2) if work is free, show "accept/reject" buttons
-      if (request.state === "cancelled") {
-        return "";
-      }
-      // 3) if work is free, show "accept/reject" buttons
-      return acceptRejectButtonElement;
+  //  * ACTION ELEMENTS
+  function renderActions() {
+    // request cancelled
+    if (request.state === "cancelled") {
+      return <>Request has been Cancelled</>;
     }
-    // if user is the borrower
-    if (user._id === request.user_borrowing._id) {
-      // 3) if work is rented, show "cancel rental" button
+    //  user == artist
+    if (user._id === request.artist._id) {
       if (request.artwork.is_borrowed) {
-        return cancelRentalElement;
+        return <>Ongoing Rental</>;
+        // return cancelRentalElement;
       }
-      // 4) if work is free, show "cancel request" button
+      return acceptRejectElement;
+    }
+    // user == borrower
+    if (user._id === request.user_borrowing._id) {
+      if (request.artwork.is_borrowed) {
+        return <>Ongoing Rental</>;
+        // return cancelRentalElement;
+      }
       return cancelRequestElement;
     }
   }
 
-  //   button elements
-  const acceptRejectButtonElement = (
+  //   Action Elements JSX
+  const acceptRejectElement = (
     <>
       <label htmlFor="">
         Message
@@ -75,7 +73,7 @@ function RequestDetailsPage() {
       <div className="request-button-wrapper">
         <button
           onClick={() => {
-            handleButtonClick("request-accepted");
+            handleButtonClick("accepted");
           }}
           className="request-button accepted"
         >
@@ -83,7 +81,7 @@ function RequestDetailsPage() {
         </button>
         <button
           onClick={() => {
-            handleButtonClick("request-rejected");
+            handleButtonClick("rejected");
           }}
           className="request-button rejected"
         >
@@ -97,7 +95,7 @@ function RequestDetailsPage() {
     <div className="request-button-wrapper">
       <button
         onClick={() => {
-          handleButtonClick("request-cancelled");
+          handleButtonClick("cancelled");
         }}
         className="request-button"
       >
@@ -106,96 +104,62 @@ function RequestDetailsPage() {
     </div>
   );
 
-  const cancelRentalElement = (
-    <div className="request-button-wrapper">
-      <label htmlFor="">
-        Message
-        <textarea
-          className="request-message-textarea"
-          name=""
-          id=""
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        ></textarea>
-      </label>
-      <button
-        onClick={() => {
-          handleButtonClick("retnal-cancelled");
-        }}
-        className="request-button"
-      >
-        cancel rental
-      </button>
-    </div>
-  );
-
-  // button cancel / reject / accept functionality
-  // message <--------- continue here and tidy up
-  // request-accepted
-  // request-rejected
-  // request-cancelled
-  // retnal-cancelled
-  // enum: ["new-request", "change-request", "confirm"]
-
+  // Action Buttons Functionality
   function handleButtonClick(action) {
-    // 1) request-cancelled
-    if (action === "request-cancelled") {
-      // 1.1) make a notification to the artist
-      const cancelledNotification = {
+    if (action === "cancelled") {
+      const notification = {
         type: "confirm",
         request: request._id,
         message: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
       };
-      console.log(cancelledNotification);
-      userService
-        .createNotification(request.artist._id, cancelledNotification)
-        .then((response) => {
-          console.log(response);
-          // 1.2) update the request to be cancelled <-------
-          // NOTIFICATION WILL CHANGE, CONDITIONAL RENDER
-          return rentalsService.updateRental(request._id, {
-            state: "cancelled",
-          });
-        })
-        .then(() => {
-          navigate("/profile");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // find the notification that already exists
+      
+      // userService
+      //   .updateNotification(request.artist._id, notification)
+      //   .then((response) => {
+      //     console.log(response);
+      //     return rentalsService.updateRental(request._id, {
+      //       state: "cancelled",
+      //     });
+      //   })
+      //   .then(() => {
+      //     // navigate("/profile");
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
       return;
     }
 
-    rentalsService
-      .updateRental(id, { state: action })
-      .then((response) => {
-        console.log(response.data);
-        setState(action);
-      })
-      .then(() => {
-        // * NOTIFICATION IF REJECTED, DELETED AFTER NOTIFICATION
-        const borrowed = action === "rejected" ? false : true;
-        artworksService
-          .updateArtwork(request.artwork._id, { is_borrowed: borrowed })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .then(() => {
-        navigate("/profile");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // rentalsService
+    //   .updateRental(id, { state: action })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     setState(action);
+    //   })
+    //   .then(() => {
+    //     // * NOTIFICATION IF REJECTED, DELETED AFTER NOTIFICATION
+    //     const borrowed = action === "rejected" ? false : true;
+    //     artworksService
+    //       .updateArtwork(request.artwork._id, { is_borrowed: borrowed })
+    //       .then((response) => {
+    //         console.log(response);
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //       });
+    //   })
+    //   .then(() => {
+    //     navigate("/profile");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }
 
   return (
     <div className="page-wrapper">
-      {request && state && (
+      {user && request && state && (
         <div className="page-wrapper request-wrapper">
           <h3 className="request-headline">Request Details</h3>
 
@@ -233,6 +197,7 @@ function RequestDetailsPage() {
           <p className="request-details-request-infos-text">
             {request.user_borrowing.user_name}
           </p>
+
           {/* rental period */}
           <h3 className="request-details-request-infos-headline">
             Rental Period
@@ -248,6 +213,7 @@ function RequestDetailsPage() {
                 .replace("-", "/")
                 .replace("-", "/")}
           </p>
+
           {/* transportation */}
           <h3 className="request-details-request-infos-headline">
             Transportation
@@ -255,6 +221,7 @@ function RequestDetailsPage() {
           <p className="request-details-request-infos-text">
             {request.transportation}
           </p>
+
           {/* delivery details */}
           {request.transportation === "delivery" ? (
             <>
@@ -276,6 +243,7 @@ function RequestDetailsPage() {
           ) : (
             ""
           )}
+
           {/* Message */}
           {request.message && (
             <>
@@ -287,8 +255,9 @@ function RequestDetailsPage() {
               </p>
             </>
           )}
-          {/* buttons */}
-          {user && renderActionButtons()}
+
+          {/* Action Elements */}
+          {renderActions()}
         </div>
       )}
     </div>
@@ -296,3 +265,27 @@ function RequestDetailsPage() {
 }
 
 export default RequestDetailsPage;
+
+// const cancelRentalElement = (
+//   <div className="request-button-wrapper">
+//     <label htmlFor="">
+//       Message
+//       <textarea
+//         className="request-message-textarea"
+//         name=""
+//         id=""
+//         onChange={(e) => {
+//           setMessage(e.target.value);
+//         }}
+//       ></textarea>
+//     </label>
+//     <button
+//       onClick={() => {
+//         handleButtonClick("retnal-cancelled");
+//       }}
+//       className="request-button"
+//     >
+//       cancel rental
+//     </button>
+//   </div>
+// );

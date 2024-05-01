@@ -73,23 +73,28 @@ class UserService {
   // POST one notification in sub-schema
   createNotification = (_id, notification) => {
     return this.api.post(`/api/user/${_id}/notifications`, notification);
-  }
+  };
 
   // GET all notifications of one user
   getNotifications = (id) => {
     return this.api.get(`/api/user/${id}/notifications`);
   };
 
-    // UPDATE a notification
-    updateNotification = (_id, notification_id, notification) => {
-      return this.api.patch(`/api/user/${_id}/notifications/${notification_id}`,notification);
-    };
+  getNotificationForRequest = (id, request_id) => {
+    return this.api.get(`/api/user/${id}/notifications/${request_id}`);
+  };
+  
+  // UPDATE a notification//
+  updateNotification = (_id, notification_id, notification) => {
+    return this.api.patch(
+      `/api/user/${_id}/notifications/${notification_id}`,
+      notification
+    );
+  };
 
   // DELETE a notification
   deleteNotification = (_id, notification_id) => {
-    return this.api.delete(
-      `/api/user/${_id}/notifications/${notification_id}`
-    );
+    return this.api.delete(`/api/user/${_id}/notifications/${notification_id}`);
   };
 }
 
