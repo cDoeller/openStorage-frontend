@@ -107,7 +107,7 @@ function RequestDetailsPage() {
         cancelRequest();
         return;
       case "accepted":
-        acceptRequest()
+        acceptRequest();
         return;
       case "rejected":
         console.log("rejected");
@@ -115,8 +115,29 @@ function RequestDetailsPage() {
     }
   }
 
-  function acceptRequest(){
-    
+  function acceptRequest() {
+    // 1) make new notification for borrower
+    const acceptedNotification = {
+      type: "new-rental",
+      request: request._id,
+      message: message,
+    };
+    userService
+      .createNotification(request.user_borrowing._id, acceptedNotification)
+      .then(() => {
+        // 2) change the rental state
+        return rentalsService.updateRental(request._id, { state: "accepted" });
+      })
+      .then(() => {
+        // 3) change the artwork is_borrowed value
+        return artworksService.updateArtwork(request.artwork._id, {
+          is_borrowed: true,
+        });
+      })
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => console.log(err));
   }
 
   function cancelRequest() {

@@ -79,22 +79,32 @@ function NotificationCard(props) {
         case "new-rental":
           return (
             <>
-              Congratulations! You are now renting the artwork{" "}
-              {notification.request.artwork.title} – click on the button below
-              to view the details!
+              <p className="notification-card-text">
+                Congratulations – You are now renting the artwork{" "}
+                {notification.request.artwork.title}!
+              </p>
+              {notification.message && (
+                <p className="notification-card-text">
+                  The artist has left you a
+                  message: <i>{notification.message}</i>
+                </p>
+              )}
             </>
           );
         case "new-request":
           return (
             <>
-              User {notification.request.user_borrowing.user_name} would like to
-              rent your artwork {notification.request.artwork.title} – click on
-              the button below to view the request!
+              <p className="notification-card-text">
+                User {notification.request.user_borrowing.user_name} would like
+                to rent your artwork {notification.request.artwork.title} –
+                click on the button below to view the request!
+              </p>
             </>
           );
         case "change-request":
           return (
             <>
+              {/* <p className="notification-card-text"></p>
               User {notification.request.user_borrowing.user_name} would like to
               change the{" "}
               <Link
@@ -108,11 +118,13 @@ function NotificationCard(props) {
                 <p className="notification-card-text">
                   "{notification.message}"
                 </p>
-              )}
+              )} */}
             </>
           );
         case "confirm":
-          return <>{notification.message}</>;
+          return (
+            <p className="notification-card-text">{notification.message}</p>
+          );
       }
     }
   }
@@ -132,7 +144,9 @@ function NotificationCard(props) {
             </div>
             <h3 className="notification-card-headline">{notificationTitle}</h3>
           </div>
-          <p className="notification-card-text">{notificationText}</p>
+          <div className="notification-card-text-wrapper">
+            {notificationText}
+          </div>
           <div className="notification-card-button-wrapper">
             {notificationButton}
           </div>
