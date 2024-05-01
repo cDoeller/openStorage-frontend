@@ -126,14 +126,11 @@ function RequestDetailsPage() {
           );
         })
         .then(() => {
-          //  4) update rental state to "cancelled"
-          // return rentalsService.updateRental(request._id, {
-          //   state: "cancelled",
-          // });
-          return userService.deleteRental(request._id);
+          //  4) delete the rental
+          return rentalsService.deleteRental(request._id);
         })
         .then(() => {
-          // navigate("/profile");
+          navigate("/profile");
         })
         .catch((err) => {
           console.log(err);
