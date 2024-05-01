@@ -37,7 +37,7 @@ function RequestDetailsPage() {
     //  user == artist
     if (user._id === request.artist._id) {
       if (request.artwork.is_borrowed) {
-        return <>Ongoing Rental</>;
+        return ongoingRentalElement;
         // return cancelRentalElement;
       }
       return acceptRejectElement;
@@ -45,7 +45,7 @@ function RequestDetailsPage() {
     // user == borrower
     if (user._id === request.user_borrowing._id) {
       if (request.artwork.is_borrowed) {
-        return <>Ongoing Rental</>;
+        return ongoingRentalElement;
         // return cancelRentalElement;
       }
       return cancelRequestElement;
@@ -53,6 +53,12 @@ function RequestDetailsPage() {
   }
 
   //   Action Elements JSX
+  const ongoingRentalElement = (
+    <>
+      <h3 className="request-status-headline">Ongoing Rental</h3>
+    </>
+  );
+
   const acceptRejectElement = (
     <>
       <label htmlFor="">
@@ -336,27 +342,3 @@ function RequestDetailsPage() {
 }
 
 export default RequestDetailsPage;
-
-// const cancelRentalElement = (
-//   <div className="request-button-wrapper">
-//     <label htmlFor="">
-//       Message
-//       <textarea
-//         className="request-message-textarea"
-//         name=""
-//         id=""
-//         onChange={(e) => {
-//           setMessage(e.target.value);
-//         }}
-//       ></textarea>
-//     </label>
-//     <button
-//       onClick={() => {
-//         handleButtonClick("retnal-cancelled");
-//       }}
-//       className="request-button"
-//     >
-//       cancel rental
-//     </button>
-//   </div>
-// );
