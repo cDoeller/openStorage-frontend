@@ -125,11 +125,24 @@ function RequestDetailsPage() {
     userService
       .createNotification(request.user_borrowing._id, acceptedNotification)
       .then(() => {
-        // 2) change the rental state
+        // 2) get and delete the notification for new request in artist
+        return userService.getNotificationForRequest(
+          request.artist._id,
+          request._id
+        );
+      })
+      .then((response) => {
+        return userService.deleteNotification(
+          request.artist._id,
+          response.data._id
+        );
+      })
+      .then(() => {
+        // 3) change the rental state
         return rentalsService.updateRental(request._id, { state: "accepted" });
       })
       .then(() => {
-        // 3) change the artwork is_borrowed value
+        // 4) change the artwork is_borrowed value
         return artworksService.updateArtwork(request.artwork._id, {
           is_borrowed: true,
         });
