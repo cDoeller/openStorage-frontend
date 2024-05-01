@@ -120,37 +120,40 @@ function RequestDetailsPage() {
     const rejectedNotification = {
       type: "confirm",
       request: request._id,
-      text: `The artist has rejected your request for the artwork ${request.artwork.title}.`,
+      text: `Unfortunately, your request for the artwork ${request.artwork.title} has been rejected by the artist.`,
       message: message,
     };
     userService
       .createNotification(request.user_borrowing._id, rejectedNotification)
-      .then((response) => {
-        // 2) get and delete the notification for new request in artist
+      .then(() => {
+        // 2) get the notification id in artist
         return userService.getNotificationForRequest(
           request.artist._id,
           request._id
         );
       })
       .then((response) => {
-        return userService.deleteNotification(
+        // 3) update notification in the artist user
+        const notificationId = response.data._id;
+        const updatedNotification = {
+          type: "confirm",
+          request: request._id,
+          text: `The request for your artwork ${request.artwork.title} has been successfully rejected.`,
+          message: "",
+        };
+        return userService.updateNotification(
           request.artist._id,
-          response.data._id
+          notificationId,
+          updatedNotification
         );
       })
       .then(() => {
-        // 3) change the rental state
-        return rentalsService.updateRental(request._id, { state: "rejected" });
+        // 4) delete the rental
+        return rentalsService.deleteRental(request._id);
       })
-      // .then(() => {
-      //   // 4) change the artwork is_borrowed value
-      //   return artworksService.updateArtwork(request.artwork._id, {
-      //     is_borrowed: true,
-      //   });
-      // })
-      // .then(() => {
-      //   navigate("/profile");
-      // })
+      .then(() => {
+        navigate("/profile");
+      })
       .catch((err) => console.log(err));
   }
 

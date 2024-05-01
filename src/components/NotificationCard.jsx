@@ -80,7 +80,7 @@ function NotificationCard(props) {
           <p className="notification-card-text">{notification.text}</p>
           {notification.message && (
             <p className="notification-card-text">
-              The artist has left you a message: <i>{notification.message}</i>
+              <i>{notification.message}</i>
             </p>
           )}
         </>
