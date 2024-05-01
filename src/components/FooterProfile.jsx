@@ -18,7 +18,7 @@ function FooterProfile() {
       userService
         .getUser(user._id)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           setIsArtist(response.data.isArtist);
         })
         .catch((err) => console.log(err));

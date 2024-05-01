@@ -36,7 +36,7 @@ function RequestDetailsPage() {
   function renderActions() {
     // request cancelled
     if (request.state === "cancelled") {
-      return <>Request has been Cancelled</>;
+      return;
     }
     //  user == artist
     if (user._id === request.artist._id) {
@@ -107,27 +107,37 @@ function RequestDetailsPage() {
   // Action Buttons Functionality
   function handleButtonClick(action) {
     if (action === "cancelled") {
-      const notification = {
+      // 1) make new notification
+      const updatedNotification = {
         type: "confirm",
         request: request._id,
         message: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
       };
-      // find the notification that already exists
-      
-      // userService
-      //   .updateNotification(request.artist._id, notification)
-      //   .then((response) => {
-      //     console.log(response);
-      //     return rentalsService.updateRental(request._id, {
-      //       state: "cancelled",
-      //     });
-      //   })
-      //   .then(() => {
-      //     // navigate("/profile");
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      // 2) find corresponding notification in artist
+      userService
+        .getNotificationForRequest(request.artist._id, request._id)
+        .then((response) => {
+          const notificationId = response.data._id;
+          // 3) update notification in the artist user
+          return userService.updateNotification(
+            request.artist._id,
+            notificationId,
+            updatedNotification
+          );
+        })
+        .then(() => {
+          //  4) update rental state to "cancelled"
+          // return rentalsService.updateRental(request._id, {
+          //   state: "cancelled",
+          // });
+          return userService.deleteRental(request._id);
+        })
+        .then(() => {
+          // navigate("/profile");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       return;
     }
 
