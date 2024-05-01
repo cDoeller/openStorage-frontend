@@ -35,6 +35,16 @@ function NotificationCard(props) {
       .catch((err) => console.log(err));
   }
 
+  function handleNewClick() {
+    // change notification new = false
+    userService
+      .updateNotificationNew(userId, notification._id, {new: false})
+      .then(() => {
+        console.log("read")
+      })
+      .catch((err) => console.log(err));
+  }
+
   const notificationButton = getNotificationButton();
   function getNotificationButton() {
     if (notification) {
@@ -42,7 +52,7 @@ function NotificationCard(props) {
         case "new-request":
           return (
             <Link to={`/request/${notification.request._id}/details`}>
-              <button className="notification-card-button">SHOW REQUEST</button>
+              <button onClick={handleNewClick} className="notification-card-button">SHOW REQUEST</button>
             </Link>
           );
         case "new-rental":
@@ -95,7 +105,7 @@ function NotificationCard(props) {
         <>
           <div
             className={
-              "notification-card-title-wrapper " + (notification.isNew && "new")
+              "notification-card-title-wrapper " + (notification.new && "new")
             }
           >
             <div className="notification-card-title-icon-wrapper">

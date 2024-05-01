@@ -128,6 +128,7 @@ function RequestDetailsPage() {
       request: request._id,
       text: `Unfortunately, your request for the artwork ${request.artwork.title} has been rejected by the artist.`,
       message: message,
+      new: true,
     };
     userService
       .createNotification(request.user_borrowing._id, rejectedNotification)
@@ -146,6 +147,7 @@ function RequestDetailsPage() {
           request: request._id,
           text: `The request for your artwork ${request.artwork.title} has been successfully rejected.`,
           message: "",
+          new: true,
         };
         return userService.updateNotification(
           request.artist._id,
@@ -170,6 +172,7 @@ function RequestDetailsPage() {
       request: request._id,
       text: `Congratulations – You are now renting the artwork ${request.artwork.title}!`,
       message: message,
+      new: true,
     };
     userService
       .createNotification(request.user_borrowing._id, acceptedNotification)
@@ -209,6 +212,7 @@ function RequestDetailsPage() {
       request: request._id,
       text: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
       message: "",
+      new: true,
     };
     // 2) find corresponding notification in artist
     userService

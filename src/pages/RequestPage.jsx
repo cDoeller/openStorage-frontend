@@ -110,6 +110,7 @@ function RequestPage() {
           click on the button below to view the request!`,
           message: "",
           request: response.data._id,
+          new: true,
         };
         // create notification for artist
         return userService.createNotification(

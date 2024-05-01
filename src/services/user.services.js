@@ -75,6 +75,11 @@ class UserService {
     return this.api.post(`/api/user/${_id}/notifications`, notification);
   };
 
+  // GET if new notification exists
+  hasNewNotifications = (_id) => {
+    return this.api.get(`/api/user/${_id}/notifications/hasNew`);
+  };
+
   // GET all notifications of one user
   getNotifications = (id) => {
     return this.api.get(`/api/user/${id}/notifications`);
@@ -83,12 +88,20 @@ class UserService {
   getNotificationForRequest = (id, request_id) => {
     return this.api.get(`/api/user/${id}/notifications/${request_id}`);
   };
-  
+
   // UPDATE a notification//
   updateNotification = (_id, notification_id, notification) => {
     return this.api.patch(
       `/api/user/${_id}/notifications/${notification_id}`,
       notification
+    );
+  };
+
+  // UPDATE a notification//
+  updateNotificationNew = (_id, notification_id, _isNew) => {
+    return this.api.patch(
+      `/api/user/${_id}/notifications/${notification_id}/new`,
+      _isNew
     );
   };
 
