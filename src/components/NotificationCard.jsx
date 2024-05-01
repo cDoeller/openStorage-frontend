@@ -13,6 +13,8 @@ function NotificationCard(props) {
       switch (notification.type) {
         case "new-request":
           return <>New Request</>;
+        case "new-rental":
+          return <>New Rental</>;
         case "change-request":
           return <>User Request</>;
         case "confirm":
@@ -43,6 +45,12 @@ function NotificationCard(props) {
               <button className="notification-card-button">SHOW REQUEST</button>
             </Link>
           );
+        case "new-rental":
+          return (
+            <Link to={`/request/${notification.request._id}/details`}>
+              <button className="notification-card-button">SHOW RENTAL</button>
+            </Link>
+          );
         case "change-request":
           return (
             <>
@@ -68,6 +76,14 @@ function NotificationCard(props) {
   function getNotificationText() {
     if (notification) {
       switch (notification.type) {
+        case "new-rental":
+          return (
+            <>
+              Congratulations! You are now renting the artwork{" "}
+              {notification.request.artwork.title} – click on the button below
+              to view the details!
+            </>
+          );
         case "new-request":
           return (
             <>
