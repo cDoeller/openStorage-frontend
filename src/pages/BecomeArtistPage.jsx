@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
 import cityService from "../services/city.services";
-import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
 import Select from "react-select";
 import "../styles/Forms.css";
@@ -23,9 +22,9 @@ function BecomeArtistPage() {
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(2024);
   const [imagesUrl, setImagesUrl] = useState([]);
-  const [imageData, setImageData] = useState("")
-  const [imageToUpload, setImageToUpload] = useState("")
-  const [uploadedImages, setUploadedImages] = useState([])
+  const [imageData, setImageData] = useState("");
+  const [imageToUpload, setImageToUpload] = useState("");
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [artworkCity, setArtworkCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
@@ -53,12 +52,13 @@ function BecomeArtistPage() {
   ];
 
   let countryOptions = [
-    { value: "Germany", label: "Germany"},
-    { value: "United States", label: "United States"}
-  ]
+    { value: "Germany", label: "Germany" },
+    { value: "United States", label: "United States" },
+  ];
 
   const [cityOptions, setCityOptions] = useState();
-  
+  const [artworkCityOptions, setArtworkCityOptions] = useState()
+
   // REACT SELECT HANDLE SELECT FUNCTIONS
   function handleMediaSelectChange(selectedOption) {
     setMedium(selectedOption.value);
@@ -70,10 +70,10 @@ function BecomeArtistPage() {
     setCity(selectedOption.value);
   }
   function handleArtworkCitiesSelectChange(selectedOption) {
-    setArtworkCity(selectedOption.value)
+    setArtworkCity(selectedOption.value);
   }
   function handleCountrySelectChange(selectedOption) {
-    setCountry(selectedOption.value)
+    setCountry(selectedOption.value);
   }
 
   const selectStles = {
@@ -110,32 +110,34 @@ function BecomeArtistPage() {
       let cityNames = response.data.map((oneCity) => {
         return { value: oneCity.name, label: oneCity.name };
       });
+
       // console.log(cityNames);
       setCityOptions(cityNames);
+      setArtworkCityOptions(cityNames)
     });
   }, []);
 
   useEffect(() => {
     userService.getUser(user._id).then((response) => {
       const initialData = response.data;
-      setRealName(initialData.real_name);
-      setStreet(initialData.contact.address.street);
-      setCity(initialData.contact.address.city);
-      setCountry(initialData.contact.address.country);
-      setPostcode(initialData.contact.address.postal_code);
+      // setRealName(initialData.real_name);
+      // setStreet(initialData.contact.address.street);
+      // setCity(initialData.contact.address.city);
+      // setCountry(initialData.contact.address.country);
+      // setPostcode(initialData.contact.address.postal_code);
     });
   }, [user]);
 
-  function handleDeleteImage(e,index){
-    e.preventDefault()
-    const copiedImages = [...uploadedImages]
-    copiedImages.splice(index, 1)
-    setUploadedImages(copiedImages)
+  function handleDeleteImage(e, index) {
+    e.preventDefault();
+    const copiedImages = [...uploadedImages];
+    copiedImages.splice(index, 1);
+    setUploadedImages(copiedImages);
   }
 
-  function handleImagesUpload(e){
-    e.preventDefault()
-    
+  function handleImagesUpload(e) {
+    e.preventDefault();
+
     const files = e.target.files;
     const uploadData = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -143,51 +145,57 @@ function BecomeArtistPage() {
     }
 
     setImageData(uploadData);
-      
-      
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(e) {
+    try {
+      e.preventDefault();
 
-
-    let newArtwork = {
-        title:title,
-        year:year,
-        artist:user._id,
-        city:artworkCity,
-        dimensions:{
-            x:dimensionsX,
-            y:dimensionsY,
-            z:dimensionsZ
+      let verificationData = {
+        real_name: realName,
+        artist_statement: artistStatement,
+        contact: {
+          address: {
+            street: street,
+            city: city,
+            country: country,
+            postal_code: postcode,
+          },
         },
-        medium:medium,
-        genre:genre
-    }
+        artwork: {
+          title: title,
+          year: year,
+          artist: user._id,
+          city: artworkCity,
+          dimensions: {
+            x: dimensionsX,
+            y: dimensionsY,
+            z: dimensionsZ,
+          },
+          medium: medium,
+          genre: genre,
+        },
+      };
 
       // performs the action of sending the data
-      uploadService.uploadImage(imageData)
-        .then((response) => {
-            newArtwork.images_url = response.data.fileUrls
-          console.log("response is: ", response);
-          // response carries "fileUrl" which we can use to update the state
-          let copiedArray = [...uploadedImages, response.data.fileUrls]
-          setUploadedImages(copiedArray)
-          return artworksService.createArtwork(newArtwork)
-          .then((response)=>{
-            console.log("successfully created a new artwork")
-            console.log(response.data)
-            return userService.updateUser(user._id, {isArtist:true})
-            
-        })
-        .then((response)=>{
-            console.log("Successfully made the user an artist", response.data)
-            navigate(`/profile`)
-        })
-        })
-        .catch((err) => console.log("Error while verifying artist: ", err));
-    
+      const cloudinaryResponse = await uploadService.uploadImage(imageData);
 
+      verificationData.artwork.images_url = cloudinaryResponse.data.fileUrls;
+      console.log("response is: ", cloudinaryResponse);
+      // response carries "fileUrl" which we can use to update the state
+      let copiedArray = [...uploadedImages, ...cloudinaryResponse.data.fileUrls];
+      setUploadedImages(copiedArray);
+      console.log("verification data sent to backend", verificationData);
+
+      const verificationResponse = await userService.verifyArtist(
+        user._id,
+        verificationData
+      );
+      console.log("response from verification: ", verificationResponse)
+      navigate(`/profile`);
+    } catch (err) {
+      console.log("Error while verifying artist: ", err);
+    }
   }
 
   return (
@@ -204,7 +212,12 @@ function BecomeArtistPage() {
           {"< Back"}
         </button>
       </div>
-      <form className="form" onSubmit={(e)=>{handleSubmit(e)}}>
+      <form
+        className="form"
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+      >
         <label htmlFor="real name">Real Name</label>
         <input
           className="input"
@@ -217,10 +230,10 @@ function BecomeArtistPage() {
           }}
         />
 
-        <label htmlFor="artist statement">Artist Statement</label>
+        <label htmlFor="artist-statement">Artist Statement</label>
         <textarea
           className="textarea"
-          name="artist statement"
+          name="artist-statement"
           required
           value={artistStatement}
           onChange={(e) => {
@@ -230,7 +243,7 @@ function BecomeArtistPage() {
         />
 
         <h4>Contact Information</h4>
-        <label htmlFor="street">Street name and number</label>
+        <label htmlFor="street">Street Name / No.</label>
         <input
           name="street"
           type="text"
@@ -242,9 +255,10 @@ function BecomeArtistPage() {
           }}
         />
 
-        <label htmlFor="">City</label>
+        <label htmlFor="city">City</label>
         <Select
-        required
+        name="city"
+          required
           options={cityOptions}
           onChange={handleCitiesSelectChange}
           value={{ label: city }}
@@ -252,16 +266,26 @@ function BecomeArtistPage() {
         />
 
         <label htmlFor="">Country</label>
-        <Select 
-        required
+        <Select
+          required
           options={countryOptions}
           onChange={handleCountrySelectChange}
-          value={{label: country}}
+          value={{ label: country }}
           styles={selectStles}
         />
 
         <label htmlFor="">Postal Code</label>
-        <input type="text" required minLength={5} maxLength={5} value={postcode} onChange={(e)=>{setPostcode(e.target.value)}} />
+        <input
+          type="number"
+          className="input"
+          required
+          minLength={4}
+          maxLength={5}
+          value={postcode}
+          onChange={(e) => {
+            setPostcode(e.target.valueAsNumber);
+          }}
+        />
 
         <h4>Upload Artwork</h4>
 
@@ -284,44 +308,61 @@ function BecomeArtistPage() {
           className="input"
           value={year}
           onChange={(e) => {
-            setYear(e.target.value);
+            setYear(e.target.valueAsNumber);
           }}
         />
 
         {/* CITY */}
-        <label htmlFor="" className="filterinterface-form-label">
-              City
-            </label>
+        <label htmlFor="artworkcity" className="filterinterface-form-label">
+          City
+        </label>
         <Select
-        required
-          options={cityOptions}
+        name="artworkcity"
+          required
+          options={artworkCityOptions}
           onChange={handleArtworkCitiesSelectChange}
-          value={{ label: city }}
+          value={{ label: artworkCity }}
           styles={selectStles}
         />
 
         <label htmlFor="">Images</label>
-        <input type="file" required multiple className="input" onChange={(e)=>{handleImagesUpload(e)}} />
+        <input
+          type="file"
+          required
+          multiple
+          className="input"
+          onChange={(e) => {
+            handleImagesUpload(e);
+          }}
+        />
         {/* <button onClick={(e)=>{handleImagesUpload(e)}}>Upload Image</button> */}
         {uploadedImages &&
-              uploadedImages.map((oneImage, index) => {
-                return (
-                  <div key={index} className="create-artwork-img-wrapper">
-                    <img src={oneImage} alt={title} />
-                    <button className="create-artwork-delete-img-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
-                  </div>
-                );
-              })}
+          uploadedImages.map((oneImage, index) => {
+            return (
+              <div key={index} className="create-artwork-img-wrapper">
+                <img src={oneImage} alt={title} />
+                <button
+                  className="create-artwork-delete-img-button"
+                  onClick={(e) => {
+                    handleDeleteImage(e, index);
+                  }}
+                >
+                  x
+                </button>
+              </div>
+            );
+          })}
 
-        <label htmlFor="">Dimensions</label>
+        <label htmlFor="">Dimensions [cm]</label>
         <div className="create-dimensions-wrapper">
           <input
             className="create-artwork-input"
             type="number"
             required
+            min={0}
             value={dimensionsX}
             onChange={(e) => {
-              setDimensionsX(e.target.value);
+              setDimensionsX(e.target.valueAsNumber);
             }}
           />
           x
@@ -329,47 +370,49 @@ function BecomeArtistPage() {
             className="create-artwork-input"
             type="number"
             required
+            min={0}
             value={dimensionsY}
             onChange={(e) => {
-              setDimensionsY(e.target.value);
+              setDimensionsY(e.target.valueAsNumber);
             }}
           />
           y
           <input
             className="create-artwork-input"
             type="number"
+            min={0}
             value={dimensionsZ}
             onChange={(e) => {
-              setDimensionsZ(e.target.value);
+              setDimensionsZ(e.target.valueAsNumber);
             }}
           />
           z
         </div>
         {/* MEDIUM */}
         <label htmlFor="" className="filterinterface-form-label">
-              Medium
-            </label>
-            <Select
-            required
-              options={mediaOptions}
-              onChange={handleMediaSelectChange}
-              value={{ label: medium }}
-              styles={selectStles}
-            />
+          Medium
+        </label>
+        <Select
+          required
+          options={mediaOptions}
+          onChange={handleMediaSelectChange}
+          value={{ label: medium }}
+          styles={selectStles}
+        />
 
-            {/* GENRE */}
-            <label htmlFor="" className="filterinterface-form-label">
-              Genre
-            </label>
-            <Select
-            required
-              options={genreOptions}
-              onChange={handleGenreSelectChange}
-              value={{ label: genre }}
-              styles={selectStles}
-            />
+        {/* GENRE */}
+        <label htmlFor="" className="filterinterface-form-label">
+          Genre
+        </label>
+        <Select
+          required
+          options={genreOptions}
+          onChange={handleGenreSelectChange}
+          value={{ label: genre }}
+          styles={selectStles}
+        />
 
-            <button>Submit</button>
+        <button>Submit</button>
       </form>
     </div>
   );
