@@ -43,7 +43,7 @@ function ArtworksScrollbar(props) {
       <div className="artworks-scrollbar-heading">
         <p className="scrollbar-heading">{heading}</p>
         {heading === "Artworks" && isLoggedIn &&  (
-          <Link className="create-artwork-link" to={`/artworks/create-artwork`}>
+          <Link className="create-artwork-link" to={`/profile/create-artwork`}>
             <div className="create-artwork-button">
             <p>+</p>
             </div>
