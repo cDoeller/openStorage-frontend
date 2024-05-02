@@ -5,7 +5,9 @@ import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
 import Popup from "./Popup";
 
-function FooterProfile() {
+function FooterProfile(props) {
+  const { pathname } = props;
+
   const [showMenu, setShowMenu] = useState(false);
   const [isArtist, setIsArtist] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -30,7 +32,7 @@ function FooterProfile() {
         })
         .catch((err) => console.log(err));
     }
-  }, [user]);
+  }, [user, pathname]);
 
   // * "MORE" - MENU ELEMENTS
   const profileMenuElement = (
@@ -112,9 +114,11 @@ function FooterProfile() {
           to="/notifications"
         >
           <div className="footer-profile-icon-wrapper">
-            {newNotificationsAmount!=0 && (
+            {newNotificationsAmount != 0 && (
               <div className="footer-profile-icon-notifications-display-wrapper">
-                <p className="footer-profile-icon-notifications-display-number">{newNotificationsAmount}</p>
+                <p className="footer-profile-icon-notifications-display-number">
+                  {newNotificationsAmount}
+                </p>
               </div>
             )}
             <img src="/img/bell-icon.png" alt="" />

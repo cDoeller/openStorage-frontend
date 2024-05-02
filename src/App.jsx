@@ -177,7 +177,7 @@ function App() {
       {generalFooterPages.includes(cleanPathname) ? (
         <FooterGeneral />
       ) : (
-        <FooterProfile />
+        <FooterProfile pathname={pathname} />
       )}
     </>
   );
