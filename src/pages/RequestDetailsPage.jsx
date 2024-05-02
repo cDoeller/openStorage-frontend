@@ -80,6 +80,22 @@ function RequestDetailsPage() {
     </>
   );
 
+  const changeRequestInfoElement = (
+    <div className="change-request-infos-for-artist">
+      <h3 className="request-details-request-infos-headline">
+        Requested Extension
+      </h3>
+      <p>
+        {request &&
+          request.change_request.change_requested &&
+          request.change_request.new_end_date
+            .slice(0, 10)
+            .replace("-", "/")
+            .replace("-", "/")}
+      </p>
+    </div>
+  );
+
   // * calc days until rental ends
   function getDaysLeft() {
     if (request) {
@@ -96,6 +112,7 @@ function RequestDetailsPage() {
     //  user == artist
     if (user._id === request.artist._id) {
       if (request.artwork.is_borrowed) {
+        if (request.change_request.change_requested) return acceptRejectElement;
         return "";
         // return cancelRentalElement;
       }
@@ -185,10 +202,18 @@ function RequestDetailsPage() {
         cancelRequest();
         return;
       case "accepted":
-        acceptRequest();
+        if (request && request.change_request.change_requested) {
+          acceptChange();
+        } else {
+          acceptRequest();
+        }
         return;
       case "rejected":
-        rejectRequest();
+        if (request && request.change_request.change_requested) {
+          rejectChange();
+        } else {
+          rejectRequest();
+        }
         return;
       case "extension":
         requestExtension();
@@ -196,7 +221,9 @@ function RequestDetailsPage() {
     }
   }
 
-  // <-------- FOR NOW THIS IS A DUMMY FUNCTIONALITY
+  function acceptChange (){console.log("accepted change")}
+  function rejectChange (){console.log("rejected change")}
+
   function requestExtension() {
     // 1) make new notification
     const newNotification = {
@@ -209,6 +236,16 @@ function RequestDetailsPage() {
     // 2) make new notification in artist
     userService
       .createNotification(request.artist._id, newNotification)
+      .then(() => {
+        // 3) uopdate rental with extension request
+        const updatedRental = {
+          change_request: {
+            change_requested: true,
+            new_end_date: newEndDate,
+          },
+        };
+        return rentalsService.updateRental(request._id, updatedRental);
+      })
       .then(() => {
         navigate("/profile");
       })
@@ -387,7 +424,15 @@ function RequestDetailsPage() {
               " – " +
               request.end_date.slice(0, 10).replace("-", "/").replace("-", "/")}
           </p>
-          {extendRentalElement}
+
+          {/* CHANGE REQUEST */}
+          {user._id === request.user_borrowing._id &&
+            !request.change_request.change_requested &&
+            extendRentalElement}
+
+          {user._id === request.artist._id &&
+            request.change_request.change_requested &&
+            changeRequestInfoElement}
 
           {/* transportation */}
           <h3 className="request-details-request-infos-headline">
