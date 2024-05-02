@@ -36,7 +36,7 @@ function ProfilePage() {
             <Link to="/profile/edit-profile">Edit</Link>
           </div>
           <UserProfileCard
-            name={userInfo.real_name}
+            name={userInfo.user_name}
             img={userInfo.profile_img_url}
             isArtist={userInfo.isArtist}
             city={userInfo.city}

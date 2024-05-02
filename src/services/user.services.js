@@ -64,6 +64,11 @@ class UserService {
     return this.api.patch(`/api/user/${id}/update`, requestBody);
   };
 
+  // PATCH verify as an artist
+  verifyArtist = (id, requestBody) => {
+    return this.api.patch(`/api/user/${id}/verify-artist`, requestBody)
+  }
+
   // DELETE a user
   deleteUser = (id) => {
     return this.api.delete(`/api/user/${id}/delete`);
