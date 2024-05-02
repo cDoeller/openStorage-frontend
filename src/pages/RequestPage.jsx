@@ -102,13 +102,21 @@ function RequestPage() {
     rentalsService
       .createRental(newRental)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         const newNotification = {
           type: "new-request",
+          text: `User ${user.user_name} would like
+          to rent your artwork ${artwork.title} –
+          click on the button below to view the request!`,
+          message: "",
           request: response.data._id,
+          new: true,
         };
         // create notification for artist
-        return userService.createNotification(artwork.artist._id, newNotification);
+        return userService.createNotification(
+          artwork.artist._id,
+          newNotification
+        );
       })
       .then(() => {
         navigate("/profile");

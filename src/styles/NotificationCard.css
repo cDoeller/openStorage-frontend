@@ -31,8 +31,13 @@
   flex-grow: 1;
   font-weight: 500;
 }
-.notification-card-text {
+.notification-card-text-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
   padding: 1rem;
+}
+.notification-card-text {
   text-align: center;
 }
 .notification-card-button-wrapper {

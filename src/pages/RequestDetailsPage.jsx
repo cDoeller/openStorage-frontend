@@ -11,6 +11,8 @@ function RequestDetailsPage() {
   const [request, setRequest] = useState(null);
   const [state, setState] = useState("");
   const [message, setMessage] = useState("");
+  const [extensionIsRequested, setExtensionIsRequested] = useState(false);
+  const [newEndDate, setNewEndDate] = useState(null);
 
   const { user } = useContext(AuthContext);
   const { id } = useParams();
@@ -20,7 +22,7 @@ function RequestDetailsPage() {
     rentalsService
       .getRental(id)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setRequest(response.data);
         return response.data;
       })
@@ -32,34 +34,121 @@ function RequestDetailsPage() {
       });
   }, [id]);
 
-  //  * BUTTONS
-  function renderActionButtons() {
-    // if user is the artist
-    if (user._id === request.artist._id) {
-      // 1) if work is rented, show "cancel rental" button
-      if (request.artwork.is_borrowed) {
-        return cancelRentalElement;
-      }
-      // 2) if work is free, show "accept/reject" buttons
-      if (request.state === "cancelled") {
-        return "";
-      }
-      // 3) if work is free, show "accept/reject" buttons
-      return acceptRejectButtonElement;
+  // * request for an extension of end date
+  const extendRentalElement = (
+    <>
+      <div className="request-extension-wrapper">
+        <div className="request-extension-interface-wrapper">
+          <input
+            className="request-extension-interface-checkbox"
+            name="extension"
+            type="checkbox"
+            onChange={() => {
+              setExtensionIsRequested(!extensionIsRequested);
+              setNewEndDate(new Date(request.end_date).toJSON().slice(0, 10));
+            }}
+          />
+          <label
+            className="request-extension-interface-label"
+            htmlFor="extension"
+          >
+            Request Extension
+          </label>
+        </div>
+        {extensionIsRequested && (
+          <div className="request-extension-newdate-wrapper">
+            <label
+              className="request-extension-interface-label"
+              htmlFor="newEndDate"
+            >
+              Desired Ending Date
+            </label>
+            <input
+              className="request-extension-newdate-datepicker"
+              name="newEndDate"
+              type="date"
+              min={new Date(request.end_date).toJSON().slice(0, 10)}
+              value={newEndDate}
+              required
+              onChange={(e) => {
+                setNewEndDate(e.target.value);
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </>
+  );
+
+  const changeRequestInfoElement = (
+    <div className="change-request-infos-for-artist">
+      <h3 className="request-details-request-infos-headline">
+        Requested Extension
+      </h3>
+      <p>
+        {request &&
+          request.change_request.change_requested &&
+          request.change_request.new_end_date
+            .slice(0, 10)
+            .replace("-", "/")
+            .replace("-", "/")}
+      </p>
+    </div>
+  );
+
+  // * calc days until rental ends
+  function getDaysLeft() {
+    if (request) {
+      const todayDate = new Date();
+      const endDate = new Date(request.end_date);
+      const differenceMillis = endDate.getTime() - todayDate.getTime();
+      const daysLeft = Math.floor(differenceMillis / (1000 * 60 * 60 * 24));
+      return daysLeft;
     }
-    // if user is the borrower
-    if (user._id === request.user_borrowing._id) {
-      // 3) if work is rented, show "cancel rental" button
+  }
+
+  //  * ACTION ELEMENTS
+  function renderActions() {
+    //  user == artist
+    if (user._id === request.artist._id) {
       if (request.artwork.is_borrowed) {
-        return cancelRentalElement;
+        if (request.change_request.change_requested) return acceptRejectElement;
+        return "";
+        // return cancelRentalElement;
       }
-      // 4) if work is free, show "cancel request" button
+      return acceptRejectElement;
+    }
+    // user == borrower
+    if (user._id === request.user_borrowing._id) {
+      if (request.artwork.is_borrowed) {
+        return ongoingRentalElement;
+        // return cancelRentalElement;
+      }
       return cancelRequestElement;
     }
   }
 
-  //   button elements
-  const acceptRejectButtonElement = (
+  //   Action Elements JSX
+  const ongoingRentalElement = (
+    <div className="request-status-renting-wrapper">
+      <h3 className="request-status-days-left">
+        Return Artwork in {state === "accepted" && getDaysLeft()} Days
+      </h3>
+      {extensionIsRequested &&
+        newEndDate !== new Date(request.end_date).toJSON().slice(0, 10) && (
+          <button
+            onClick={() => {
+              handleButtonClick("extension");
+            }}
+            className="request-button accepted"
+          >
+            request extension
+          </button>
+        )}
+    </div>
+  );
+
+  const acceptRejectElement = (
     <>
       <label htmlFor="">
         Message
@@ -75,7 +164,7 @@ function RequestDetailsPage() {
       <div className="request-button-wrapper">
         <button
           onClick={() => {
-            handleButtonClick("request-accepted");
+            handleButtonClick("accepted");
           }}
           className="request-button accepted"
         >
@@ -83,7 +172,7 @@ function RequestDetailsPage() {
         </button>
         <button
           onClick={() => {
-            handleButtonClick("request-rejected");
+            handleButtonClick("rejected");
           }}
           className="request-button rejected"
         >
@@ -97,7 +186,7 @@ function RequestDetailsPage() {
     <div className="request-button-wrapper">
       <button
         onClick={() => {
-          handleButtonClick("request-cancelled");
+          handleButtonClick("cancelled");
         }}
         className="request-button"
       >
@@ -106,84 +195,173 @@ function RequestDetailsPage() {
     </div>
   );
 
-  const cancelRentalElement = (
-    <div className="request-button-wrapper">
-      <label htmlFor="">
-        Message
-        <textarea
-          className="request-message-textarea"
-          name=""
-          id=""
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        ></textarea>
-      </label>
-      <button
-        onClick={() => {
-          handleButtonClick("retnal-cancelled");
-        }}
-        className="request-button"
-      >
-        cancel rental
-      </button>
-    </div>
-  );
-
-  // button cancel / reject / accept functionality
-  // message <--------- continue here and tidy up
-  // request-accepted
-  // request-rejected
-  // request-cancelled
-  // retnal-cancelled
-  // enum: ["new-request", "change-request", "confirm"]
-
+  // Action Buttons Functionality
   function handleButtonClick(action) {
-    // 1) request-cancelled
-    if (action === "request-cancelled") {
-      // 1.1) make a notification to the artist
-      const cancelledNotification = {
-        type: "confirm",
-        request: request._id,
-        message: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
-      };
-      console.log(cancelledNotification);
-      userService
-        .createNotification(request.artist._id, cancelledNotification)
-        .then((response) => {
-          console.log(response);
-          // 1.2) update the request to be cancelled <-------
-          // NOTIFICATION WILL CHANGE, CONDITIONAL RENDER
-          return rentalsService.updateRental(request._id, {
-            state: "cancelled",
-          });
-        })
-        .then(() => {
-          navigate("/profile");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      return;
+    switch (action) {
+      case "cancelled":
+        cancelRequest();
+        return;
+      case "accepted":
+        if (request && request.change_request.change_requested) {
+          acceptChange();
+        } else {
+          acceptRequest();
+        }
+        return;
+      case "rejected":
+        if (request && request.change_request.change_requested) {
+          rejectChange();
+        } else {
+          rejectRequest();
+        }
+        return;
+      case "extension":
+        requestExtension();
+        return;
     }
+  }
 
-    rentalsService
-      .updateRental(id, { state: action })
-      .then((response) => {
-        console.log(response.data);
-        setState(action);
+  function acceptChange (){console.log("accepted change")}
+  function rejectChange (){console.log("rejected change")}
+
+  function requestExtension() {
+    // 1) make new notification
+    const newNotification = {
+      type: "new-rental",
+      request: request._id,
+      text: `User ${request.user_borrowing.user_name} would like to extend the rental of your Artwork ${request.artwork.title}.`,
+      message: "",
+      new: true,
+    };
+    // 2) make new notification in artist
+    userService
+      .createNotification(request.artist._id, newNotification)
+      .then(() => {
+        // 3) uopdate rental with extension request
+        const updatedRental = {
+          change_request: {
+            change_requested: true,
+            new_end_date: newEndDate,
+          },
+        };
+        return rentalsService.updateRental(request._id, updatedRental);
       })
       .then(() => {
-        // * NOTIFICATION IF REJECTED, DELETED AFTER NOTIFICATION
-        const borrowed = action === "rejected" ? false : true;
-        artworksService
-          .updateArtwork(request.artwork._id, { is_borrowed: borrowed })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function rejectRequest() {
+    // 1) make new notification for borrower
+    const rejectedNotification = {
+      type: "confirm",
+      request: request._id,
+      text: `Unfortunately, your request for the artwork ${request.artwork.title} has been rejected by the artist.`,
+      message: message,
+      new: true,
+    };
+    userService
+      .createNotification(request.user_borrowing._id, rejectedNotification)
+      .then(() => {
+        // 2) get the notification id in artist
+        return userService.getNotificationForRequest(
+          request.artist._id,
+          request._id
+        );
+      })
+      .then((response) => {
+        // 3) update notification in the artist user
+        const notificationId = response.data._id;
+        const updatedNotification = {
+          type: "confirm",
+          request: request._id,
+          text: `The request for your artwork ${request.artwork.title} has been successfully rejected.`,
+          message: "",
+          new: true,
+        };
+        return userService.updateNotification(
+          request.artist._id,
+          notificationId,
+          updatedNotification
+        );
+      })
+      .then(() => {
+        // 4) delete the rental
+        return rentalsService.deleteRental(request._id);
+      })
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function acceptRequest() {
+    // 1) make new notification for borrower
+    const acceptedNotification = {
+      type: "new-rental",
+      request: request._id,
+      text: `Congratulations – You are now renting the artwork ${request.artwork.title}!`,
+      message: message,
+      new: true,
+    };
+    userService
+      .createNotification(request.user_borrowing._id, acceptedNotification)
+      .then(() => {
+        // 2) get and delete the notification for new request in artist
+        return userService.getNotificationForRequest(
+          request.artist._id,
+          request._id
+        );
+      })
+      .then((response) => {
+        return userService.deleteNotification(
+          request.artist._id,
+          response.data._id
+        );
+      })
+      .then(() => {
+        // 3) change the rental state
+        return rentalsService.updateRental(request._id, { state: "accepted" });
+      })
+      .then(() => {
+        // 4) change the artwork is_borrowed value
+        return artworksService.updateArtwork(request.artwork._id, {
+          is_borrowed: true,
+        });
+      })
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function cancelRequest() {
+    // 1) make new notification
+    const updatedNotification = {
+      type: "confirm",
+      request: request._id,
+      text: `The Request for your Artwork ${request.artwork.title} from user ${request.user_borrowing.user_name} has been cancelled.`,
+      message: "",
+      new: true,
+    };
+    // 2) find corresponding notification in artist
+    userService
+      .getNotificationForRequest(request.artist._id, request._id)
+      .then((response) => {
+        const notificationId = response.data._id;
+        // 3) update notification in the artist user
+        return userService.updateNotification(
+          request.artist._id,
+          notificationId,
+          updatedNotification
+        );
+      })
+      .then(() => {
+        //  4) delete the rental
+        return rentalsService.deleteRental(request._id);
       })
       .then(() => {
         navigate("/profile");
@@ -195,7 +373,7 @@ function RequestDetailsPage() {
 
   return (
     <div className="page-wrapper">
-      {request && state && (
+      {user && request && state && (
         <div className="page-wrapper request-wrapper">
           <h3 className="request-headline">Request Details</h3>
 
@@ -233,6 +411,7 @@ function RequestDetailsPage() {
           <p className="request-details-request-infos-text">
             {request.user_borrowing.user_name}
           </p>
+
           {/* rental period */}
           <h3 className="request-details-request-infos-headline">
             Rental Period
@@ -243,11 +422,18 @@ function RequestDetailsPage() {
               .replace("-", "/")
               .replace("-", "/") +
               " – " +
-              request.start_date
-                .slice(0, 10)
-                .replace("-", "/")
-                .replace("-", "/")}
+              request.end_date.slice(0, 10).replace("-", "/").replace("-", "/")}
           </p>
+
+          {/* CHANGE REQUEST */}
+          {user._id === request.user_borrowing._id &&
+            !request.change_request.change_requested &&
+            extendRentalElement}
+
+          {user._id === request.artist._id &&
+            request.change_request.change_requested &&
+            changeRequestInfoElement}
+
           {/* transportation */}
           <h3 className="request-details-request-infos-headline">
             Transportation
@@ -255,6 +441,7 @@ function RequestDetailsPage() {
           <p className="request-details-request-infos-text">
             {request.transportation}
           </p>
+
           {/* delivery details */}
           {request.transportation === "delivery" ? (
             <>
@@ -276,6 +463,7 @@ function RequestDetailsPage() {
           ) : (
             ""
           )}
+
           {/* Message */}
           {request.message && (
             <>
@@ -287,8 +475,9 @@ function RequestDetailsPage() {
               </p>
             </>
           )}
-          {/* buttons */}
-          {user && renderActionButtons()}
+
+          {/* Action Elements */}
+          {renderActions()}
         </div>
       )}
     </div>
