@@ -25,11 +25,7 @@ function NavBar() {
         <h3 className="nav-top-signup-login-text">{user && user.user_name}</h3>
       </Link>
       <div className="nav-top-logo-container" onClick={logOutUser}>
-        <img
-          className="nav-top-logo-img"
-          src="/img/signout.png"
-          alt=""
-        />
+        <img className="nav-top-logo-img" src="/img/signout.png" alt="" />
       </div>
     </div>
   );

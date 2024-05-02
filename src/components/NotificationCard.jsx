@@ -6,19 +6,6 @@ import userService from "../services/user.services";
 function NotificationCard(props) {
   const { notification, setNotifications, userId } = props;
 
-  useEffect(() => {
-    if (notification.request.state === "cancelled") {
-      const updatedNotification = {
-        message: `The Request for your Artwork ${notification.request.artwork.title} from user ${notification.request.user_borrowing.user_name} has been cancelled.`,
-        type: "confirm",
-      };
-      userService
-        .updateNotification(userId, notification._id, updatedNotification)
-        .then(() => {})
-        .catch((err) => console.log(err));
-    }
-  }, [notification, userId]);
-
   // NOTIFICATION TITLE
   const notificationTitle = getNotificationTitle();
   function getNotificationTitle() {
@@ -26,6 +13,8 @@ function NotificationCard(props) {
       switch (notification.type) {
         case "new-request":
           return <>New Request</>;
+        case "new-rental":
+          return <>New Rental</>;
         case "change-request":
           return <>User Request</>;
         case "confirm":
@@ -46,6 +35,16 @@ function NotificationCard(props) {
       .catch((err) => console.log(err));
   }
 
+  function handleNewClick() {
+    // change notification new = false
+    userService
+      .updateNotificationNew(userId, notification._id, {new: false})
+      .then(() => {
+        console.log("read")
+      })
+      .catch((err) => console.log(err));
+  }
+
   const notificationButton = getNotificationButton();
   function getNotificationButton() {
     if (notification) {
@@ -53,7 +52,13 @@ function NotificationCard(props) {
         case "new-request":
           return (
             <Link to={`/request/${notification.request._id}/details`}>
-              <button className="notification-card-button">SHOW REQUEST</button>
+              <button onClick={handleNewClick} className="notification-card-button">SHOW REQUEST</button>
+            </Link>
+          );
+        case "new-rental":
+          return (
+            <Link to={`/request/${notification.request._id}/details`}>
+              <button onClick={handleNewClick} className="notification-card-button">SHOW RENTAL</button>
             </Link>
           );
         case "change-request":
@@ -80,37 +85,16 @@ function NotificationCard(props) {
   const notificationText = getNotificationText();
   function getNotificationText() {
     if (notification) {
-      switch (notification.type) {
-        case "new-request":
-          return (
-            <>
-              User {notification.request.user_borrowing.user_name} would like to
-              rent your artwork {notification.request.artwork.title} – click on
-              the button below to view the request!
-            </>
-          );
-        case "change-request":
-          return (
-            <>
-              User {notification.request.user_borrowing.user_name} would like to
-              change the{" "}
-              <Link
-                className="notification-card-link"
-                to={`/request/${notification.request._id}/details`}
-              >
-                rental agreement
-              </Link>{" "}
-              for your artwork {notification.request.artwork.title}.
-              {notification.message && (
-                <p className="notification-card-text">
-                  "{notification.message}"
-                </p>
-              )}
-            </>
-          );
-        case "confirm":
-          return <>{notification.message}</>;
-      }
+      return (
+        <>
+          <p className="notification-card-text">{notification.text}</p>
+          {notification.message && (
+            <p className="notification-card-text">
+              <i>{notification.message}</i>
+            </p>
+          )}
+        </>
+      );
     }
   }
 
@@ -121,7 +105,7 @@ function NotificationCard(props) {
         <>
           <div
             className={
-              "notification-card-title-wrapper " + (notification.isNew && "new")
+              "notification-card-title-wrapper " + (notification.new && "new")
             }
           >
             <div className="notification-card-title-icon-wrapper">
@@ -129,7 +113,9 @@ function NotificationCard(props) {
             </div>
             <h3 className="notification-card-headline">{notificationTitle}</h3>
           </div>
-          <p className="notification-card-text">{notificationText}</p>
+          <div className="notification-card-text-wrapper">
+            {notificationText}
+          </div>
           <div className="notification-card-button-wrapper">
             {notificationButton}
           </div>
