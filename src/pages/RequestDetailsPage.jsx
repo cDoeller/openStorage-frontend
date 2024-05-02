@@ -32,6 +32,17 @@ function RequestDetailsPage() {
       });
   }, [id]);
 
+  // * calc days until rental ends
+  function getDaysLeft() {
+    if (request) {
+      const todayDate = new Date();
+      const endDate = new Date(request.end_date);
+      const differenceMillis = endDate.getTime() - todayDate.getTime();
+      const daysLeft = Math.floor(differenceMillis / (1000 * 60 * 60 * 24));
+      return daysLeft;
+    }
+  }
+
   //  * ACTION ELEMENTS
   function renderActions() {
     //  user == artist
@@ -339,6 +350,7 @@ function RequestDetailsPage() {
 
           {/* Action Elements */}
           {renderActions()}
+          {state === "accepted" && getDaysLeft()}
         </div>
       )}
     </div>
