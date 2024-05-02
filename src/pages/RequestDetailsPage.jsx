@@ -48,7 +48,7 @@ function RequestDetailsPage() {
     //  user == artist
     if (user._id === request.artist._id) {
       if (request.artwork.is_borrowed) {
-        return ongoingRentalElement;
+        return "";
         // return cancelRentalElement;
       }
       return acceptRejectElement;
@@ -65,9 +65,19 @@ function RequestDetailsPage() {
 
   //   Action Elements JSX
   const ongoingRentalElement = (
-    <>
-      <h3 className="request-status-headline">Ongoing Rental</h3>
-    </>
+    <div className="request-status-renting-wrapper">
+      <h3 className="request-status-days-left">
+        Return Artwork in {state === "accepted" && getDaysLeft()} Days
+      </h3>
+      <button
+        onClick={() => {
+          handleButtonClick("extension");
+        }}
+        className="request-button accepted"
+      >
+        request extension
+      </button>
+    </div>
   );
 
   const acceptRejectElement = (
@@ -129,7 +139,31 @@ function RequestDetailsPage() {
       case "rejected":
         rejectRequest();
         return;
+      case "extension":
+        requestExtension();
+        return;
     }
+  }
+
+  // <-------- FOR NOW THIS IS A DUMMY FUNCTIONALITY
+  function requestExtension() {
+    // 1) make new notification
+    const newNotification = {
+      type: "new-rental",
+      request: request._id,
+      text: `User ${request.user_borrowing.user_name} would like to extend the rental of your Artwork ${request.artwork.title}.`,
+      message: "",
+      new: true,
+    };
+    // 2) make new notification in artist
+    userService
+      .createNotification(request.artist._id, newNotification)
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function rejectRequest() {
@@ -350,7 +384,6 @@ function RequestDetailsPage() {
 
           {/* Action Elements */}
           {renderActions()}
-          {state === "accepted" && getDaysLeft()}
         </div>
       )}
     </div>
