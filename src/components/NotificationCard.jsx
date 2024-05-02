@@ -58,7 +58,7 @@ function NotificationCard(props) {
         case "new-rental":
           return (
             <Link to={`/request/${notification.request._id}/details`}>
-              <button className="notification-card-button">SHOW RENTAL</button>
+              <button onClick={handleNewClick} className="notification-card-button">SHOW RENTAL</button>
             </Link>
           );
         case "change-request":
