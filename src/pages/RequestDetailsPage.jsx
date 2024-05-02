@@ -11,6 +11,8 @@ function RequestDetailsPage() {
   const [request, setRequest] = useState(null);
   const [state, setState] = useState("");
   const [message, setMessage] = useState("");
+  const [extensionIsRequested, setExtensionIsRequested] = useState(false);
+  const [newEndDate, setNewEndDate] = useState(null);
 
   const { user } = useContext(AuthContext);
   const { id } = useParams();
@@ -31,6 +33,52 @@ function RequestDetailsPage() {
         console.log(err);
       });
   }, [id]);
+
+  // * request for an extension of end date
+  const extendRentalElement = (
+    <>
+      <div className="request-extension-wrapper">
+        <div className="request-extension-interface-wrapper">
+          <input
+            className="request-extension-interface-checkbox"
+            name="extension"
+            type="checkbox"
+            onChange={() => {
+              setExtensionIsRequested(!extensionIsRequested);
+              setNewEndDate(new Date(request.end_date).toJSON().slice(0, 10));
+            }}
+          />
+          <label
+            className="request-extension-interface-label"
+            htmlFor="extension"
+          >
+            Request Extension
+          </label>
+        </div>
+        {extensionIsRequested && (
+          <div className="request-extension-newdate-wrapper">
+            <label
+              className="request-extension-interface-label"
+              htmlFor="newEndDate"
+            >
+              Desired Ending Date
+            </label>
+            <input
+              className="request-extension-newdate-datepicker"
+              name="newEndDate"
+              type="date"
+              min={new Date(request.end_date).toJSON().slice(0, 10)}
+              value={newEndDate}
+              required
+              onChange={(e) => {
+                setNewEndDate(e.target.value);
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </>
+  );
 
   // * calc days until rental ends
   function getDaysLeft() {
@@ -69,14 +117,17 @@ function RequestDetailsPage() {
       <h3 className="request-status-days-left">
         Return Artwork in {state === "accepted" && getDaysLeft()} Days
       </h3>
-      <button
-        onClick={() => {
-          handleButtonClick("extension");
-        }}
-        className="request-button accepted"
-      >
-        request extension
-      </button>
+      {extensionIsRequested &&
+        newEndDate !== new Date(request.end_date).toJSON().slice(0, 10) && (
+          <button
+            onClick={() => {
+              handleButtonClick("extension");
+            }}
+            className="request-button accepted"
+          >
+            request extension
+          </button>
+        )}
     </div>
   );
 
@@ -334,11 +385,9 @@ function RequestDetailsPage() {
               .replace("-", "/")
               .replace("-", "/") +
               " – " +
-              request.start_date
-                .slice(0, 10)
-                .replace("-", "/")
-                .replace("-", "/")}
+              request.end_date.slice(0, 10).replace("-", "/").replace("-", "/")}
           </p>
+          {extendRentalElement}
 
           {/* transportation */}
           <h3 className="request-details-request-infos-headline">
