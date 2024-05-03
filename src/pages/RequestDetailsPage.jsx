@@ -52,7 +52,7 @@ function RequestDetailsPage() {
             className="request-extension-interface-label"
             htmlFor="extension"
           >
-            Request Extension
+            Change Return Date
           </label>
         </div>
         {extensionIsRequested && (
@@ -61,13 +61,14 @@ function RequestDetailsPage() {
               className="request-extension-interface-label"
               htmlFor="newEndDate"
             >
-              Desired Ending Date
+              Desired Return Date
             </label>
             <input
               className="request-extension-newdate-datepicker"
               name="newEndDate"
               type="date"
-              min={new Date(request.end_date).toJSON().slice(0, 10)}
+              // min={new Date(request.end_date).toJSON().slice(0, 10)}
+              min={new Date().toJSON().slice(0, 10)}
               value={newEndDate}
               required
               onChange={(e) => {
@@ -83,7 +84,7 @@ function RequestDetailsPage() {
   const changeRequestInfoElement = (
     <div className="change-request-infos-for-artist">
       <h3 className="request-details-request-infos-headline">
-        Requested Extension
+        Requested Return Date
       </h3>
       <p>
         {request &&
@@ -142,7 +143,7 @@ function RequestDetailsPage() {
             }}
             className="request-button accepted"
           >
-            request extension
+            request change
           </button>
         )}
     </div>
@@ -222,13 +223,12 @@ function RequestDetailsPage() {
   }
 
   function acceptChange() {
-    console.log("accepted change");
     // 1) make new notification, find notification in user and update
     const newNotification = {
       type: "confirm",
       request: request._id,
-      text: `Your Request for extending the rental of the Artwork ${request.artwork.title} from artist ${request.artist.real_name} has been accepted.`,
-      message: "",
+      text: `Your Request for changing the return date of the Artwork ${request.artwork.title} from artist ${request.artist.real_name} has been accepted.`,
+      message: message,
       new: true,
     };
     userService
@@ -277,7 +277,7 @@ function RequestDetailsPage() {
     const newNotification = {
       type: "new-request",
       request: request._id,
-      text: `User ${request.user_borrowing.user_name} would like to extend the rental of your Artwork ${request.artwork.title}.`,
+      text: `User ${request.user_borrowing.user_name} would like to change the return date of your Artwork ${request.artwork.title}.`,
       message: "",
       new: true,
     };
