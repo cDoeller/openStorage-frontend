@@ -134,24 +134,30 @@ function HomePage() {
         <p className="landing-genre-section-text">
           Check out the works of our most popular genres
         </p>
-        {popularGenres &&
-          popularGenres.map((genre) => {
-            return (
-              <div
-                key={genre._id}
-                className="landing-genre-section-bullet-wrapper"
-              >
-                <div className="landing-genre-section-bullet-icon-wrapper">
-                  <img
-                    src="/img/star.png"
-                    alt=""
-                    className="landing-genre-section-bullet-icon"
-                  />
+        <div className="landing-genre-section-genre-wrapper">
+          {popularGenres &&
+            popularGenres.map((genre) => {
+              return (
+                <div
+                  key={genre._id}
+                  className="landing-genre-section-bullet-wrapper"
+                >
+                  <div className="landing-genre-section-bullet-icon-wrapper">
+                    <img
+                      src="/img/star.png"
+                      alt=""
+                      className="landing-genre-section-bullet-icon"
+                    />
+                  </div>
+                  <Link to={`/artworks/?genre=${genre._id}`}>
+                    <p className="landing-genre-section-bullet-text">
+                      {genre._id}
+                    </p>
+                  </Link>
                 </div>
-                <p className="landing-genre-section-bullet-text">{genre._id}</p>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </section>
 
       {/* newsletter section */}

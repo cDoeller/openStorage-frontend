@@ -112,15 +112,18 @@
   text-align: center;
   width: 60%;
 }
-.landing-genre-section-bullet-wrapper {
-  width: 100%;
+.landing-genre-section-genre-wrapper{
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+.landing-genre-section-bullet-wrapper {
+  display: flex;
   align-items: center;
-  gap: 10%;
+  gap: 1rem;
 }
 .landing-genre-section-bullet-icon-wrapper {
-  width: 20px;
+  width: 15px;
 }
 .landing-genre-section-bullet-icon {
   width: 100%;
