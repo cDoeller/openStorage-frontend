@@ -61,13 +61,6 @@ function NotificationCard(props) {
               <button onClick={handleNewClick} className="notification-card-button">SHOW RENTAL</button>
             </Link>
           );
-        case "change-request":
-          return (
-            <>
-              <button className="notification-card-button">ACCEPT</button>
-              <button className="notification-card-button">REJECT</button>
-            </>
-          );
         case "confirm":
           return (
             <button
