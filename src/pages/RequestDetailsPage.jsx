@@ -253,12 +253,12 @@ function RequestDetailsPage() {
           change_request: {
             change_requested: false,
           },
-          end_date: request.change_request.new_end_date
+          end_date: request.change_request.new_end_date,
         };
         return rentalsService.updateRental(request._id, updatedRental);
       })
       .then(() => {
-        navigate("/profile")
+        navigate("/profile");
       })
       .catch((err) => {
         console.log(err);
@@ -266,10 +266,45 @@ function RequestDetailsPage() {
   }
 
   function rejectChange() {
-    console.log("rejected change");
-    // 1) find the notification in user and update
-    // 2) find the notification in artist and update
-    // 3) update the rental: reset change request
+    // 1) make new notification, find notification in user and update
+    const newNotification = {
+      type: "confirm",
+      request: request._id,
+      text: `Unfortunately, your Request for changing the return date of the Artwork ${request.artwork.title} from artist ${request.artist.real_name} has been rejected.`,
+      message: message,
+      new: true,
+    };
+    userService
+      .createNotification(request.user_borrowing._id, newNotification)
+      // 2) find and delete the notification in artist
+      .then(() => {
+        return userService.getNotificationForRequest(
+          request.artist._id,
+          request._id
+        );
+      })
+      .then((response) => {
+        const notificationId = response.data._id;
+        return userService.deleteNotification(
+          request.artist._id,
+          notificationId
+        );
+      })
+      // 3) update the rental: new end date, reset change request
+      .then(() => {
+        const updatedRental = {
+          change_request: {
+            change_requested: false,
+          }
+        };
+        return rentalsService.updateRental(request._id, updatedRental);
+      })
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function requestExtension() {
