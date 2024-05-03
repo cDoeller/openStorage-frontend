@@ -4,7 +4,7 @@ import artworksService from "../services/artworks.services";
 import Select from "react-select";
 
 function FilterInterface(props) {
-  const { setArtworks, allArtists, allCities } = props;
+  const { setArtworks, allArtists, allCities, genrePreset } = props;
 
   const [city, setCity] = useState("");
   const [medium, setMedium] = useState("");
@@ -12,6 +12,13 @@ function FilterInterface(props) {
   const [dimensions, setDimensions] = useState({ x: 0, y: 0, z: 0 });
   const [artistId, setArtistId] = useState("");
   const [artistName, setArtistName] = useState("");
+
+  // Genre Preset
+  useEffect(() => {
+    if (genrePreset) {
+      setGenre(genrePreset);
+    }
+  }, [genrePreset]);
 
   // Filtering
   useEffect(() => {
@@ -26,7 +33,7 @@ function FilterInterface(props) {
     if (dimensions.z) queryString += `dimensions_z=${dimensions.z}&`;
     if (artistId) queryString += `artist=${artistId}`;
 
-    console.log(queryString);
+    // console.log(queryString);
 
     artworksService
       .getArtworkQuery(queryString)

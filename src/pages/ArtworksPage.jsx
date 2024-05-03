@@ -11,12 +11,29 @@ function ArtworksPage() {
   const [showInterface, setShowInterface] = useState(false);
   const [allArtists, setAllArtists] = useState(null);
   const [allCities, setAllCities] = useState(null);
+  const [genrePreset, setGenrePreset] = useState("");
 
   function toggleFilterInterface() {
     setShowInterface(!showInterface);
   }
 
   useEffect(() => {
+    // get search params if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const genre = urlParams.get("genre");
+    setGenrePreset(genre);
+    // <-------------------- PAGE PRE FILTERED, HOW TO?
+    // if (genre) {
+    //   artworksService
+    //     .getArtworkQuery(`?genre=${genre}`)
+    //     .then((response) => {
+    //       // console.log(response.data);
+    //       setArtworks(response.data);
+    //     })
+    //     .catch((err) => console.log(err));
+    // }
+    
+    // handle artworks display
     artworksService
       .getAllArtworks()
       .then((response) => {
@@ -49,7 +66,7 @@ function ArtworksPage() {
     const scrollTopPosition =
       window.pageYOffset || document.documentElement.scrollTop;
     window.onscroll = function () {
-      window.scrollTo(0,scrollTopPosition);
+      window.scrollTo(0, scrollTopPosition);
     };
   }
   function enableScroll() {
@@ -77,6 +94,7 @@ function ArtworksPage() {
           setArtworks={setArtworks}
           allArtists={allArtists}
           allCities={allCities}
+          genrePreset={genrePreset}
         />
       </div>
 
