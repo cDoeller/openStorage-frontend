@@ -80,21 +80,6 @@ function RequestDetailsPage() {
     </>
   );
 
-  const extensionRequestedElement = (
-    <div className="change-request-infos-for-artist">
-      <h3 className="request-details-request-infos-headline">
-        Extension Requested
-      </h3>
-      <p className="request-details-request-infos-headline">
-        {request &&
-          request.change_request.new_end_date
-            .slice(0, 10)
-            .replace("-", "/")
-            .replace("-", "/")}
-      </p>
-    </div>
-  );
-
   const changeRequestInfoElement = (
     <div className="change-request-infos-for-artist">
       <h3 className="request-details-request-infos-headline">
@@ -455,7 +440,7 @@ function RequestDetailsPage() {
 
           {user._id === request.user_borrowing._id &&
             request.change_request.change_requested &&
-            extensionRequestedElement}
+            changeRequestInfoElement}
 
           {/* transportation */}
           <h3 className="request-details-request-infos-headline">
