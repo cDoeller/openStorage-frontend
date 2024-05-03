@@ -36,10 +36,10 @@ function ProfilePage() {
             <Link to="/profile/edit-profile">Edit</Link>
           </div>
           <UserProfileCard
-            name={userInfo.user_name}
+            name={userInfo.real_name? userInfo.real_name : userInfo.user_name}
             img={userInfo.profile_img_url}
             isArtist={userInfo.isArtist}
-            city={userInfo.city}
+            city={userInfo.contact.address.city}
             tagline={userInfo.tagline}
           />
 

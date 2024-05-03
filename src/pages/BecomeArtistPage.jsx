@@ -4,6 +4,7 @@ import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
 import cityService from "../services/city.services";
 import uploadService from "../services/file-upload.services";
+import artworksServices from "../services/artworks.services"
 import Select from "react-select";
 import "../styles/Forms.css";
 
@@ -17,7 +18,7 @@ function BecomeArtistPage() {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  const [postcode, setPostcode] = useState(null);
+  const [postcode, setPostcode] = useState();
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(2024);
@@ -151,6 +152,32 @@ function BecomeArtistPage() {
     try {
       e.preventDefault();
 
+      // performs the action of sending the data
+      const cloudinaryResponse = await uploadService.uploadImage(imageData);
+
+      let artworkData = {
+        title: title,
+        year: year,
+        artist: user._id,
+        city: artworkCity,
+        dimensions: {
+          x: dimensionsX,
+          y: dimensionsY,
+          z: dimensionsZ,
+        },
+        medium: medium,
+        genre: genre,
+      }
+
+      artworkData.images_url = cloudinaryResponse.data.fileUrls;
+      console.log("response is: ", cloudinaryResponse);
+      // response carries "fileUrl" which we can use to update the state
+      let copiedArray = [...uploadedImages, ...cloudinaryResponse.data.fileUrls];
+      setUploadedImages(copiedArray);
+
+      const createFirstArtwork = await artworksServices.createArtwork(artworkData)
+      console.log("response from artwork creation", createFirstArtwork)
+
       let verificationData = {
         real_name: realName,
         artist_statement: artistStatement,
@@ -162,36 +189,18 @@ function BecomeArtistPage() {
             postal_code: postcode,
           },
         },
-        artwork: {
-          title: title,
-          year: year,
-          artist: user._id,
-          city: artworkCity,
-          dimensions: {
-            x: dimensionsX,
-            y: dimensionsY,
-            z: dimensionsZ,
-          },
-          medium: medium,
-          genre: genre,
-        },
+        artwork:createFirstArtwork.data.newArtwork
       };
 
-      // performs the action of sending the data
-      const cloudinaryResponse = await uploadService.uploadImage(imageData);
-
-      verificationData.artwork.images_url = cloudinaryResponse.data.fileUrls;
-      console.log("response is: ", cloudinaryResponse);
-      // response carries "fileUrl" which we can use to update the state
-      let copiedArray = [...uploadedImages, ...cloudinaryResponse.data.fileUrls];
-      setUploadedImages(copiedArray);
       console.log("verification data sent to backend", verificationData);
+
 
       const verificationResponse = await userService.verifyArtist(
         user._id,
         verificationData
       );
       console.log("response from verification: ", verificationResponse)
+
       navigate(`/profile`);
     } catch (err) {
       console.log("Error while verifying artist: ", err);
