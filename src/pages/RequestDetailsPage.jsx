@@ -223,15 +223,21 @@ function RequestDetailsPage() {
 
   function acceptChange() {
     console.log("accepted change");
+    // 1) find the notification in user and update
+    // 2) find the notification in artist and update
+    // 3) update the rental: new end date, reset change request
   }
   function rejectChange() {
     console.log("rejected change");
+    // 1) find the notification in user and update
+    // 2) find the notification in artist and update
+    // 3) update the rental: reset change request
   }
 
   function requestExtension() {
     // 1) make new notification
     const newNotification = {
-      type: "new-rental",
+      type: "new-request",
       request: request._id,
       text: `User ${request.user_borrowing.user_name} would like to extend the rental of your Artwork ${request.artwork.title}.`,
       message: "",
