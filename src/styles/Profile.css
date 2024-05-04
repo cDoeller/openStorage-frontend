@@ -1,11 +1,33 @@
-
-.profile-wrapper{
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap:2rem;
+}
+.profile-edit-link {
+  position: absolute;
+  right: 10px;
+  font-weight: 600;
+}
+.profile-artist-wrapper {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+}
+.profile-user-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.edit-link{
-    position: absolute;
-    right:10px;
-    font-weight:600;
+.profile-artist-statement-wrapper {
+
+}
+.profile-artist-statement-statement-headline {
+}
+.profile-artist-statement-statement-statement {
+}
+.profile-artworks-wrapper {
+    margin-bottom: 2rem;
+}
+.profile-section-headline {
 }
