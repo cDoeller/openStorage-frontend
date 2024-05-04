@@ -52,7 +52,7 @@ function RequestDetailsPage() {
             className="request-extension-interface-label"
             htmlFor="extension"
           >
-            Request Extension
+            Change Return Date
           </label>
         </div>
         {extensionIsRequested && (
@@ -61,13 +61,14 @@ function RequestDetailsPage() {
               className="request-extension-interface-label"
               htmlFor="newEndDate"
             >
-              Desired Ending Date
+              Desired Return Date
             </label>
             <input
               className="request-extension-newdate-datepicker"
               name="newEndDate"
               type="date"
-              min={new Date(request.end_date).toJSON().slice(0, 10)}
+              // min={new Date(request.end_date).toJSON().slice(0, 10)}
+              min={new Date().toJSON().slice(0, 10)}
               value={newEndDate}
               required
               onChange={(e) => {
@@ -83,7 +84,7 @@ function RequestDetailsPage() {
   const changeRequestInfoElement = (
     <div className="change-request-infos-for-artist">
       <h3 className="request-details-request-infos-headline">
-        Requested Extension
+        Requested Return Date
       </h3>
       <p>
         {request &&
@@ -142,7 +143,7 @@ function RequestDetailsPage() {
             }}
             className="request-button accepted"
           >
-            request extension
+            request change
           </button>
         )}
     </div>
@@ -221,15 +222,97 @@ function RequestDetailsPage() {
     }
   }
 
-  function acceptChange (){console.log("accepted change")}
-  function rejectChange (){console.log("rejected change")}
+  function acceptChange() {
+    // 1) make new notification, find notification in user and update
+    const newNotification = {
+      type: "confirm",
+      request: request._id,
+      text: `Your Request for changing the return date of the Artwork ${request.artwork.title} from artist ${request.artist.real_name} has been accepted.`,
+      message: message,
+      new: true,
+    };
+    userService
+      .createNotification(request.user_borrowing._id, newNotification)
+      // 2) find and delete the notification in artist
+      .then(() => {
+        return userService.getNotificationForRequest(
+          request.artist._id,
+          request._id
+        );
+      })
+      .then((response) => {
+        const notificationId = response.data._id;
+        return userService.deleteNotification(
+          request.artist._id,
+          notificationId
+        );
+      })
+      // 3) update the rental: new end date, reset change request
+      .then(() => {
+        const updatedRental = {
+          change_request: {
+            change_requested: false,
+          },
+          end_date: request.change_request.new_end_date,
+        };
+        return rentalsService.updateRental(request._id, updatedRental);
+      })
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function rejectChange() {
+    // 1) make new notification, find notification in user and update
+    const newNotification = {
+      type: "confirm",
+      request: request._id,
+      text: `Unfortunately, your Request for changing the return date of the Artwork ${request.artwork.title} from artist ${request.artist.real_name} has been rejected.`,
+      message: message,
+      new: true,
+    };
+    userService
+      .createNotification(request.user_borrowing._id, newNotification)
+      // 2) find and delete the notification in artist
+      .then(() => {
+        return userService.getNotificationForRequest(
+          request.artist._id,
+          request._id
+        );
+      })
+      .then((response) => {
+        const notificationId = response.data._id;
+        return userService.deleteNotification(
+          request.artist._id,
+          notificationId
+        );
+      })
+      // 3) update the rental: new end date, reset change request
+      .then(() => {
+        const updatedRental = {
+          change_request: {
+            change_requested: false,
+          }
+        };
+        return rentalsService.updateRental(request._id, updatedRental);
+      })
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   function requestExtension() {
     // 1) make new notification
     const newNotification = {
-      type: "new-rental",
+      type: "new-request",
       request: request._id,
-      text: `User ${request.user_borrowing.user_name} would like to extend the rental of your Artwork ${request.artwork.title}.`,
+      text: `User ${request.user_borrowing.user_name} would like to change the return date of your Artwork ${request.artwork.title}.`,
       message: "",
       new: true,
     };
@@ -431,6 +514,10 @@ function RequestDetailsPage() {
             extendRentalElement}
 
           {user._id === request.artist._id &&
+            request.change_request.change_requested &&
+            changeRequestInfoElement}
+
+          {user._id === request.user_borrowing._id &&
             request.change_request.change_requested &&
             changeRequestInfoElement}
 
