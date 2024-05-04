@@ -4,10 +4,10 @@ import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
 import cityService from "../services/city.services";
 import uploadService from "../services/file-upload.services";
-import artworksServices from "../services/artworks.services"
+import artworksServices from "../services/artworks.services";
 import Select from "react-select";
 import "../styles/Forms.css";
-// import axios from "axios";
+import citiesGermany from "../data/cities-germany.json";
 
 function BecomeArtistPage() {
   const { user, isLoggedIn } = useContext(AuthContext);
@@ -19,7 +19,7 @@ function BecomeArtistPage() {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  const [postcode, setPostcode] = useState();
+  const [postcode, setPostcode] = useState("");
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(2024);
@@ -55,11 +55,10 @@ function BecomeArtistPage() {
 
   let countryOptions = [
     { value: "Germany", label: "Germany" },
-    { value: "United States", label: "United States" },
   ];
 
-  const [cityOptions, setCityOptions] = useState();
-  const [artworkCityOptions, setArtworkCityOptions] = useState()
+  const [cityOptions, setCityOptions] = useState(null);
+  const [artworkCityOptions, setArtworkCityOptions] = useState(null);
 
   // REACT SELECT HANDLE SELECT FUNCTIONS
   function handleMediaSelectChange(selectedOption) {
@@ -107,16 +106,13 @@ function BecomeArtistPage() {
     }),
   };
 
+  // * CITY NAMES
   useEffect(() => {
-    cityService.getAllCities().then((response) => {
-      let cityNames = response.data.map((oneCity) => {
-        return { value: oneCity.name, label: oneCity.name };
-      });
-
-      // console.log(cityNames);
-      setCityOptions(cityNames);
-      setArtworkCityOptions(cityNames)
+    const cityNames = citiesGermany.map((oneCity) => {
+      return { value: oneCity.city, label: oneCity.city };
     });
+    setCityOptions(cityNames);
+    setArtworkCityOptions(cityNames);
   }, []);
 
   useEffect(() => {
@@ -127,7 +123,6 @@ function BecomeArtistPage() {
       setCity(initialData.contact.address.city);
       setCountry(initialData.contact.address.country);
       setPostcode(initialData.contact.address.postal_code);
-
     });
   }, [user]);
 
@@ -169,16 +164,21 @@ function BecomeArtistPage() {
         },
         medium: medium,
         genre: genre,
-      }
+      };
 
       artworkData.images_url = cloudinaryResponse.data.fileUrls;
       console.log("response is: ", cloudinaryResponse);
       // response carries "fileUrl" which we can use to update the state
-      let copiedArray = [...uploadedImages, ...cloudinaryResponse.data.fileUrls];
+      let copiedArray = [
+        ...uploadedImages,
+        ...cloudinaryResponse.data.fileUrls,
+      ];
       setUploadedImages(copiedArray);
 
-      const createFirstArtwork = await artworksServices.createArtwork(artworkData)
-      console.log("response from artwork creation", createFirstArtwork)
+      const createFirstArtwork = await artworksServices.createArtwork(
+        artworkData
+      );
+      console.log("response from artwork creation", createFirstArtwork);
 
       let verificationData = {
         real_name: realName,
@@ -191,17 +191,16 @@ function BecomeArtistPage() {
             postal_code: postcode,
           },
         },
-        artwork:createFirstArtwork.data.newArtwork
+        artwork: createFirstArtwork.data.newArtwork,
       };
 
       console.log("verification data sent to backend", verificationData);
-
 
       const verificationResponse = await userService.verifyArtist(
         user._id,
         verificationData
       );
-      console.log("response from verification: ", verificationResponse)
+      console.log("response from verification: ", verificationResponse);
 
       navigate(`/profile`);
     } catch (err) {
@@ -268,7 +267,7 @@ function BecomeArtistPage() {
 
         <label htmlFor="city">City</label>
         <Select
-        name="city"
+          name="city"
           required
           options={cityOptions}
           onChange={handleCitiesSelectChange}
@@ -287,12 +286,12 @@ function BecomeArtistPage() {
 
         <label htmlFor="">Postal Code</label>
         <input
-          type="string"
+          type="text"
           className="input"
           required
           minLength={4}
           maxLength={5}
-          value={postcode}
+          value={postcode && postcode}
           onChange={(e) => {
             setPostcode(e.target.value);
           }}
@@ -309,6 +308,7 @@ function BecomeArtistPage() {
           onChange={(e) => {
             setTitle(e.target.value);
           }}
+          value={title}
         />
 
         <label htmlFor="year">Year</label>
@@ -328,7 +328,7 @@ function BecomeArtistPage() {
           City
         </label>
         <Select
-        name="artworkcity"
+          name="artworkcity"
           required
           options={artworkCityOptions}
           onChange={handleArtworkCitiesSelectChange}
