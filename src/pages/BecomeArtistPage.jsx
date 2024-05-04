@@ -7,6 +7,7 @@ import uploadService from "../services/file-upload.services";
 import artworksServices from "../services/artworks.services"
 import Select from "react-select";
 import "../styles/Forms.css";
+// import axios from "axios";
 
 function BecomeArtistPage() {
   const { user, isLoggedIn } = useContext(AuthContext);
@@ -22,7 +23,7 @@ function BecomeArtistPage() {
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(2024);
-  const [imagesUrl, setImagesUrl] = useState([]);
+  // const [imagesUrl, setImagesUrl] = useState([]);
   const [imageData, setImageData] = useState("");
   const [imageToUpload, setImageToUpload] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -121,11 +122,12 @@ function BecomeArtistPage() {
   useEffect(() => {
     userService.getUser(user._id).then((response) => {
       const initialData = response.data;
-      // setRealName(initialData.real_name);
-      // setStreet(initialData.contact.address.street);
-      // setCity(initialData.contact.address.city);
-      // setCountry(initialData.contact.address.country);
-      // setPostcode(initialData.contact.address.postal_code);
+      setRealName(initialData.real_name);
+      setStreet(initialData.contact.address.street);
+      setCity(initialData.contact.address.city);
+      setCountry(initialData.contact.address.country);
+      setPostcode(initialData.contact.address.postal_code);
+
     });
   }, [user]);
 
@@ -285,14 +287,14 @@ function BecomeArtistPage() {
 
         <label htmlFor="">Postal Code</label>
         <input
-          type="number"
+          type="string"
           className="input"
           required
           minLength={4}
           maxLength={5}
           value={postcode}
           onChange={(e) => {
-            setPostcode(e.target.valueAsNumber);
+            setPostcode(e.target.value);
           }}
         />
 
