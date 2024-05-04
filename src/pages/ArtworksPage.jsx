@@ -71,7 +71,6 @@ function ArtworksPage() {
         userService
           .getAllArtistsWithWorks()
           .then((response) => {
-            // console.log(response.data);
             setAllArtists(response.data);
           })
           .catch((err) => console.log(err));

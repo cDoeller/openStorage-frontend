@@ -22,7 +22,7 @@ function FilterInterface(props) {
 
   // Filtering
   useEffect(() => {
-    console.log(artistName);
+    // console.log(artistName);
 
     let queryString = "?";
     if (city) queryString += `city=${city}&`;
@@ -81,7 +81,7 @@ function FilterInterface(props) {
   let artistOptions = [];
   if (allArtists) {
     allArtists.forEach((oneArtist) => {
-      artistOptions.push({ value: oneArtist._id, label: oneArtist.user_name });
+      artistOptions.push({ value: oneArtist._id, label: oneArtist.real_name });
     });
   }
 
