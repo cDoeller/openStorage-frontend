@@ -100,20 +100,30 @@ function CreateArtworkPage() {
     setCityOptions(cityNames);
   }, []);
 
-  function handleDeleteImage(e, index) {
-    e.preventDefault();
-    const copiedImages = [...uploadedImages];
-    copiedImages.splice(index, 1);
-    setUploadedImages(copiedImages);
+
+    function handleDeleteImage(e,index){
+      e.preventDefault()
+      const newImageData = [...imageData]
+      const copiedImages = [...imagePreviews]
+      copiedImages.splice(index, 1)
+      newImageData.splice(index,1)
+
+    setImageData(newImageData);
+    console.log(copiedImages);
+    setImagePreviews(copiedImages);
   }
 
+
+
   function handleImagesUrl(e) {
-    e.preventDefault();
+    // e.preventDefault();
 
     const files = Array.from(e.target.files);
-    setImageData(files);
-    const previews = files.map((file) => URL.createObjectURL(file));
-    console.log(previews);
+    const newImageData = [...imageData, ...files];
+    
+    setImageData(newImageData);
+    const previews = newImageData.map((files) => URL.createObjectURL(files));
+
     setImagePreviews(previews);
   }
 
@@ -133,8 +143,15 @@ function CreateArtworkPage() {
       genre: genre,
     };
 
+    const uploadData = new FormData();
+    
+    imageData.forEach((file)=>{
+      uploadData.append("images", file)
+    })
+
+    console.log("image data ", imageData)
     uploadService
-      .uploadImage(imageData)
+      .uploadImage(uploadData)
       .then((response) => {
         newArtwork.images_url = response.data.fileUrls;
 
@@ -238,30 +255,29 @@ function CreateArtworkPage() {
         </div>
 
         <div className="create-artwork-img-section">
-          <label htmlFor="images">Images</label>
+        <div className="file-input-container">
+        <label htmlFor="images">Upload Images</label>
           <input
             name="images"
+            className="input file-input"
             multiple
             onChange={(e) => {
               handleImagesUrl(e);
             }}
             type="file"
           />
-          {/* <button
-            onClick={(e) => {
-              handleImagesUrl(e);
-            }}
-          >
-            Upload Image
-          </button> */}
+
+        </div>
           <div className="create-artwork-thumbnail-wrapper">
             {imagePreviews.map((preview, index) => (
+              <div className="create-artwork-img-thumbnail" key={index}>
               <img
-                key={index}
                 src={preview}
                 alt={`Preview ${index}`}
-                style={{ maxWidth: "200px", maxHeight: "200px" }}
+                
               />
+              <button className="delete-button" onClick={(e)=>{handleDeleteImage(e)}}>x</button>
+              </div>
             ))}
           </div>
         </div>

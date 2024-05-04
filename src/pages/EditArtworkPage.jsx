@@ -24,8 +24,9 @@ function EditArtworkPage() {
   const [dimensionsY, setDimensionsY] = useState(0);
   const [dimensionsZ, setDimensionsZ] = useState(0);
 
-  const [imagesUrl, setImagesUrl] = useState([]);
-  const [imageData, setImageData] = useState("")
+  const [oldImages, setOldImages] = useState([]);
+  const [imageData, setImageData] = useState([])
+  const [imagePreviews, setImagePreviews] = useState([])
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
 
@@ -123,7 +124,8 @@ function EditArtworkPage() {
         setDimensionsX(initialArtwork.dimensions.x);
         setDimensionsY(initialArtwork.dimensions.y);
         setDimensionsZ(initialArtwork.dimensions.z);
-        setImagesUrl(initialArtwork.images_url);
+        setOldImages(initialArtwork.images_url);
+        setImagePreviews(initialArtwork.images_url)
         setMedium(initialArtwork.medium);
         setGenre(initialArtwork.genre);
       })
@@ -132,33 +134,42 @@ function EditArtworkPage() {
       });
   }, [id]);
 
+  // console.log("images url beginning", imagesUrl)
+
   function handleImagesUrl(e) {
-    e.preventDefault();
+    // e.preventDefault();
 
+    const files = Array.from(e.target.files);
+    const newImageData = [...imageData,...files]
+  
+    const previews = newImageData.map((files) => URL.createObjectURL(files));
+    console.log("previews after adding files", previews);
 
-    const files = e.target.files;
-    const uploadData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      uploadData.append("images", files[i]);
-    }
-
-    setImageData(uploadData);
+    const newPreviews = [...previews,...oldImages]
+  
+    setImageData(newImageData);
+    setImagePreviews(newPreviews)
+    console.log("image data after adding new ", imageData)
   }
 
   function handleDeleteImage(e,index){
     e.preventDefault()
-    const copiedImages = [...imagesUrl]
-    copiedImages.splice(index, 1)
-    setImagesUrl(copiedImages)
+    // const copiedImages = [...oldImages]
+    // const newImageData = [...imageData]
+    // copiedImages.splice(index, 1)
+    // newImageData.splice(index, 1)
+    // setOldImages(copiedImages)
+    // setImageData(newImageData)
   }
 
-  // content for delete popup
+  // DELETE ARTWORK POPUP
     function handleYes(e){
       e.preventDefault()
 
       artworksService.deleteArtwork(id)
       .then((deletedArtwork)=>{
         console.log(deletedArtwork)
+        setShowPopup(false)
         navigate("/profile")
       })
       .catch((err)=>{
@@ -173,15 +184,13 @@ function EditArtworkPage() {
   const deleteButton = <div className="">
     <button onClick={(e)=>{handleYes(e)}}>Yes</button>
     <button onClick={(e)=>{handleNo(e)}}>No</button>
-
     </div>
+
+
 
   function handleDeleteArtwork(e) {
     e.preventDefault();
-
     setShowPopup(true)
-
-
   }
 
   function handleSubmit(e) {
@@ -205,16 +214,22 @@ function EditArtworkPage() {
 
     console.log("imageData ", imageData)
 
-    if(imageData){
+    const uploadData = new FormData();
+    
+    imageData.forEach((file)=>{
+      uploadData.append("images", file)
+    })
+
+    if(uploadData){
       uploadService
-        .uploadImage(imageData)
+        .uploadImage(uploadData)
         .then((response) => {
           let newImages = response.data.fileUrls
           
           console.log("response is: ", response.data.fileUrls);
           
-          let allImagesArray = [...imagesUrl, ...newImages];
-          // setImagesUrl(copiedArray);
+          let allImagesArray = [...oldImages, ...newImages];
+          
           updatedArtwork.images_url = allImagesArray;
           return artworksService.updateArtwork(artwork._id, updatedArtwork);
         })
@@ -226,7 +241,7 @@ function EditArtworkPage() {
         .catch((err) => console.log("Error while uploading the file: ", err));
     }
     else{
-      updatedArtwork.images_url = imagesUrl
+      updatedArtwork.images_url = oldImages
       artworksService.updateArtwork(artwork._id, updatedArtwork)
       .then((response)=>{
         console.log("successfully updated an artwork");
@@ -324,7 +339,7 @@ function EditArtworkPage() {
             </div>
             <label htmlFor="">Images</label>
               <input
-                className="edit-artwork-input"
+                className="file-input edit-artwork-input"
                 type="file"
                 multiple
                 onChange={(e) => {
@@ -333,7 +348,7 @@ function EditArtworkPage() {
               />
               {/* <button onClick={(e)=>handleImageUpload(e)}>Upload Image</button> */}
               <div className="edit-artwork-img-section">
-              {imagesUrl && imagesUrl.map((oneUrl, index) => {
+              {imagePreviews && imagePreviews.map((oneUrl, index) => {
                 return (
                   <div className="edit-artwork-img-wrapper" key={index}>
                     <img src={oneUrl} alt={title} />

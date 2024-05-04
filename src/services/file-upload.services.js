@@ -20,8 +20,8 @@ class UploadService {
           });
     }
 
-    uploadImage = (file) => {
-      return this.api.post("/api/upload", file)
+    uploadImage = (files) => {
+      return this.api.post("/api/upload", files)
         // .then(res => res.data)
         // .catch((err)=>{
         //     console.log(err)
