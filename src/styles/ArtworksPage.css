@@ -3,7 +3,7 @@
 }
 .artworks-filterinterface-show {
   display: block;
-  width:100%;
+  width: 100%;
   position: fixed;
   left: 0;
 }
@@ -45,4 +45,21 @@
   flex-direction: column;
   gap: 2rem;
   margin-bottom: 3rem;
+}
+
+.artworks-no-artworks-wrapper {
+  margin-top: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.artworks-no-artworks-icon-wrapper {
+  width: 60px;
+}
+.artworks-no-artworks-icon-wrapper > img {
+  width: 100%;
+}
+.artworks-no-artworks-headline {
+  font-weight: 400;
 }
