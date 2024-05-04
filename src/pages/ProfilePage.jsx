@@ -109,9 +109,9 @@ function ProfilePage() {
 
               {/* MANAGE PORTFOLIO */}
               <div className="profile-outgoing-wrapper">
-                <h3 className="profile-section-headline">
-                  Manage Rentals
-                </h3>
+                {(isReceivingRequest || isOfferingRental) && (
+                  <h3 className="profile-section-headline">Manage Rentals</h3>
+                )}
                 {/* incoming pending requests */}
                 {isReceivingRequest && (
                   <>
