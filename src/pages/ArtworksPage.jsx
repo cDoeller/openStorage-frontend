@@ -18,22 +18,49 @@ function ArtworksPage() {
   }
 
   useEffect(() => {
-    // get search params if present
     const urlParams = new URLSearchParams(window.location.search);
     const genre = urlParams.get("genre");
-    setGenrePreset(genre);
-    // <-------------------- PAGE PRE FILTERED, HOW TO?
-    // if (genre) {
-    //   artworksService
-    //     .getArtworkQuery(`?genre=${genre}`)
-    //     .then((response) => {
-    //       // console.log(response.data);
-    //       setArtworks(response.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    // }
-    
-    // handle artworks display
+
+    //  if a genre is passed from homepage, render prefiltered works
+    if (genre) {
+      setGenrePreset(genre);
+      const genreQueryString = `?genre=${genre}`;
+      getPrefilteredArtworks(genreQueryString);
+      // if no genre is present, render all artworks
+    } else {
+      getAllArtworks();
+    }
+  }, []);
+
+  function getPrefilteredArtworks(queryString) {
+    artworksService
+      .getArtworkQuery(queryString)
+      .then((response) => {
+        // console.log(response.data);
+        setArtworks(response.data);
+      })
+      .then(() => {
+        userService
+          .getAllArtistsWithWorks()
+          .then((response) => {
+            // console.log(response.data);
+            setAllArtists(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
+      .then(() => {
+        artworksService
+          .getArtworkCities()
+          .then((response) => {
+            // console.log(response.data);
+            setAllCities(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function getAllArtworks() {
     artworksService
       .getAllArtworks()
       .then((response) => {
@@ -59,7 +86,7 @@ function ArtworksPage() {
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
-  }, []);
+  }
 
   // disable scroll when filter page open
   function disableScroll() {
