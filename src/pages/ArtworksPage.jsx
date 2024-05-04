@@ -108,7 +108,7 @@ function ArtworksPage() {
   }, [showInterface]);
 
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper mobile-dvh-general">
       {/* FILTER INTERFACE */}
       <div
         className={
@@ -165,6 +165,16 @@ function ArtworksPage() {
                 </Link>
               );
             })}
+          {artworks && artworks.length === 0 && (
+            <div className="artworks-no-artworks-wrapper">
+              <div className="artworks-no-artworks-icon-wrapper">
+                <img src="/img/media.png" alt="" />
+              </div>
+              <h3 className="artworks-no-artworks-headline">
+                No Artworks Found
+              </h3>
+            </div>
+          )}
         </div>
       </>
     </div>
