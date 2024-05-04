@@ -1,38 +1,47 @@
-.artworks-scrollbar-container{
-    display:flex;
-    flex-direction: column;
+.artworks-scrollbar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.profile-artworks-scrollbar{
-    display: flex;
-    flex-direction: row;
-    overflow-x: scroll;
-    gap:0.5rem;
+.profile-artworks-scrollbar {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  gap: 0.5rem;
 }
 
-.profile-artwork-card-wrapper{
-    display: flex;
-    flex-direction: column;
-    border: solid black 1px;
+.profile-artwork-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: solid black 1px;
 }
-.scrollbar-heading{
-    font-weight:600;
-    padding:15px 0;
+.scrollbar-heading {
+  font-weight: 600;
+  /* padding:15px 0; */
 }
-.artworks-scrollbar-heading{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.artworks-scrollbar-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
 }
-.create-artwork-button{
-    background-color: black;
-    border-radius:20px;
-    width:36px;
-
+.create-artwork-button {
+  background-color: black;
+  border-radius: 50%;
+  width: 35px;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
-.create-artwork-button >p {
-    color:white;
-    font-size: 24px;
-    text-align: center;
+.create-artwork-button > p {
+  color: rgb(255, 255, 255);
+  box-sizing: border-box;
+  height: fit-content;
+  position:relative;
+  top:-1px;
+  font-size: 1.2rem;
 }

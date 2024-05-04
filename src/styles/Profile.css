@@ -1,11 +1,40 @@
-
-.profile-wrapper{
-    display: flex;
-    flex-direction: column;
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
-
-.edit-link{
-    position: absolute;
-    right:10px;
-    font-weight:600;
+.profile-profilecard-wrapper {
+  position: relative;
+}
+.profile-edit-link {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-weight: 600;
+}
+.profile-artist-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  /* background-color: aqua; */
+}
+.profile-artist-statement-wrapper {
+}
+.profile-artist-statement-statement-headline {
+}
+.profile-artist-statement-statement-statement {
+}
+.profile-section-headline {
+}
+.profile-outgoing-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* background-color: rgb(0, 255, 0); */
+}
+.profile-incoming-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* background-color: rgb(255, 0, 221); */
 }
