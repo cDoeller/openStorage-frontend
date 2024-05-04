@@ -6,10 +6,13 @@ import uploadService from "../services/file-upload.services";
 import cityService from "../services/city.services";
 import { AuthContext } from "../context/auth.context";
 import "../styles/EditArtwork.css";
+import Popup from "../components/Popup";
 
 function EditArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
   const { id } = useParams();
+
+  const [showPopup, setShowPopup] = useState(false)
 
   const [artwork, setArtwork] = useState(null);
   const [cityOptions, setCityOptions] = useState([])
@@ -149,11 +152,36 @@ function EditArtworkPage() {
     setImagesUrl(copiedImages)
   }
 
+  // content for delete popup
+    function handleYes(e){
+      e.preventDefault()
+
+      artworksService.deleteArtwork(id)
+      .then((deletedArtwork)=>{
+        console.log(deletedArtwork)
+        navigate("/profile")
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    
+    }
+    function handleNo(e){
+      e.preventDefault()
+      setShowPopup(false)
+    }
+  const deleteButton = <div className="">
+    <button onClick={(e)=>{handleYes(e)}}>Yes</button>
+    <button onClick={(e)=>{handleNo(e)}}>No</button>
+
+    </div>
+
   function handleDeleteArtwork(e) {
     e.preventDefault();
 
-    // open a modal to confirm choice
-    // then make the delete call
+    setShowPopup(true)
+
+
   }
 
   function handleSubmit(e) {
@@ -213,6 +241,13 @@ function EditArtworkPage() {
 
   return (
     <div id="EditArtworkPage" className="page-wrapper">
+    <Popup
+    headline={"Are you sure?"}
+    showPopup={showPopup}
+    setShowPopup={setShowPopup}
+    text={"Deleting the artwork is irreversible"}
+    button={deleteButton}
+     />
     <div className="heading-wrapper">
       <h1>Edit Artwork</h1>
       <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}>{"< Back"}</button>
@@ -329,6 +364,7 @@ function EditArtworkPage() {
               value={{ label: genre }}
               styles={selectStles}
             />
+            <button onClick={handleDeleteArtwork}>Delete Artwork</button>
           <button onSubmit={handleSubmit}>Submit Changes</button>
         </form>
       )}
