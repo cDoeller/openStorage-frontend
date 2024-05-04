@@ -185,7 +185,7 @@ function RequestPage() {
             </div>
             <div className="request-artwork-info-wrapper">
               <p className="request-artwork-info-text">
-                {artwork.artist.user_name}
+                {artwork.artist.real_name}
               </p>
               <p className="request-artwork-info-text">
                 {artwork.title}, {artwork.year}

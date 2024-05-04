@@ -8,13 +8,34 @@ function ArtworkCard(props) {
 
   switch (medium) {
     case "Painting":
-      medium_img = "../../public/img/painting-icon.png";
+      medium_img = "/img/painting-icon.png";
       break;
     case "Photography":
-      medium_img = "../../public/img/photo-icon.png";
+      medium_img = "/img/photo-icon.png";
       break;
-      default:
-        medium_img = "../../public/img/photo-icon.png";
+    case "Drawing":
+      medium_img = "/img/drawing-icon.png";
+      break;
+    case "Sculpture":
+      medium_img = "/img/sculpture-icon.png";
+      break;
+    case "Object":
+      medium_img = "/img/object-icon.png";
+      break;
+    case "Installation":
+      medium_img = "/img/installation-icon.png";
+      break;
+    case "Print":
+      medium_img = "/img/print-icon.png";
+      break;
+    case "Collage":
+      medium_img = "/img/collage-icon.png";
+      break;
+    case "Mixed Media":
+      medium_img = "/img/mixedmedia-icon.png";
+      break;
+    default:
+      medium_img = "/img/media.png";
   }
 
   return (

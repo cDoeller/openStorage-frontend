@@ -15,11 +15,12 @@
   align-items: center;
 }
 .artwork-card-info-text-wrapper {
+  max-width:80%;
 }
 .artwork-card-info-text-text {
 }
 .artwork-card-icon-wrapper {
-  width: 40px;
+  width: 30px;
 }
 .artwork-card-icon-wrapper > img {
   width: 100%;
