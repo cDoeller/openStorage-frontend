@@ -6,6 +6,7 @@ import cityService from "../services/city.services";
 import "../styles/CreateArtwork.css";
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
+import citiesGermany from "../data/cities-germany.json";
 
 function CreateArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -92,13 +93,11 @@ function CreateArtworkPage() {
   };
 
   useEffect(() => {
-    cityService.getAllCities().then((response) => {
-      let cityNames = response.data.map((oneCity) => {
-        return { value: oneCity.name, label: oneCity.name };
-      });
-      // console.log(cityNames);
-      setCityOptions(cityNames);
+    let cityNames = citiesGermany.map((oneCity) => {
+      return { value: oneCity.city, label: oneCity.city };
     });
+    // console.log(cityNames);
+    setCityOptions(cityNames);
   }, []);
 
   function handleDeleteImage(e, index) {
@@ -114,11 +113,9 @@ function CreateArtworkPage() {
     const files = Array.from(e.target.files);
     setImageData(files);
     const previews = files.map((file) => URL.createObjectURL(file));
-    console.log(previews)
+    console.log(previews);
     setImagePreviews(previews);
-
   }
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -142,7 +139,7 @@ function CreateArtworkPage() {
         newArtwork.images_url = response.data.fileUrls;
 
         // console.log("response is: ", response);
-        
+
         let copiedArray = [...uploadedImages, response.data.fileUrls];
         setUploadedImages(copiedArray);
         return artworksService.createArtwork(newArtwork);
@@ -151,7 +148,7 @@ function CreateArtworkPage() {
         console.log("successfully created a new artwork");
         const newArtwork = response.data.newArtwork;
         console.log(newArtwork);
-        navigate(`/artworks/${newArtwork._id}`)
+        navigate(`/artworks/${newArtwork._id}`);
       })
       .catch((err) => console.log("Error while uploading the file: ", err));
   }
@@ -258,9 +255,14 @@ function CreateArtworkPage() {
             Upload Image
           </button> */}
           <div className="create-artwork-thumbnail-wrapper">
-          {imagePreviews.map((preview, index) => (
-          <img key={index} src={preview} alt={`Preview ${index}`} style={{ maxWidth: "200px", maxHeight: "200px" }} />
-        ))}
+            {imagePreviews.map((preview, index) => (
+              <img
+                key={index}
+                src={preview}
+                alt={`Preview ${index}`}
+                style={{ maxWidth: "200px", maxHeight: "200px" }}
+              />
+            ))}
           </div>
         </div>
         {/* MEDIUM */}
