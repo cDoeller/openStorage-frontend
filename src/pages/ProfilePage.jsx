@@ -65,11 +65,10 @@ function ProfilePage() {
   }
 
   return (
-    <div id="ProfilePage" className="page-wrapper mobile-dvh">
-      <h1>Your Profile</h1>
-
+    <div className="page-wrapper mobile-dvh">
       {isLoggedIn && userInfo && (
         <div className="profile-wrapper">
+          <h1>Your Profile</h1>
           <div className="profile-edit-link">
             <Link to="/profile/edit-profile">Edit</Link>
           </div>
@@ -84,53 +83,57 @@ function ProfilePage() {
 
           {/* ARTIST DASHBOARD */}
           {userInfo.isArtist && (
-            <div className="profile-artist-wrapper">
-              <div className="profile-artist-statement-wrapper">
-                <h3 className="profile-artist-statement-statement-headline">
-                  Artist Statement:
-                </h3>
-                <p className="profile-artist-statement-statement-statement">
-                  {userInfo.artist_statement}
-                </p>
+            <>
+              <div className="profile-artist-wrapper">
+                <div className="profile-artist-statement-wrapper">
+                  <h3 className="profile-artist-statement-statement-headline">
+                    Artist Statement:
+                  </h3>
+                  <p className="profile-artist-statement-statement-statement">
+                    {userInfo.artist_statement}
+                  </p>
+                </div>
+
+                {/* ARTWORKS */}
+                <ArtworksScrollbar
+                  userInfo={userInfo}
+                  contents={userInfo.artworks}
+                  heading={"Artworks"}
+                ></ArtworksScrollbar>
               </div>
 
-              {/* ARTWORKS */}
-              <ArtworksScrollbar
-                userInfo={userInfo}
-                contents={userInfo.artworks}
-                heading={"Artworks"}
-              ></ArtworksScrollbar>
-
               {/* MANAGE PORTFOLIO */}
-              <h3 className="profile-section-headline">
-                Manage Outgoing Rentals
-              </h3>
-              {/* incoming pending requests */}
-              {isReceivingRequest && (
-                <>
-                  <ArtworksScrollbar
-                    userInfo={userInfo}
-                    contents={userInfo.rentals.rentals_offering}
-                    heading={"Pending Requests"}
-                  />
-                </>
-              )}
-              {/* offered rentals */}
-              {isOfferingRental && (
-                <>
-                  <ArtworksScrollbar
-                    userInfo={userInfo}
-                    contents={userInfo.rentals.rentals_offering}
-                    heading={"Current Rentals"}
-                  />
-                </>
-              )}
-            </div>
+              <div className="profile-outgoing-wrapper">
+                <h3 className="profile-section-headline">
+                  Manage Outgoing Rentals
+                </h3>
+                {/* incoming pending requests */}
+                {isReceivingRequest && (
+                  <>
+                    <ArtworksScrollbar
+                      userInfo={userInfo}
+                      contents={userInfo.rentals.rentals_offering}
+                      heading={"Pending Requests"}
+                    />
+                  </>
+                )}
+                {/* offered rentals */}
+                {isOfferingRental && (
+                  <>
+                    <ArtworksScrollbar
+                      userInfo={userInfo}
+                      contents={userInfo.rentals.rentals_offering}
+                      heading={"Current Rentals"}
+                    />
+                  </>
+                )}
+              </div>
+            </>
           )}
 
           {/* NORMAL USER DASHBOARD */}
           {(isRequestingRental || isReceivingRental) && (
-            <div className="profile-user-wrapper">
+            <div className="profile-incoming-wrapper">
               <h3 className="profile-section-headline">Your Activities</h3>
               {/* outgoing pending requests */}
               {isRequestingRental && (
