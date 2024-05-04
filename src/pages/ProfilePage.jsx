@@ -69,17 +69,22 @@ function ProfilePage() {
       {isLoggedIn && userInfo && (
         <div className="profile-wrapper">
           <h1>Your Profile</h1>
-          <div className="profile-edit-link">
-            <Link to="/profile/edit-profile">Edit</Link>
-          </div>
 
-          <UserProfileCard
-            name={userInfo.real_name ? userInfo.real_name : userInfo.user_name}
-            img={userInfo.profile_img_url}
-            isArtist={userInfo.isArtist}
-            city={userInfo.contact.address.city}
-            tagline={userInfo.tagline}
-          />
+          {/* PROFILE CARD */}
+          <div className="profile-profilecard-wrapper">
+            <div className="profile-edit-link">
+              <Link to="/profile/edit-profile">Edit</Link>
+            </div>
+            <UserProfileCard
+              name={
+                userInfo.real_name ? userInfo.real_name : userInfo.user_name
+              }
+              img={userInfo.profile_img_url}
+              isArtist={userInfo.isArtist}
+              city={userInfo.contact.address.city}
+              tagline={userInfo.tagline}
+            />
+          </div>
 
           {/* ARTIST DASHBOARD */}
           {userInfo.isArtist && (
