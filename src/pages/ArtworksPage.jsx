@@ -11,12 +11,56 @@ function ArtworksPage() {
   const [showInterface, setShowInterface] = useState(false);
   const [allArtists, setAllArtists] = useState(null);
   const [allCities, setAllCities] = useState(null);
+  const [genrePreset, setGenrePreset] = useState("");
 
   function toggleFilterInterface() {
     setShowInterface(!showInterface);
   }
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const genre = urlParams.get("genre");
+
+    //  if a genre is passed from homepage, render prefiltered works
+    if (genre) {
+      setGenrePreset(genre);
+      const genreQueryString = `?genre=${genre}`;
+      getPrefilteredArtworks(genreQueryString);
+      // if no genre is present, render all artworks
+    } else {
+      getAllArtworks();
+    }
+  }, []);
+
+  function getPrefilteredArtworks(queryString) {
+    artworksService
+      .getArtworkQuery(queryString)
+      .then((response) => {
+        // console.log(response.data);
+        setArtworks(response.data);
+      })
+      .then(() => {
+        userService
+          .getAllArtistsWithWorks()
+          .then((response) => {
+            // console.log(response.data);
+            setAllArtists(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
+      .then(() => {
+        artworksService
+          .getArtworkCities()
+          .then((response) => {
+            // console.log(response.data);
+            setAllCities(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function getAllArtworks() {
     artworksService
       .getAllArtworks()
       .then((response) => {
@@ -42,14 +86,14 @@ function ArtworksPage() {
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
-  }, []);
+  }
 
   // disable scroll when filter page open
   function disableScroll() {
     const scrollTopPosition =
       window.pageYOffset || document.documentElement.scrollTop;
     window.onscroll = function () {
-      window.scrollTo(0,scrollTopPosition);
+      window.scrollTo(0, scrollTopPosition);
     };
   }
   function enableScroll() {
@@ -77,6 +121,7 @@ function ArtworksPage() {
           setArtworks={setArtworks}
           allArtists={allArtists}
           allCities={allCities}
+          genrePreset={genrePreset}
         />
       </div>
 

@@ -112,15 +112,18 @@
   text-align: center;
   width: 60%;
 }
-.landing-genre-section-bullet-wrapper {
-  width: 100%;
+.landing-genre-section-genre-wrapper{
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+.landing-genre-section-bullet-wrapper {
+  display: flex;
   align-items: center;
-  gap: 10%;
+  gap: 1rem;
 }
 .landing-genre-section-bullet-icon-wrapper {
-  width: 20px;
+  width: 15px;
 }
 .landing-genre-section-bullet-icon {
   width: 100%;
@@ -137,10 +140,7 @@
   margin-bottom: 3rem;
 }
 .landing-newsletter-section-icon-wrapper {
-  width: 80px;
-  padding: 0.2rem 2rem;
-  border-radius: 10px;
-  background-color: rgb(239, 239, 239);
+  width: 40px;
 }
 .landing-newsletter-section-icon {
   width: 100%;
