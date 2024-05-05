@@ -5,8 +5,8 @@ import { AuthContext } from "../context/auth.context";
 import "../styles/EditProfile.css";
 import userService from "../services/user.services";
 import uploadService from "../services/file-upload.services";
-import "../styles/Forms.css"
-import germanCities from "../data/cities-germany.json"
+import "../styles/Forms.css";
+import germanCities from "../data/cities-germany.json";
 
 function EditProfilePage() {
   const navigate = useNavigate();
@@ -14,11 +14,11 @@ function EditProfilePage() {
   const storedToken = localStorage.getItem("authToken");
 
   const [userInfo, setUserInfo] = useState(null);
-  const [cityOptions, setCityOptions] = useState([])
+  const [cityOptions, setCityOptions] = useState([]);
 
   const [realName, setRealName] = useState("");
   const [profileImg, setProfileImg] = useState("");
-  const [imageData ,setImageData] = useState("")
+  const [imageData, setImageData] = useState("");
   const [tagline, setTagline] = useState("");
   const [city, setCity] = useState("");
   const [artistStatement, setArtistStatement] = useState("");
@@ -69,18 +69,15 @@ function EditProfilePage() {
     }),
   };
 
-  
+  function handleProfileImg(e) {
+    let imageToUpload = new FormData();
+    imageToUpload.append("images", e.target.files[0]);
 
-  function handleProfileImg(e){
-    let imageToUpload = new FormData()
-    imageToUpload.append("images", e.target.files[0])
-
-    
     const preview = URL.createObjectURL(e.target.files[0]);
     console.log(preview);
-    setProfileImg(preview)
+    setProfileImg(preview);
 
-    setImageData(imageToUpload)
+    setImageData(imageToUpload);
   }
 
   function handleSubmit(e) {
@@ -104,31 +101,29 @@ function EditProfilePage() {
       tagline: tagline,
     };
 
-    uploadService.uploadImage(imageData)
-    .then((response)=>{
-      let imageUrl = response.data.fileUrls[0]
-      updatedUser.profile_img_url = imageUrl
-      return userService.updateUser(userInfo._id, updatedUser)
-    })
-    .then((response) => {
-      console.log(response.data);
-      navigate("/profile");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-
+    uploadService
+      .uploadImage(imageData)
+      .then((response) => {
+        let imageUrl = response.data.fileUrls[0];
+        updatedUser.profile_img_url = imageUrl;
+        return userService.updateUser(userInfo._id, updatedUser);
+      })
+      .then((response) => {
+        console.log(response.data);
+        navigate("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  useEffect(()=>{
-    let formattedOptions = germanCities.map((oneCity)=>{
-      return {value:oneCity.city, label:oneCity.city}
-    })
-    setCityOptions(formattedOptions)
+  useEffect(() => {
+    let formattedOptions = germanCities.map((oneCity) => {
+      return { value: oneCity.city, label: oneCity.city };
+    });
+    setCityOptions(formattedOptions);
+  }, []);
 
-  },[])
-  
   useEffect(() => {
     if (user) {
       userService
@@ -157,22 +152,43 @@ function EditProfilePage() {
 
   return (
     <div id="EditProfilePage" className="page-wrapper mobile-dvh">
-    <div className="edit-profile heading-wrapper">
-      <h1>Edit Profile</h1>
-      <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}> {"< Back"}</button>
-    </div>
+      <div className="heading-wrapper">
+        <h1>Edit Profile</h1>
+        <button
+          className="back-button"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
+          {" "}
+          {"< Back"}
+        </button>
+      </div>
 
       {isLoggedIn && userInfo && (
-        <form className="profile edit-form" onSubmit={(e)=>{handleSubmit(e)}}>
-          <div className="edit-profile-info-wrapper">
-          <div className="change-profile-img-container">
-            <div className="edit-profile-img-wrapper">
-              <img src={profileImg} alt="profile image" />
+        <form
+          className="profile edit-form edit-profile-form"
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+        >
+          <div className="edit-profile-general-info-wrapper">
+            <div className="edit-profile-img-container">
+              <div className="edit-profile-img-wrapper">
+                <img src={profileImg} alt="profile image" />
+              </div>
+
+              <input
+                name="profile-img"
+                className="file-input edit-profile-image-file-input"
+                type="file"
+                accept=".jpg, .png"
+                onChange={(e) => {
+                  handleProfileImg(e);
+                }}
+              />
             </div>
-
-              <input name="profile-img" className="file-input" type="file" accept=".jpg, .png" onChange={(e)=>{handleProfileImg(e)}} />
-
-          </div>
             <div className="edit-profile-text-wrapper">
               {userInfo.isArtist ? (
                 <p className="profile-type">Artist</p>
@@ -199,20 +215,20 @@ function EditProfilePage() {
                 }}
               />
               {/* CITY */}
-            <label htmlFor="" className="filterinterface-form-label">
-              City
-            </label>
-            <Select
-              options={cityOptions}
-              onChange={handleCitiesSelectChange}
-              value={{ label: city }}
-              styles={selectStles}
-            />
+              <label htmlFor="" className="filterinterface-form-label">
+                City
+              </label>
+              <Select
+                options={cityOptions}
+                onChange={handleCitiesSelectChange}
+                value={{ label: city }}
+                styles={selectStles}
+              />
             </div>
           </div>
 
           {userInfo.isArtist && (
-            <div>
+            <div className="edit-profile-artist-info-wrapper">
               <div className="artist-statement-wrapper">
                 <label htmlFor="">Artist Statement:</label>
                 <textarea
@@ -224,74 +240,72 @@ function EditProfilePage() {
                   }}
                 />
               </div>
-              <hr />
-              <h4>Contact Information:</h4>
-              <div className="contact-wrapper">
-              <label htmlFor="">Website</label>
-              <input
-                className="edit-profile input"
-                type="text"
-                value={website}
-                onChange={(e) => {
-                  setWebsite(e.target.value);
-                }}
-              />
-              <label htmlFor="">Instagram</label>
-              <input
-                className="edit-profile input"
-                type="text"
-                value={instagram}
-                onChange={(e) => {
-                  setInstagram(e.target.value);
-                }}
-              />
-              <div className="address-wrapper">
-
-              <h5>Address:</h5>
-              <label htmlFor="street">Street</label>
-              <input
-              name="street"
-                className="edit-profile input"
-                type="text"
-                value={addressStreet}
-                onChange={(e) => {
-                  setAddressStreet(e.target.value);
-                }}
-              />
-              <label htmlFor="city">City</label>
-              <input
-              name="city"
-                className="edit-profile input"
-                type="text"
-                value={addressCity}
-                onChange={(e) => {
-                  setAddressCity(e.target.value);
-                }}
-              />
-              <label htmlFor="country">Country</label>
-              <input
-                className="edit-profile input"
-                type="text"
-                value={addressCountry}
-                onChange={(e) => {
-                  setAddressCountry(e.target.value);
-                }}
-              />
-              <label htmlFor="postcode">Postal Code</label>
-              <input
-                className="edit-profile input"
-                type="text"
-                value={addressPostcode}
-                onChange={(e) => {
-                  setAddressPostcode(e.target.value);
-                }}
-              />
+              {/* <hr /> */}
+              <h3 className="edit-profile-contact-info-headline">Contact Information:</h3>
+              <div className="edit-profile-contact-info-wrapper">
+                <label htmlFor="">Website</label>
+                <input
+                  className="edit-profile input"
+                  type="text"
+                  value={website}
+                  onChange={(e) => {
+                    setWebsite(e.target.value);
+                  }}
+                />
+                <label htmlFor="">Instagram</label>
+                <input
+                  className="edit-profile input"
+                  type="text"
+                  value={instagram}
+                  onChange={(e) => {
+                    setInstagram(e.target.value);
+                  }}
+                />
+                <div className="edit-profile-contact-info-address-wrapper">
+                  <h3 className="edit-profile-adress-info-headline">Address:</h3>
+                  <label htmlFor="street">Street</label>
+                  <input
+                    name="street"
+                    className="edit-profile input"
+                    type="text"
+                    value={addressStreet}
+                    onChange={(e) => {
+                      setAddressStreet(e.target.value);
+                    }}
+                  />
+                  <label htmlFor="city">City</label>
+                  <input
+                    name="city"
+                    className="edit-profile input"
+                    type="text"
+                    value={addressCity}
+                    onChange={(e) => {
+                      setAddressCity(e.target.value);
+                    }}
+                  />
+                  <label htmlFor="country">Country</label>
+                  <input
+                    className="edit-profile input"
+                    type="text"
+                    value={addressCountry}
+                    onChange={(e) => {
+                      setAddressCountry(e.target.value);
+                    }}
+                  />
+                  <label htmlFor="postcode">Postal Code</label>
+                  <input
+                    className="edit-profile input"
+                    type="text"
+                    value={addressPostcode}
+                    onChange={(e) => {
+                      setAddressPostcode(e.target.value);
+                    }}
+                  />
+                </div>
               </div>
             </div>
-
-              </div>
           )}
-          <button>Update</button>
+          <button className="edit-profile-update-button">Update</button>
         </form>
       )}
     </div>

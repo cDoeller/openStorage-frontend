@@ -9,6 +9,7 @@
   border: none;
   border-bottom: 2px solid black;
   background-color: white;
+  box-sizing: border-box;
 }
 
 .textarea{
