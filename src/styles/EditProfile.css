@@ -64,13 +64,18 @@
 .edit-profile-contact-info-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
+}
+.edit-profile-contact-info-web-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 /* address part */
 .edit-profile-contact-info-address-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 .edit-profile-adress-info-headline {
 }

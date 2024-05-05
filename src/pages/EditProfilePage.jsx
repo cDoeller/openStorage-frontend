@@ -241,28 +241,34 @@ function EditProfilePage() {
                 />
               </div>
               {/* <hr /> */}
-              <h3 className="edit-profile-contact-info-headline">Contact Information:</h3>
               <div className="edit-profile-contact-info-wrapper">
-                <label htmlFor="">Website</label>
-                <input
-                  className="edit-profile input"
-                  type="text"
-                  value={website}
-                  onChange={(e) => {
-                    setWebsite(e.target.value);
-                  }}
-                />
-                <label htmlFor="">Instagram</label>
-                <input
-                  className="edit-profile input"
-                  type="text"
-                  value={instagram}
-                  onChange={(e) => {
-                    setInstagram(e.target.value);
-                  }}
-                />
+                <h3 className="edit-profile-contact-info-headline">
+                  Contact Information:
+                </h3>
+                <div className="edit-profile-contact-info-web-wrapper">
+                  <label htmlFor="">Website</label>
+                  <input
+                    className="edit-profile input"
+                    type="text"
+                    value={website}
+                    onChange={(e) => {
+                      setWebsite(e.target.value);
+                    }}
+                  />
+                  <label htmlFor="">Instagram</label>
+                  <input
+                    className="edit-profile input"
+                    type="text"
+                    value={instagram}
+                    onChange={(e) => {
+                      setInstagram(e.target.value);
+                    }}
+                  />
+                </div>
                 <div className="edit-profile-contact-info-address-wrapper">
-                  <h3 className="edit-profile-adress-info-headline">Address:</h3>
+                  <h3 className="edit-profile-adress-info-headline">
+                    Address:
+                  </h3>
                   <label htmlFor="street">Street</label>
                   <input
                     name="street"
