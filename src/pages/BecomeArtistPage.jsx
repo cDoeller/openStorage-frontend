@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
-import cityService from "../services/city.services";
 import uploadService from "../services/file-upload.services";
 import artworksServices from "../services/artworks.services";
 import Select from "react-select";
 import "../styles/Forms.css";
+import "../styles/CreateArtwork.css"
 import citiesGermany from "../data/cities-germany.json";
 
 function BecomeArtistPage() {
@@ -23,10 +23,13 @@ function BecomeArtistPage() {
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(2024);
-  // const [imagesUrl, setImagesUrl] = useState([]);
-  const [imageData, setImageData] = useState("");
-  const [imageToUpload, setImageToUpload] = useState("");
+
+  // Image states
+  const [imageData, setImageData] = useState([]);
+  // const [imageToUpload, setImageToUpload] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+
   const [artworkCity, setArtworkCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
@@ -69,9 +72,7 @@ function BecomeArtistPage() {
     { value: "Art & Design", label: "Art & Design" },
   ];
 
-  let countryOptions = [
-    { value: "Germany", label: "Germany" },
-  ];
+  let countryOptions = [{ value: "Germany", label: "Germany" }];
 
   const [cityOptions, setCityOptions] = useState(null);
   const [artworkCityOptions, setArtworkCityOptions] = useState(null);
@@ -134,39 +135,61 @@ function BecomeArtistPage() {
   useEffect(() => {
     userService.getUser(user._id).then((response) => {
       const initialData = response.data;
-      setRealName(initialData.real_name);
-      setStreet(initialData.contact.address.street);
-      setCity(initialData.contact.address.city);
-      setCountry(initialData.contact.address.country);
-      setPostcode(initialData.contact.address.postal_code);
+      const address = initialData.address
+      if(initialData.real_name){
+        setRealName(initialData.real_name);
+      }
+      if(address){
+        if(address.street){
+          setStreet(address.street);
+        }
+        if(address.city){
+          setCity(address.city);
+        }
+        if(address.postal_code){
+          setPostcode(address.postal_code);
+        }
+        if(address.country){
+          setCountry(address.country);
+        }
+      }
     });
   }, [user]);
 
-  function handleDeleteImage(e, index) {
-    e.preventDefault();
-    const copiedImages = [...uploadedImages];
-    copiedImages.splice(index, 1);
-    setUploadedImages(copiedImages);
+  function handleDeleteImage(index) {
+    const newImageData = [...imageData];
+    const newImagePreviews = [...imagePreviews];
+
+    newImageData.splice(index, 1);
+    newImagePreviews.splice(index, 1);
+
+    setImageData(newImageData)
+    setImagePreviews(newImagePreviews)
   }
 
   function handleImagesUpload(e) {
     e.preventDefault();
 
     const files = e.target.files;
-    const uploadData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      uploadData.append("images", files[i]);
-    }
+    const newImageData = [...files, ...imageData];
 
-    setImageData(uploadData);
+    setImageData(newImageData);
+
+    const newImagePreviews = newImageData.map((file) =>
+      URL.createObjectURL(file)
+    );
+    setImagePreviews(newImagePreviews);
   }
 
   async function handleSubmit(e) {
     try {
       e.preventDefault();
 
+      const formData = new FormData();
+      imageData.forEach((file) => formData.append("images", file));
+
       // performs the action of sending the data
-      const cloudinaryResponse = await uploadService.uploadImage(imageData);
+      const cloudinaryResponse = await uploadService.uploadImage(formData);
 
       let artworkData = {
         title: title,
@@ -185,11 +208,11 @@ function BecomeArtistPage() {
       artworkData.images_url = cloudinaryResponse.data.fileUrls;
       console.log("response is: ", cloudinaryResponse);
       // response carries "fileUrl" which we can use to update the state
-      let copiedArray = [
-        ...uploadedImages,
-        ...cloudinaryResponse.data.fileUrls,
-      ];
-      setUploadedImages(copiedArray);
+      // let copiedArray = [
+      //   ...uploadedImages,
+      //   ...cloudinaryResponse.data.fileUrls,
+      // ];
+      // setUploadedImages(copiedArray);
 
       const createFirstArtwork = await artworksServices.createArtwork(
         artworkData
@@ -250,7 +273,7 @@ function BecomeArtistPage() {
           type="text"
           required
           name="real name"
-          value={realName}
+          value={realName && realName}
           onChange={(e) => {
             setRealName(e.target.value);
           }}
@@ -261,7 +284,7 @@ function BecomeArtistPage() {
           className="textarea"
           name="artist-statement"
           required
-          value={artistStatement}
+          value={artistStatement && artistStatement}
           onChange={(e) => {
             setArtistStatement(e.target.value);
           }}
@@ -275,7 +298,7 @@ function BecomeArtistPage() {
           type="text"
           required
           className="input"
-          value={street}
+          value={street && street}
           onChange={(e) => {
             setStreet(e.target.value);
           }}
@@ -352,26 +375,29 @@ function BecomeArtistPage() {
           styles={selectStles}
         />
 
+<div className="create-artwork-img-section">
+<div className="file-input-container">
         <label htmlFor="">Images</label>
         <input
           type="file"
+          className="file-input"
           required
           multiple
-          className="input"
+          accept=".jpg, .png"
           onChange={(e) => {
             handleImagesUpload(e);
           }}
         />
-        {/* <button onClick={(e)=>{handleImagesUpload(e)}}>Upload Image</button> */}
-        {uploadedImages &&
-          uploadedImages.map((oneImage, index) => {
+        <div className="create-artwork-thumbnail-wrapper">
+        {imagePreviews &&
+          imagePreviews.map((oneImage, index) => {
             return (
-              <div key={index} className="create-artwork-img-wrapper">
+              <div key={index} className="create-artwork-img-thumbnail">
                 <img src={oneImage} alt={title} />
                 <button
-                  className="create-artwork-delete-img-button"
-                  onClick={(e) => {
-                    handleDeleteImage(e, index);
+                  className="delete-img-button"
+                  onClick={() => {
+                    handleDeleteImage(index);
                   }}
                 >
                   x
@@ -379,6 +405,12 @@ function BecomeArtistPage() {
               </div>
             );
           })}
+
+
+        </div>
+</div>
+
+</div>
 
         <label htmlFor="">Dimensions [cm]</label>
         <div className="create-dimensions-wrapper">

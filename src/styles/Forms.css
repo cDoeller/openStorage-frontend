@@ -43,5 +43,17 @@
   border-radius: 2px;
   text-align: center;
   border:none;
+}
 
+.delete-img-button{
+  border-radius:50%;
+  border:none;
+  background-color: black;
+  color:white;
+  aspect-ratio: 1;
+  height:2rem;
+}
+
+.delete-img-button:hover{
+  color:mediumspringgreen;
 }

@@ -167,8 +167,8 @@ function EditArtworkPage() {
     console.log("image data after adding new ", imageData)
   }
 
-  function handleDeleteImage(e,index){
-    e.preventDefault()
+  function handleDeleteImage(id){
+    
     // const copiedImages = [...oldImages]
     // const newImageData = [...imageData]
     // copiedImages.splice(index, 1)
@@ -356,6 +356,7 @@ function EditArtworkPage() {
               <input
                 className="file-input edit-artwork-input"
                 type="file"
+                accept=".jpg, .png"
                 multiple
                 onChange={(e) => {
                   handleImagesUrl(e);
@@ -363,11 +364,12 @@ function EditArtworkPage() {
               />
               {/* <button onClick={(e)=>handleImageUpload(e)}>Upload Image</button> */}
               <div className="edit-artwork-img-section">
-              {imagePreviews && imagePreviews.map((oneUrl, index) => {
+              {imagePreviews && imagePreviews.map((oneUrl) => {
                 return (
-                  <div className="edit-artwork-img-wrapper" key={index}>
+                  <div className="edit-artwork-img-wrapper" key={oneUrl.id}>
+                {console.log("one url", oneUrl)}
                     <img src={oneUrl} alt={title} />
-                    <button className="edit-artwork-img-delete-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
+                    <button className="edit-artwork-img-delete-button" onClick={()=>{handleDeleteImage(oneUrl.id)}}>x</button>
                   </div>
                 );
               })}

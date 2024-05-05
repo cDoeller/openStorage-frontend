@@ -66,9 +66,14 @@
     display: flex;
     border-radius: 4px;
   }
+
+  .create-artwork-img-thumbnail>img:hover{
+    border:1px solid mediumspringgreen;
+  }
   
   .create-artwork-img-thumbnail > img {
     width: 100%;
     object-fit: contain;
+    border:1px solid white;
   }
   

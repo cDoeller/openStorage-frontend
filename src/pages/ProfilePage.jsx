@@ -81,8 +81,8 @@ function ProfilePage() {
               }
               img={userInfo.profile_img_url}
               isArtist={userInfo.isArtist}
-              city={userInfo.contact.address.city}
-              tagline={userInfo.tagline}
+              city={userInfo.contact ? userInfo.contact.address.city : ""}
+              tagline={userInfo.tagline ? userInfo.tagline : ""}
             />
           </div>
 
