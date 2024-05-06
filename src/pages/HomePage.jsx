@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/HomePage.css";
+import "../styles/styles-pages/HomePage.css";
 import artworksService from "../services/artworks.services";
 import RecentArtworks from "../components/RecentArtworks";
 
@@ -98,7 +98,9 @@ function HomePage() {
         )}
 
         <Link to="/artworks">
-          <button className="landing-artworks-section-button">ARTWORKS</button>
+          <button className="landing-artworks-section-button button">
+            BROWSE ARTWORKS
+          </button>
         </Link>
       </section>
 
@@ -162,13 +164,13 @@ function HomePage() {
 
       {/* newsletter section */}
       <section className="landing-newsletter-section">
-        <div className="landing-newsletter-section-icon-wrapper">
-          <img
-            src="/img/newsletter.png"
-            alt=""
-            className="landing-newsletter-section-icon"
-          />
-        </div>
+          <div className="landing-newsletter-section-icon-wrapper">
+            <img
+              src="/img/newsletter.png"
+              alt=""
+              className="landing-newsletter-section-icon"
+            />
+          </div>
         <p className="landing-newsletter-section-text">
           Subscribe to our newsletter and stay up to date on the latest open
           storages in your area!

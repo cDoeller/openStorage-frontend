@@ -5,8 +5,8 @@ import userService from "../services/user.services";
 import uploadService from "../services/file-upload.services";
 import artworksServices from "../services/artworks.services";
 import Select from "react-select";
-import "../styles/Forms.css";
-import "../styles/CreateArtwork.css"
+import "../styles/styles-templates/Forms.css";
+import "../styles/styles-pages/CreateArtwork.css"
 import citiesGermany from "../data/cities-germany.json";
 
 function BecomeArtistPage() {

@@ -1,4 +1,4 @@
-import "../styles/UserProfileCard.css";
+import "../styles/styles-components/UserProfileCard.css";
 
 function UserProfileCard(props) {
   const { img, name, isArtist, city, tagline } = props;

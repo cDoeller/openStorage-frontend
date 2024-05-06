@@ -1,3 +1,7 @@
+.artworks-page {
+  margin: 2rem 0 3rem 0;
+}
+
 .artworks-filterinterface-hide {
   display: none;
 }
@@ -16,8 +20,8 @@
 }
 .artworks-filterinterfacebutton-wrapper-inner {
   position: fixed;
-  top: var(--navbarHeightMobile);
-  right: 0;
+  top: calc(var(--navbarHeightMobile) + 1rem);
+  right: 0.4rem;
   background-color: white;
   border-radius: 10px;
   border: 2px solid black;

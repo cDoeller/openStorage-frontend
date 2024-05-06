@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/RecentArtworks.css";
+import "../styles/styles-components/RecentArtworks.css";
 import ArtworkCardRecent from "./ArtworkCardRecent";
 import { Link } from "react-router-dom";
 

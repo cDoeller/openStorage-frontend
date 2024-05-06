@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import Select from "react-select";
-import "../styles/CreateArtwork.css";
+import "../styles/styles-pages/CreateArtwork.css";
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
 import citiesGermany from "../data/cities-germany.json";

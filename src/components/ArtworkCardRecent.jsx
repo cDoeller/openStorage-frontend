@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/ArtworkCardRecent.css";
+import "../styles/styles-components/ArtworkCardRecent.css";
 
 function ArtworkCardRecent(props) {
   const { img, name, title, year, medium } = props;

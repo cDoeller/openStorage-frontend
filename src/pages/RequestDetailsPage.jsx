@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import "../styles/RequestDetailsPage.css";
-import "../styles/RequestPage.css";
+import "../styles/styles-pages/RequestDetailsPage.css";
+import "../styles/styles-pages/RequestPage.css";
 import { useParams, useNavigate } from "react-router-dom";
 import rentalsService from "../services/rentals.services";
 import artworksService from "../services/artworks.services";

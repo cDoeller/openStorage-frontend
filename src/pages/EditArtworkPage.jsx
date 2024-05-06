@@ -4,7 +4,7 @@ import Select from "react-select";
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
 import { AuthContext } from "../context/auth.context";
-import "../styles/EditArtwork.css";
+import "../styles/styles-pages/EditArtwork.css";
 import Popup from "../components/Popup";
 import germanCities from "../data/cities-germany.json"
 

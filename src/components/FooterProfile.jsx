@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/FooterProfile.css";
+import "../styles/styles-components/FooterProfile.css";
 import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
 import Popup from "./Popup";
