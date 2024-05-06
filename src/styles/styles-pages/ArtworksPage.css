@@ -2,16 +2,6 @@
   margin: 2rem 0 3rem 0;
 }
 
-.artworks-filterinterface-hide {
-  display: none;
-}
-.artworks-filterinterface-show {
-  display: block;
-  width: 100%;
-  position: fixed;
-  left: 0;
-}
-
 /* FILTER INTERFACE BUTTON */
 .artworks-filterinterfacebutton-wrapper {
   display: flex;
@@ -29,6 +19,7 @@
   align-items: center;
   gap: 1rem;
   padding: 0.2rem 1rem;
+  z-index: 400;
 }
 #no-border-button {
   border: none;

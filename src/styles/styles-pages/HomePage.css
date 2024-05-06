@@ -1,22 +1,23 @@
 /* landing page */
-.landing-wrapper {
+#landing-wrapper {
   display: flex;
   flex-direction: column;
   /* align-items: center; */
   gap: 4rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 /* header */
 .landing-header {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 .landing-header-info-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap:0.6rem;
 }
 .landing-header-info-title {
   text-align: center;
@@ -63,11 +64,11 @@
 }
 .landing-artworks-section-headline {
   width: 100%;
-  font-weight: 400;
+  font-weight: 500;
 }
 .landing-artworks-section-button {
   width: 100%;
-  margin-top: 2rem;
+  margin-top: 3rem;
   background-color: var(--lime);
 }
 

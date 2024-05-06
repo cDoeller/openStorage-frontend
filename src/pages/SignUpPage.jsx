@@ -1,8 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-// import axios from "axios";
-import "../styles/styles-pages/SignUp.css";
+import "../styles/styles-pages/SignUp-LogIn.css";
 import authService from "../services/auth.services";
 
 function SignUpPage() {
@@ -50,8 +49,10 @@ function SignUpPage() {
   };
 
   return (
-    <div className="signup-page-wrapper page-wrapper">
-      <h1 className="signup-headline">Welcome to Open Storage</h1>
+    <div className="signup-page-wrapper page-wrapper mobile-dvh-general">
+      <h1 className="signup-headline highlight">
+       Welcome to Open Storage
+      </h1>
       <form
         action=""
         className="signup-form"

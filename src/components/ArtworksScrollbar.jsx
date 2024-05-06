@@ -42,7 +42,7 @@ function ArtworksScrollbar(props) {
         {heading === "Artworks" && isLoggedIn && (
           <Link className="create-artwork-link" to={`/profile/create-artwork`}>
             <div className="create-artwork-button">
-          <p>+</p> 
+              <p>+</p>
             </div>
           </Link>
         )}
@@ -52,14 +52,13 @@ function ArtworksScrollbar(props) {
           artworksArray.map((oneArtwork, index) => {
             if (oneArtwork) {
               return (
-                <div key={index} className="profile-artwork-card-wrapper">
-                  <ArtworkScrollbarCard
-                    heading={heading}
-                    title={oneArtwork.title}
-                    id={contents[index]._id}
-                    img={oneArtwork.images_url}
-                  />
-                </div>
+                <ArtworkScrollbarCard
+                  key={index}
+                  heading={heading}
+                  title={oneArtwork.title}
+                  id={contents[index]._id}
+                  img={oneArtwork.images_url}
+                />
               );
             }
           })}
