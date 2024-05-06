@@ -48,7 +48,7 @@ function HomePage() {
   ];
 
   return (
-    <div className="landing-wrapper page-wrapper">
+    <div id="landing-wrapper" className="page-wrapper">
       {/* header */}
       <header className="landing-header">
         <div className="landing-header-info-wrapper">

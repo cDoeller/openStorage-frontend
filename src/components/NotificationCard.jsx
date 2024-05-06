@@ -93,7 +93,7 @@ function NotificationCard(props) {
 
   // JSX
   return (
-    <div className="notification-card-wrapper">
+    <div className="notification-card-wrapper box-shadow">
       {notification && (
         <>
           <div

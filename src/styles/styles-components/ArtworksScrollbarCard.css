@@ -1,14 +1,26 @@
-.scrollbar-artwork-card-image-wrapper{
-    width:200px;
- }
- 
- .scrollbar-artwork-card-image-wrapper>img{
-     width:100%;
-  }
- 
- .scrollbar-artwork-card-info-wrapper{
-     margin:0 5px;
-     font-size: 12px;
-     font-weight: 600;
- }
- 
+.scrollbar-artwork-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-radius: 10px;
+  height: 250px;
+  overflow: hidden;
+}
+
+.scrollbar-artwork-card-image-wrapper {
+  width: 200px;
+  height: 150px;
+}
+
+.scrollbar-artwork-card-image-wrapper > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scrollbar-artwork-card-info-wrapper {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  max-width: 200px;
+}

@@ -13,7 +13,7 @@ function EditProfilePage() {
   const { isLoggedIn, user } = useContext(AuthContext);
   const storedToken = localStorage.getItem("authToken");
 
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({});
   const [cityOptions, setCityOptions] = useState([]);
 
   const [realName, setRealName] = useState("");
@@ -31,11 +31,17 @@ function EditProfilePage() {
   const [addressStreet, setAddressStreet] = useState("");
   const [addressCity, setAddressCity] = useState("");
   const [addressCountry, setAddressCountry] = useState("");
-  const [addressPostcode, setAddressPostcode] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [addressPostcode, setAddressPostcode] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  let countryOptions = [{ value: "Germany", label: "Germany" }];
 
   function handleCitiesSelectChange(selectedOption) {
     setCity(selectedOption.value);
+  }
+
+  function handleCountrySelectChange(selectedOption) {
+    setAddressCountry(selectedOption.value);
   }
 
   // REACT SELECT STYLING
@@ -69,54 +75,6 @@ function EditProfilePage() {
     }),
   };
 
-  function handleProfileImg(e) {
-    let imageToUpload = new FormData();
-    imageToUpload.append("images", e.target.files[0]);
-
-    const preview = URL.createObjectURL(e.target.files[0]);
-    console.log(preview);
-    setProfileImg(preview);
-
-    setImageData(imageToUpload);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    let updatedUser = {
-      real_name: realName,
-      artist_statement: artistStatement,
-      city: city,
-      contact: {
-        website: website,
-        instagram: instagram,
-        address: {
-          street: addressStreet,
-          city: addressCity,
-          country: addressCountry,
-          postal_code: addressPostcode,
-          phone_number: phoneNumber,
-        },
-      },
-      tagline: tagline,
-    };
-
-    uploadService
-      .uploadImage(imageData)
-      .then((response) => {
-        let imageUrl = response.data.fileUrls[0];
-        updatedUser.profile_img_url = imageUrl;
-        return userService.updateUser(userInfo._id, updatedUser);
-      })
-      .then((response) => {
-        console.log(response.data);
-        navigate("/profile");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   useEffect(() => {
     let formattedOptions = germanCities.map((oneCity) => {
       return { value: oneCity.city, label: oneCity.city };
@@ -130,19 +88,41 @@ function EditProfilePage() {
         .getUser(user._id)
         .then((response) => {
           const initialData = response.data;
-          setProfileImg(initialData.profile_img_url);
+          const address = initialData.contact.address;
           setUserInfo(initialData);
-          setRealName(initialData.real_name);
-          setCity(initialData.city);
-          setArtistStatement(initialData.artist_statement);
-          setWebsite(initialData.contact.website);
-          setInstagram(initialData.contact.instagram);
-          setAddressStreet(initialData.contact.address.street);
-          setAddressCity(initialData.contact.address.city);
-          setAddressCountry(initialData.contact.address.country);
-          setAddressPostcode(initialData.contact.address.postal_code);
-          setPhoneNumber(initialData.contact.address.phone_number);
-          setTagline(initialData.tagline);
+          if (initialData.profile_img_url) {
+            setProfileImg(initialData.profile_img_url);
+          }
+          if (initialData.real_name) {
+            setRealName(initialData.real_name);
+          }
+          if (initialData.artist_statement) {
+            setArtistStatement(initialData.artist_statement);
+          }
+          if (initialData.contact.website) {
+            setWebsite(initialData.contact.website);
+          }
+          if (initialData.contact.instagram) {
+            setInstagram(initialData.contact.instagram);
+          }
+          if (address.street) {
+            setAddressStreet(address.street);
+          }
+          if (address.city) {
+            setAddressCity(address.city);
+          }
+          if (address.country) {
+            setAddressCountry(address.country);
+          }
+          if (address.postal_code) {
+            setAddressPostcode(address.postal_code);
+          }
+          if (address.phone_number) {
+            setPhoneNumber(address.phone_number);
+          }
+          if (initialData.tagline) {
+            setTagline(initialData.tagline);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -150,171 +130,238 @@ function EditProfilePage() {
     }
   }, [user, storedToken]);
 
+  function handleProfileImg(e) {
+    let imageToUpload = new FormData();
+    imageToUpload.append("images", e.target.files[0]);
+
+    const preview = URL.createObjectURL(e.target.files[0]);
+    console.log(preview);
+    setProfileImg(preview);
+
+    setImageData(imageToUpload);
+  }
+
+  async function handleSubmit(e) {
+    try {
+      e.preventDefault();
+
+      let updatedUser = {
+        real_name: realName,
+        artist_statement: artistStatement,
+        city: city,
+        contact: {
+          website: website,
+          instagram: instagram,
+          address: {
+            street: addressStreet,
+            city: addressCity,
+            country: addressCountry,
+            postal_code: addressPostcode,
+            phone_number: phoneNumber,
+          },
+        },
+        tagline: tagline,
+      };
+
+      if (imageData.length > 0) {
+        const cloudinaryResponse = await uploadService.uploadImage(imageData);
+
+        let imageUrl = cloudinaryResponse.data.fileUrls[0];
+        updatedUser.profile_img_url = imageUrl;
+      }
+
+      const updateResponse = await userService.updateUser(
+        userInfo._id,
+        updatedUser
+      );
+
+      console.log(updateResponse);
+      navigate("/profile");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
-    <div id="EditProfilePage" className="page-wrapper mobile-dvh">
-      <div className="heading-wrapper">
-        <h1>Edit Profile</h1>
-        <button
-          className="back-button"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(-1);
-          }}
-        >
-          {" "}
-          {"< Back"}
-        </button>
-      </div>
-
-      {isLoggedIn && userInfo && (
-        <form
-          className="profile edit-form edit-profile-form"
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-        >
-          <div className="edit-profile-general-info-wrapper">
-            <div className="edit-profile-img-container">
-              <div className="edit-profile-img-wrapper">
-                <img src={profileImg} alt="profile image" />
-              </div>
-
-              <input
-                name="profile-img"
-                className="file-input edit-profile-image-file-input"
-                type="file"
-                accept=".jpg, .png"
-                onChange={(e) => {
-                  handleProfileImg(e);
-                }}
-              />
-            </div>
-            <div className="edit-profile-text-wrapper">
-              {userInfo.isArtist ? (
-                <p className="profile-type">Artist</p>
-              ) : (
-                <p className="profile-type">Art-Lover</p>
-              )}
-              <label htmlFor="">Name</label>
-              <input
-                className="edit-profile input"
-                name="name"
-                type="text"
-                value={realName}
-                onChange={(e) => {
-                  setRealName(e.target.value);
-                }}
-              />
-              <label htmlFor="">Tagline</label>
-              <input
-                className="edit-profile input"
-                type="text"
-                value={tagline}
-                onChange={(e) => {
-                  setTagline(e.target.value);
-                }}
-              />
-              {/* CITY */}
-              <label htmlFor="" className="filterinterface-form-label">
-                City
-              </label>
-              <Select
-                options={cityOptions}
-                onChange={handleCitiesSelectChange}
-                value={{ label: city }}
-                styles={selectStles}
-              />
-            </div>
+    <>
+      {userInfo && (
+        <div id="EditProfilePage" className="page-wrapper mobile-dvh">
+          <div className="heading-wrapper">
+            <h1>Edit Profile</h1>
+            <button
+              className="back-button"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
+              }}
+            >
+              {" "}
+              {"< Back"}
+            </button>
           </div>
 
-          {userInfo.isArtist && (
-            <div className="edit-profile-artist-info-wrapper">
-              <div className="artist-statement-wrapper">
-                <label htmlFor="">Artist Statement:</label>
-                <textarea
-                  className="edit-profile input edit-profile-textarea"
-                  value={artistStatement}
-                  placeholder="Write a short description of your artistic practice"
-                  onChange={(e) => {
-                    setArtistStatement(e.target.value);
-                  }}
-                />
-              </div>
-              {/* <hr /> */}
-              <div className="edit-profile-contact-info-wrapper">
-                <h3 className="edit-profile-contact-info-headline">
-                  Contact Information:
-                </h3>
-                <div className="edit-profile-contact-info-web-wrapper">
-                  <label htmlFor="">Website</label>
+          {isLoggedIn && userInfo && (
+            <form
+              className="profile edit-form edit-profile-form"
+              onSubmit={(e) => {
+                handleSubmit(e);
+              }}
+            >
+              <div className="edit-profile-general-info-wrapper">
+                <div className="edit-profile-img-container">
+                  <div className="edit-profile-img-wrapper">
+                    <img src={profileImg} alt="profile image" />
+                  </div>
+
                   <input
-                    className="edit-profile input"
-                    type="text"
-                    value={website}
+                    name="profile-img"
+                    className="file-input edit-profile-image-file-input"
+                    type="file"
+                    accept=".jpg, .png"
                     onChange={(e) => {
-                      setWebsite(e.target.value);
-                    }}
-                  />
-                  <label htmlFor="">Instagram</label>
-                  <input
-                    className="edit-profile input"
-                    type="text"
-                    value={instagram}
-                    onChange={(e) => {
-                      setInstagram(e.target.value);
+                      handleProfileImg(e);
                     }}
                   />
                 </div>
-                <div className="edit-profile-contact-info-address-wrapper">
-                  <h3 className="edit-profile-adress-info-headline">
-                    Address:
-                  </h3>
-                  <label htmlFor="street">Street</label>
+                <div className="edit-profile-text-wrapper">
+                  <label htmlFor="">Name</label>
                   <input
-                    name="street"
+                    minLength={2}
+                    maxLength={50}
                     className="edit-profile input"
+                    name="name"
                     type="text"
-                    value={addressStreet}
+                    value={realName}
                     onChange={(e) => {
-                      setAddressStreet(e.target.value);
+                      setRealName(e.target.value);
                     }}
                   />
-                  <label htmlFor="city">City</label>
-                  <input
-                    name="city"
-                    className="edit-profile input"
-                    type="text"
-                    value={addressCity}
-                    onChange={(e) => {
-                      setAddressCity(e.target.value);
-                    }}
-                  />
-                  <label htmlFor="country">Country</label>
+                  <label htmlFor="">Tagline</label>
                   <input
                     className="edit-profile input"
                     type="text"
-                    value={addressCountry}
+                    value={tagline}
                     onChange={(e) => {
-                      setAddressCountry(e.target.value);
-                    }}
-                  />
-                  <label htmlFor="postcode">Postal Code</label>
-                  <input
-                    className="edit-profile input"
-                    type="text"
-                    value={addressPostcode}
-                    onChange={(e) => {
-                      setAddressPostcode(e.target.value);
+                      setTagline(e.target.value);
                     }}
                   />
                 </div>
               </div>
-            </div>
+
+              {userInfo.isArtist && (
+                <div className="edit-profile-artist-info-wrapper">
+                  <div className="artist-statement-wrapper">
+                    <label htmlFor="">Artist Statement:</label>
+                    <textarea
+                      required
+                      minLength={20}
+                      maxLength={300}
+                      className="edit-profile input edit-profile-textarea"
+                      value={artistStatement}
+                      placeholder="Write a short description of your artistic practice"
+                      onChange={(e) => {
+                        setArtistStatement(e.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="edit-profile-contact-info-wrapper">
+                    <h3 className="edit-profile-contact-info-headline">
+                      Contact Information:
+                    </h3>
+                    <div className="edit-profile-contact-info-web-wrapper">
+                      <label htmlFor="">Website</label>
+                      <input
+                        className="edit-profile input"
+                        type="url"
+                        value={website}
+                        onChange={(e) => {
+                          setWebsite(e.target.value);
+                        }}
+                      />
+                      <label htmlFor="">Instagram</label>
+                      <input
+                        className="edit-profile input"
+                        type="text"
+                        value={instagram}
+                        onChange={(e) => {
+                          setInstagram(e.target.value);
+                        }}
+                      />
+                      <label htmlFor="phone">Phone Number</label>
+                      <input
+                        className="edit-profile input"
+                        minLength={6}
+                        pattern="(\+49|0)[1-9][0-9]*$"
+                        title="Please enter a valid German phone number"
+                        name="phone"
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(e) => {
+                          setPhoneNumber(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="edit-profile-contact-info-address-wrapper">
+                      <h3 className="edit-profile-adress-info-headline">
+                        Address:
+                      </h3>
+                      <label htmlFor="street">Street Name / No.</label>
+                      <input
+                        name="street"
+                        className="edit-profile input"
+                        type="text"
+                        minLength={5}
+                        maxLength={100}
+                        autoComplete="street-address"
+                        value={addressStreet}
+                        onChange={(e) => {
+                          setAddressStreet(e.target.value);
+                        }}
+                      />
+                      <label htmlFor="city">City</label>
+                      <Select
+                        name="city"
+                        required
+                        autoComplete="address-level2"
+                        options={cityOptions}
+                        onChange={handleCitiesSelectChange}
+                        value={{ label: addressCity }}
+                        styles={selectStles}
+                      />
+                      <label htmlFor="country">Country</label>
+                      <Select
+                        required
+                        autoComplete="country"
+                        options={countryOptions}
+                        onChange={handleCountrySelectChange}
+                        value={{ label: addressCountry }}
+                        styles={selectStles}
+                      />
+                      <label htmlFor="postcode">Postal Code</label>
+                      <input
+                        className="edit-profile input"
+                        type="text"
+                        autoComplete="postal-code"
+                        minLength={4}
+                        maxLength={5}
+                        value={addressPostcode}
+                        onChange={(e) => {
+                          setAddressPostcode(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+              <button className="edit-profile-update-button button">
+                Update
+              </button>
+            </form>
           )}
-          <button className="edit-profile-update-button">Update</button>
-        </form>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

@@ -4,30 +4,19 @@
   gap: 1rem;
 }
 
-.profile-artworks-scrollbar {
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-  gap: 0.5rem;
-}
-
-.profile-artwork-card-wrapper {
-  display: flex;
-  flex-direction: column;
-  border: solid black 1px;
-}
-.scrollbar-heading {
-  font-weight: 600;
-  /* padding:15px 0; */
-}
+/* HEADING CONTAINER */
 .artworks-scrollbar-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
 }
+.scrollbar-heading {
+  font-weight: 600;
+  /* padding:15px 0; */
+}
 .create-artwork-button {
-  background-color: black;
+  background-color: var(--lime);
   border-radius: 50%;
   width: 35px;
   aspect-ratio: 1/1;
@@ -38,10 +27,19 @@
   box-sizing: border-box;
 }
 .create-artwork-button > p {
-  color: rgb(255, 255, 255);
   box-sizing: border-box;
   height: fit-content;
-  position:relative;
-  top:-1px;
+  position: relative;
+  top: -1px;
   font-size: 1.2rem;
+}
+
+/* ACTUAL SCROLLBAR */
+.profile-artworks-scrollbar {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
 }
