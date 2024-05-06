@@ -98,32 +98,17 @@ function ArtworksPage() {
   function enableScroll() {
     window.onscroll = function () {};
   }
+
   useEffect(() => {
     if (showInterface) {
-      disableScroll();
+      // disableScroll();
     } else {
-      enableScroll();
+      // enableScroll();
     }
   }, [showInterface]);
 
   return (
-    <div className="page-wrapper mobile-dvh-general artworks-page">
-      {/* FILTER INTERFACE */}
-      <div
-        className={
-          showInterface
-            ? "artworks-filterinterface-show"
-            : "artworks-filterinterface-hide"
-        }
-      >
-        <FilterInterface
-          setArtworks={setArtworks}
-          allArtists={allArtists}
-          allCities={allCities}
-          genrePreset={genrePreset}
-        />
-      </div>
-
+    <>
       {/* FILTER INTERFACE BUTTON */}
       <div className="artworks-filterinterfacebutton-wrapper">
         <div
@@ -140,43 +125,58 @@ function ArtworksPage() {
         </div>
       </div>
 
-      {/* ARTWORKS PAGE */}
-      <>
-        {/* ARTWORKS CARDS */}
-        <div className="artworks-artwork-cards">
-          {artworks &&
-            artworks.map((artwork) => {
-              return (
-                <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
-                  <ArtworkCard
-                    name={artwork.artist.real_name}
-                    title={artwork.title}
-                    dimensions={
-                      artwork.dimensions.x +
-                      " x " +
-                      artwork.dimensions.y +
-                      (artwork.dimensions.z ? " x " + artwork.dimensions.z : "")
-                    }
-                    year={artwork.year}
-                    img={artwork.images_url[0]}
-                    medium={artwork.medium}
-                  />
-                </Link>
-              );
-            })}
-          {artworks && artworks.length === 0 && (
-            <div className="artworks-no-artworks-wrapper">
-              <div className="artworks-no-artworks-icon-wrapper">
-                <img src="/img/media.png" alt="" />
+      {showInterface ? (
+        <FilterInterface
+          setArtworks={setArtworks}
+          allArtists={allArtists}
+          allCities={allCities}
+          genrePreset={genrePreset}
+        />
+      ) : (
+        <div
+          className={
+            "page-wrapper mobile-dvh-general artworks-page " +
+            (showInterface && "none")
+          }
+        >
+          {/* ARTWORKS CARDS */}
+          <div className="artworks-artwork-cards">
+            {artworks &&
+              artworks.map((artwork) => {
+                return (
+                  <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
+                    <ArtworkCard
+                      name={artwork.artist.real_name}
+                      title={artwork.title}
+                      dimensions={
+                        artwork.dimensions.x +
+                        " x " +
+                        artwork.dimensions.y +
+                        (artwork.dimensions.z
+                          ? " x " + artwork.dimensions.z
+                          : "")
+                      }
+                      year={artwork.year}
+                      img={artwork.images_url[0]}
+                      medium={artwork.medium}
+                    />
+                  </Link>
+                );
+              })}
+            {artworks && artworks.length === 0 && (
+              <div className="artworks-no-artworks-wrapper">
+                <div className="artworks-no-artworks-icon-wrapper">
+                  <img src="/img/media.png" alt="" />
+                </div>
+                <h3 className="artworks-no-artworks-headline">
+                  No Artworks Found
+                </h3>
               </div>
-              <h3 className="artworks-no-artworks-headline">
-                No Artworks Found
-              </h3>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </>
-    </div>
+      )}
+    </>
   );
 }
 

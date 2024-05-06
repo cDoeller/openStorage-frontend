@@ -3,7 +3,7 @@
   position: sticky;
   top: 0;
   left: 0;
-  z-index:100;
+  z-index:800;
 }
 /* <---- HEIGHT NAV MOBILE == 90px + 65px >>>> 155px */
 
@@ -47,7 +47,7 @@
 }
 .nav-bottom-link{
   font-size: 1.2rem;
-  font-weight: 400;
+  font-weight: 500;
   /* background-color: aqua; */
 }
 .nav-bottom-link-container{

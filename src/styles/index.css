@@ -83,6 +83,10 @@ button {
 }
 /* ---> {" "}<span className="highlight">TEXT</span> */
 
+.none{
+  display: none;
+}
+
 .page-error-messages {
   width: 100%;
   text-align: center;
