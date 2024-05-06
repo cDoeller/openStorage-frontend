@@ -6,11 +6,19 @@ import uploadService from "../services/file-upload.services";
 import artworksServices from "../services/artworks.services";
 import Select from "react-select";
 import "../styles/styles-templates/Forms.css";
-import "../styles/styles-pages/CreateArtwork.css"
+import "../styles/styles-pages/CreateArtwork.css";
 import citiesGermany from "../data/cities-germany.json";
 
 function BecomeArtistPage() {
-  const { user, isLoggedIn } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const [errorMessage,setErrorMessage] = useState(null)
+  const [isArtist,setIsArtist] = useState(false)
+
+  const errorMessageElement = (
+    <>
+      <h3 className="page-error-messages">{errorMessage}</h3>
+    </>
+  );
 
   const navigate = useNavigate();
 
@@ -27,7 +35,7 @@ function BecomeArtistPage() {
   // Image states
   const [imageData, setImageData] = useState([]);
   // const [imageToUpload, setImageToUpload] = useState("");
-  const [uploadedImages, setUploadedImages] = useState([]);
+  // const [uploadedImages, setUploadedImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const [artworkCity, setArtworkCity] = useState("");
@@ -135,21 +143,24 @@ function BecomeArtistPage() {
   useEffect(() => {
     userService.getUser(user._id).then((response) => {
       const initialData = response.data;
-      const address = initialData.address
-      if(initialData.real_name){
+      const address = initialData.address;
+
+      setIsArtist(initialData.isArtist)
+      
+      if (initialData.real_name) {
         setRealName(initialData.real_name);
       }
-      if(address){
-        if(address.street){
+      if (address) {
+        if (address.street) {
           setStreet(address.street);
         }
-        if(address.city){
+        if (address.city) {
           setCity(address.city);
         }
-        if(address.postal_code){
+        if (address.postal_code) {
           setPostcode(address.postal_code);
         }
-        if(address.country){
+        if (address.country) {
           setCountry(address.country);
         }
       }
@@ -163,12 +174,13 @@ function BecomeArtistPage() {
     newImageData.splice(index, 1);
     newImagePreviews.splice(index, 1);
 
-    setImageData(newImageData)
-    setImagePreviews(newImagePreviews)
+    setImageData(newImageData);
+    setImagePreviews(newImagePreviews);
   }
 
   function handleImagesUpload(e) {
-    e.preventDefault();
+    // e.preventDefault();
+    setErrorMessage("")
 
     const files = e.target.files;
     const newImageData = [...files, ...imageData];
@@ -185,10 +197,12 @@ function BecomeArtistPage() {
     try {
       e.preventDefault();
 
+      if(imageData.length > 0){
+        setErrorMessage("Missing images for artwork. Please upload at least 1 image.")
+      }
       const formData = new FormData();
       imageData.forEach((file) => formData.append("images", file));
 
-      // performs the action of sending the data
       const cloudinaryResponse = await uploadService.uploadImage(formData);
 
       let artworkData = {
@@ -207,12 +221,6 @@ function BecomeArtistPage() {
 
       artworkData.images_url = cloudinaryResponse.data.fileUrls;
       console.log("response is: ", cloudinaryResponse);
-      // response carries "fileUrl" which we can use to update the state
-      // let copiedArray = [
-      //   ...uploadedImages,
-      //   ...cloudinaryResponse.data.fileUrls,
-      // ];
-      // setUploadedImages(copiedArray);
 
       const createFirstArtwork = await artworksServices.createArtwork(
         artworkData
@@ -242,12 +250,17 @@ function BecomeArtistPage() {
       console.log("response from verification: ", verificationResponse);
 
       navigate(`/profile`);
+
     } catch (err) {
       console.log("Error while verifying artist: ", err);
+      setErrorMessage("Could not verify as an artist.")
     }
   }
 
   return (
+<>
+    {!isArtist && (
+
     <div className="page-wrapper mobile-dvh">
       <div className="heading-wrapper">
         <h1>Become an Artist</h1>
@@ -271,6 +284,9 @@ function BecomeArtistPage() {
         <input
           className="input"
           type="text"
+          minLength={2}
+          maxLength={50}
+          autoComplete="name"
           required
           name="real name"
           value={realName && realName}
@@ -284,6 +300,8 @@ function BecomeArtistPage() {
           className="textarea"
           name="artist-statement"
           required
+          minLength={20}
+          maxLength={300}
           value={artistStatement && artistStatement}
           onChange={(e) => {
             setArtistStatement(e.target.value);
@@ -297,6 +315,9 @@ function BecomeArtistPage() {
           name="street"
           type="text"
           required
+          minLength={5}
+          maxLength={100}
+          autoComplete="street-address"
           className="input"
           value={street && street}
           onChange={(e) => {
@@ -308,6 +329,7 @@ function BecomeArtistPage() {
         <Select
           name="city"
           required
+          autoComplete="address-level2"
           options={cityOptions}
           onChange={handleCitiesSelectChange}
           value={{ label: city }}
@@ -317,6 +339,7 @@ function BecomeArtistPage() {
         <label htmlFor="">Country</label>
         <Select
           required
+          autoComplete="country"
           options={countryOptions}
           onChange={handleCountrySelectChange}
           value={{ label: country }}
@@ -328,6 +351,7 @@ function BecomeArtistPage() {
           type="text"
           className="input"
           required
+          autoComplete="postal-code"
           minLength={4}
           maxLength={5}
           value={postcode && postcode}
@@ -375,42 +399,40 @@ function BecomeArtistPage() {
           styles={selectStles}
         />
 
-<div className="create-artwork-img-section">
-<div className="file-input-container">
-        <label htmlFor="">Images</label>
-        <input
-          type="file"
-          className="file-input"
-          required
-          multiple
-          accept=".jpg, .png"
-          onChange={(e) => {
-            handleImagesUpload(e);
-          }}
-        />
-        <div className="create-artwork-thumbnail-wrapper">
-        {imagePreviews &&
-          imagePreviews.map((oneImage, index) => {
-            return (
-              <div key={index} className="create-artwork-img-thumbnail">
-                <img src={oneImage} alt={title} />
-                <button
-                  className="delete-img-button"
-                  onClick={() => {
-                    handleDeleteImage(index);
-                  }}
-                >
-                  x
-                </button>
-              </div>
-            );
-          })}
-
-
+        <div className="create-artwork-img-section">
+          <div className="file-input-container">
+            <label htmlFor="">Images</label>
+            <input
+              type="file"
+              className="file-input"
+              required
+              multiple
+              accept=".jpg, .png"
+              onChange={(e) => {
+                handleImagesUpload(e);
+              }}
+            />
+            <div className="create-artwork-thumbnail-wrapper">
+              {imagePreviews &&
+                imagePreviews.map((oneImage, index) => {
+                  return (
+                    <div key={index} className="create-artwork-img-thumbnail">
+                      <img src={oneImage} alt={title} />
+                      <button
+                        type="button"
+                        className="delete-img-button"
+                        onClick={() => {
+                          handleDeleteImage(index);
+                        }}
+                      >
+                        x
+                      </button>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
         </div>
-</div>
-
-</div>
 
         <label htmlFor="">Dimensions [cm]</label>
         <div className="create-dimensions-wrapper">
@@ -418,7 +440,7 @@ function BecomeArtistPage() {
             className="create-artwork-input"
             type="number"
             required
-            min={0}
+            min={1}
             value={dimensionsX}
             onChange={(e) => {
               setDimensionsX(e.target.valueAsNumber);
@@ -429,7 +451,7 @@ function BecomeArtistPage() {
             className="create-artwork-input"
             type="number"
             required
-            min={0}
+            min={1}
             value={dimensionsY}
             onChange={(e) => {
               setDimensionsY(e.target.valueAsNumber);
@@ -471,9 +493,12 @@ function BecomeArtistPage() {
           styles={selectStles}
         />
 
-        <button>Submit</button>
+        <button type="submit">Submit</button>
+        {errorMessage && errorMessageElement}
       </form>
     </div>
+    )}
+</>
   );
 }
 

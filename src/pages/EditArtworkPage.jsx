@@ -1,12 +1,12 @@
+import { AuthContext } from "../context/auth.context";
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
+import Popup from "../components/Popup";
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
-import { AuthContext } from "../context/auth.context";
 import "../styles/styles-pages/EditArtwork.css";
 import "../styles/styles-templates/Forms.css";
-import Popup from "../components/Popup";
 import germanCities from "../data/cities-germany.json";
 
 function EditArtworkPage() {
@@ -120,7 +120,6 @@ function EditArtworkPage() {
         setArtwork(initialArtwork);
         setTitle(initialArtwork.title);
         setYear(initialArtwork.year);
-        setCity(initialArtwork.city);
         setDimensionsX(initialArtwork.dimensions.x);
         setDimensionsY(initialArtwork.dimensions.y);
         setDimensionsZ(initialArtwork.dimensions.z);
@@ -132,6 +131,13 @@ function EditArtworkPage() {
         console.log(err);
       });
   }, [id]);
+
+  useEffect(() => {
+    let formattedOptions = germanCities.map((oneCity) => {
+      return { value: oneCity.city, label: oneCity.city };
+    });
+    setCityOptions(formattedOptions);
+  }, []);
 
   function handleImagesUrl(e) {
     // e.preventDefault();
