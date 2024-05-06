@@ -69,7 +69,6 @@ function ProfilePage() {
       {isLoggedIn && userInfo && (
         <div className="profile-wrapper">
           <h1>Your Profile</h1>
-
           {/* PROFILE CARD */}
           <div className="profile-profilecard-wrapper">
             <div className="profile-edit-link">
@@ -92,7 +91,7 @@ function ProfilePage() {
               <div className="profile-artist-wrapper">
                 <div className="profile-artist-statement-wrapper">
                   <h3 className="profile-artist-statement-statement-headline">
-                    Artist Statement:
+                    Artist Statement
                   </h3>
                   <p className="profile-artist-statement-statement-statement">
                     {userInfo.artist_statement}
@@ -108,31 +107,34 @@ function ProfilePage() {
               </div>
 
               {/* MANAGE PORTFOLIO */}
-              <div className="profile-outgoing-wrapper">
-                {(isReceivingRequest || isOfferingRental) && (
-                  <h3 className="profile-section-headline">Manage Rentals</h3>
-                )}
-                {/* incoming pending requests */}
-                {isReceivingRequest && (
-                  <>
-                    <ArtworksScrollbar
-                      userInfo={userInfo}
-                      contents={userInfo.rentals.rentals_offering}
-                      heading={"Pending Requests"}
-                    />
-                  </>
-                )}
-                {/* offered rentals */}
-                {isOfferingRental && (
-                  <>
-                    <ArtworksScrollbar
-                      userInfo={userInfo}
-                      contents={userInfo.rentals.rentals_offering}
-                      heading={"Current Rentals"}
-                    />
-                  </>
-                )}
-              </div>
+
+              {(isReceivingRequest || isOfferingRental) && (
+                <>
+                  <div className="profile-outgoing-wrapper">
+                    <h3 className="profile-section-headline">Manage Rentals</h3>
+                    {/* incoming pending requests */}
+                    {isReceivingRequest && (
+                      <>
+                        <ArtworksScrollbar
+                          userInfo={userInfo}
+                          contents={userInfo.rentals.rentals_offering}
+                          heading={"Pending Requests"}
+                        />
+                      </>
+                    )}
+                    {/* offered rentals */}
+                    {isOfferingRental && (
+                      <>
+                        <ArtworksScrollbar
+                          userInfo={userInfo}
+                          contents={userInfo.rentals.rentals_offering}
+                          heading={"Current Rentals"}
+                        />
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
             </>
           )}
 

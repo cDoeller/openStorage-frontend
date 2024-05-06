@@ -22,7 +22,7 @@
   --black: #2d2c39;
 
   /* SIZES */
-  --navbarHeightMobile: 155px;
+  --navbarHeightMobile: 130px;
   --profileFooterHeightMobile: 80px;
   --mobileInterfacesHeight: calc(
     var(--navbarHeightMobile) + var(--profileFooterHeightMobile)

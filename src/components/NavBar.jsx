@@ -30,35 +30,6 @@ function NavBar() {
     </div>
   );
 
-  // const popup = (
-  //   <div className="nav-bottom-popup">
-  //     <Link to="#">
-  //       <button
-  //         onClick={togglePopup}
-  //         className="nav-bottom-popup-button nav-bottom-link"
-  //       >
-  //         Artist
-  //       </button>
-  //     </Link>
-  //     <Link to="#">
-  //       <button
-  //         onClick={togglePopup}
-  //         className="nav-bottom-popup-button nav-bottom-link"
-  //       >
-  //         Art Lover
-  //       </button>
-  //     </Link>
-  //   </div>
-  // );
-
-  // function togglePopup() {
-  //   if (showPopup) {
-  //     setShowPopup(false);
-  //   } else {
-  //     setShowPopup(true);
-  //   }
-  // }
-
   return (
     <nav className="nav">
       <div className="nav-top">
