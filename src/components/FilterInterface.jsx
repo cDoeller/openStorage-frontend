@@ -171,7 +171,7 @@ function FilterInterface(props) {
         />
 
         {/* DIMENSIONS */}
-        <label htmlFor="" className="filterinterface-form-label">
+        <label htmlFor="" className="filterinterface-form-label filterinterface-dimensions">
           Max Dimensions [cm]
           <div className="filterinterface-form-dimension-input-wrapper">
             <input

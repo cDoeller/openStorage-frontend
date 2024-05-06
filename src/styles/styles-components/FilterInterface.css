@@ -2,7 +2,7 @@
   background-color: white;
   width: 100%;
   min-height: calc(100dvh - var(--navbarHeightMobile));
-  padding: 5rem 1rem;
+  padding: 5rem 1rem 3rem 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -19,7 +19,11 @@
 .filterinterface-form-label {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
+}
+
+.filterinterface-dimensions{
+  padding: 1rem 0;
 }
 
 .filterinterface-form-input {
@@ -45,8 +49,5 @@
 }
 
 .filterinterface-reset-button {
-  width: fit-content;
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  margin: 1rem auto 0 auto;
+  margin: 2.5rem 0 0 0;
 }
