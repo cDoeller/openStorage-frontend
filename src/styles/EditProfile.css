@@ -1,56 +1,95 @@
-.profile-type{
-    font-size:20px;
-    color: rgb(149, 153, 157);
+#EditProfilePage {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-.edit-profile-textarea{
-    width:80%;
-    height:100px;
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-.edit-profile-info-wrapper{
-    display: flex;
-    flex-direction: row;
-    gap:1rem;
-    align-items: center;
-}
-.change-profile-img-container{
-    width:200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+.profile-type {
+  font-size: 20px;
+  color: rgb(149, 153, 157);
 }
 
-.edit-profile-img-wrapper{
-    width:130px;
-    height:130px;
-    justify-self: flex-start;
-    margin-bottom: 20px;
+/* GENERAL INFO PART */
+.edit-profile-general-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.edit-profile-img-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.edit-profile-img-wrapper {
+  width: 130px;
+  height: 130px;
+  justify-self: flex-start;
+}
+.edit-profile-img-wrapper > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.edit-profile-image-file-input {
+  width: 100%;
+}
+.edit-profile-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.edit-profile-img-wrapper > img{
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    border-radius: 50%;
+/* ARTIST INFO PART */
+.edit-profile-artist-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.artist-statement-wrapper {
+}
+.edit-profile-textarea {
+  width: 100%;
+  height: 100px;
+  padding: 0;
+}
+/* contact info */
+.edit-profile-contact-info-headline {
 }
 
-.contact-wrapper{
-    display:flex;
-    flex-direction: column;
-    gap:1.2rem;
+.edit-profile-contact-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-
-.address-wrapper{
+.edit-profile-contact-info-web-wrapper{
     display: flex;
     flex-direction: column;
-    gap:1.2rem;
+    gap: 1rem;
 }
-.loans-section-wrapper{
-    display: flex;
-    flex-direction: column;
+/* address part */
+.edit-profile-contact-info-address-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.edit-profile-adress-info-headline {
 }
 
-.requests-section-wrapper{
-    display: flex;
-    flex-direction: column;
+.edit-profile-update-button {
+}
+
+/* ??? */
+.loans-section-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.requests-section-wrapper {
+  display: flex;
+  flex-direction: column;
 }
