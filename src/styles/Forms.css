@@ -4,6 +4,14 @@
   justify-content: space-between;
 }
 
+.back-button{
+  border-style: none;
+  background:white;
+  font-size: 15px;
+  font-weight:600;
+  text-decoration: underline;
+}
+
 .input {
   padding: 0.4rem 1rem;
   border: none;

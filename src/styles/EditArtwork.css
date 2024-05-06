@@ -14,8 +14,8 @@
 }
 
 .edit-dimensions > input {
-    width:50px;
-    text-align: center;
+  width: 50px;
+  text-align: center;
 }
 
 .edit-artwork-input {
@@ -28,14 +28,31 @@
 .edit-artwork-img-section {
   height: 100%;
   display: flex;
-  flex-flow: row wrap;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.edit-artwork-thumbnail-wrapper {
+  display: flex;
+  flex-flow: row;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
-
-.edit-artwork-img-wrapper {
+.edit-artwork-img-thumbnail {
   width: 150px;
+    overflow: hidden;
+    display: flex;
+    border-radius: 4px;
 }
 
-.edit-artwork-img-wrapper > img {
-  width: 110%;
+.edit-artwork-img-thumbnail > img {
+  width: 100%;
+    object-fit: cover;
+    border:1px solid white;
+}
+
+.edit-artwork-img-thumbnail>img:hover{
+  border:1px solid mediumspringgreen;
 }
