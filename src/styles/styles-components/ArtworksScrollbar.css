@@ -10,13 +10,16 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  background-color: var(--grey);
+  padding: 1rem;
+  border-radius: 10px;
 }
 .scrollbar-heading {
-  font-weight: 600;
-  /* padding:15px 0; */
+  font-weight: 500;
+
 }
 .create-artwork-button {
-  background-color: var(--lime);
+  background-color: var(--black);
   border-radius: 50%;
   width: 35px;
   aspect-ratio: 1/1;
@@ -32,6 +35,7 @@
   position: relative;
   top: -1px;
   font-size: 1.2rem;
+  color: white;
 }
 
 /* ACTUAL SCROLLBAR */
