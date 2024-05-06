@@ -13,53 +13,26 @@ function ArtworksPage() {
   const [allCities, setAllCities] = useState(null);
   const [genrePreset, setGenrePreset] = useState("");
 
-  function toggleFilterInterface() {
-    setShowInterface(!showInterface);
-  }
+  // FILTERING UPLIFT
+  const [city, setCity] = useState("");
+  const [medium, setMedium] = useState("");
+  const [genre, setGenre] = useState("");
+  const [dimensions, setDimensions] = useState({ x: 0, y: 0, z: 0 });
+  const [artistId, setArtistId] = useState("");
+  const [artistName, setArtistName] = useState("");
 
-  // const urlParams = new URLSearchParams(window.location.search);
+  const filterStates = {
+    city: { state: city, setter: setCity },
+    medium: { state: medium, setter: setMedium },
+    genre: { state: genre, setter: setGenre },
+    dimensions: { state: dimensions, setter: setDimensions },
+    artistId: { state: artistId, setter: setArtistId },
+    artistName: { state: artistName, setter: setArtistName },
+  };
 
   useEffect(() => {
-    // const genre = urlParams.get("genre");
-    // //  if a genre is passed from homepage, render prefiltered works
-    // if (genre) {
-    //   setGenrePreset(genre);
-    //   const genreQueryString = `?genre=${genre}`;
-    //   getPrefilteredArtworks(genreQueryString);
-    //   // if no genre is present, render all artworks
-    // } else {
-    // }
-
     getAllArtworks();
   }, []);
-
-  // function getPrefilteredArtworks(queryString) {
-  //   artworksService
-  //     .getArtworkQuery(queryString)
-  //     .then((response) => {
-  //       // console.log(response.data);
-  //       setArtworks(response.data);
-  //     })
-  //     .then(() => {
-  //       userService
-  //         .getAllArtistsWithWorks()
-  //         .then((response) => {
-  //           // console.log(response.data);
-  //           setAllArtists(response.data);
-  //         })
-  //         .catch((err) => console.log(err));
-  //     })
-  //     .then(() => {
-  //       artworksService
-  //         .getArtworkCities()
-  //         .then((response) => {
-  //           // console.log(response.data);
-  //           setAllCities(response.data);
-  //         })
-  //         .catch((err) => console.log(err));
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
 
   function getAllArtworks() {
     artworksService
@@ -85,6 +58,11 @@ function ArtworksPage() {
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
+  }
+
+  // show/hide filter interface
+  function toggleFilterInterface() {
+    setShowInterface(!showInterface);
   }
 
   return (
@@ -113,7 +91,7 @@ function ArtworksPage() {
           setArtworks={setArtworks}
           allArtists={allArtists}
           allCities={allCities}
-          genrePreset={genrePreset}
+          filterStates={filterStates}
         />
       ) : (
         <div
