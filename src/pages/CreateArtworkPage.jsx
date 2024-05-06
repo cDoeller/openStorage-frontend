@@ -317,7 +317,7 @@ function CreateArtworkPage() {
           value={{ label: genre }}
           styles={selectStles}
         />
-        <button>Submit</button>
+        <button className="create-artwork-submit-button button">Submit</button>
       </form>
     </div>
   );

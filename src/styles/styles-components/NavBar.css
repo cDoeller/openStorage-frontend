@@ -9,7 +9,7 @@
 
 .nav-top {
   /* <---- HEIGHT TOP */
-  height: 90px;
+  height: 75px;
   background-color: var(--lilac);
   box-sizing: border-box;
   width: 100%;
@@ -20,8 +20,8 @@
   border-bottom: 2px solid black;
 }
 .nav-top-logo-container {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 .nav-top-logo-img {
   width: 100%;
@@ -37,7 +37,7 @@
 
 .nav-bottom{
   /* <---- HEIGHT BOTTOM */
-  height: 65px;
+  height: 55px;
   box-sizing: border-box;
   background-color: var(--pink);
   display: flex;
@@ -46,8 +46,9 @@
   border-bottom: 2px solid black;
 }
 .nav-bottom-link{
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 400;
+  /* background-color: aqua; */
 }
 .nav-bottom-link-container{
   /* in desktop version, relative must be set here */

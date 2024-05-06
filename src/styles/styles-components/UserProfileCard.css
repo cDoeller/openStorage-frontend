@@ -28,8 +28,10 @@
 
 .profile-type{
     font-weight: 400;
+    font-size: 20px;
+    color: rgb(149, 153, 157);
 }
 
 .username-bold{
-    font-weight: 700;
+    font-weight: 600;
 }

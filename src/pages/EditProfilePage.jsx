@@ -190,11 +190,6 @@ function EditProfilePage() {
               />
             </div>
             <div className="edit-profile-text-wrapper">
-              {userInfo.isArtist ? (
-                <p className="profile-type">Artist</p>
-              ) : (
-                <p className="profile-type">Art-Lover</p>
-              )}
               <label htmlFor="">Name</label>
               <input
                 className="edit-profile input"
@@ -311,7 +306,7 @@ function EditProfilePage() {
               </div>
             </div>
           )}
-          <button className="edit-profile-update-button">Update</button>
+          <button className="edit-profile-update-button button">Update</button>
         </form>
       )}
     </div>
