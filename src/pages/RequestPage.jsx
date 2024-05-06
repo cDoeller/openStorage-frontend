@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "../styles/RequestPage.css";
+import "../styles/styles-pages/RequestPage.css";
 import artworksService from "../services/artworks.services";
 import { AuthContext } from "../context/auth.context";
 import rentalsService from "../services/rentals.services";
@@ -98,17 +98,33 @@ function RequestPage() {
       is_approved: false,
     };
 
+    // create rental and notification
     rentalsService
       .createRental(newRental)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
+        const newNotification = {
+          type: "new-request",
+          text: `User ${user.user_name} would like
+          to rent your artwork ${artwork.title} –
+          click on the button below to view the request!`,
+          message: "",
+          request: response.data._id,
+          new: true,
+        };
+        // create notification for artist
+        return userService.createNotification(
+          artwork.artist._id,
+          newNotification
+        );
+      })
+      .then(() => {
         navigate("/profile");
       })
       .catch((err) => {
         setErrorMessage(err.response.data.message);
         console.log(err);
       });
-
   }
 
   // * DELIVERY ELEMENT
@@ -169,7 +185,7 @@ function RequestPage() {
             </div>
             <div className="request-artwork-info-wrapper">
               <p className="request-artwork-info-text">
-                {artwork.artist.user_name}
+                {artwork.artist.real_name}
               </p>
               <p className="request-artwork-info-text">
                 {artwork.title}, {artwork.year}

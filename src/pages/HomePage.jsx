@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/HomePage.css";
+import "../styles/styles-pages/HomePage.css";
 import artworksService from "../services/artworks.services";
 import RecentArtworks from "../components/RecentArtworks";
 
 function HomePage() {
   const [recentArtworks, setRecentArtworks] = useState(null);
+  const [popularGenres, setPopularGenres] = useState(null);
 
   useEffect(() => {
     artworksService
       .getRecentArtworks(5)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setRecentArtworks(response.data);
+        return artworksService.getPopularGenres();
+      })
+      .then((result) => {
+        let popularGenres = result.data;
+        const amount = 3;
+        // only first n genres
+        if (popularGenres.length > amount) {
+          popularGenres = popularGenres.slice(0, amount);
+        }
+        // console.log(popularGenres);
+        setPopularGenres(popularGenres);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -82,20 +94,13 @@ function HomePage() {
         <h3 className="landing-artworks-section-headline">Recently Added</h3>
 
         {recentArtworks && (
-          <div className="landing-artworks-section-gallery-wrapper">
-            {recentArtworks.map((artwork) => {
-              return (
-                <RecentArtworks
-                  artwork={artwork}
-                  key={artwork._id}
-                ></RecentArtworks>
-              );
-            })}
-          </div>
+          <RecentArtworks artworks={recentArtworks}></RecentArtworks>
         )}
 
         <Link to="/artworks">
-          <button className="landing-artworks-section-button">ARTWORKS</button>
+          <button className="landing-artworks-section-button button">
+            BROWSE ARTWORKS
+          </button>
         </Link>
       </section>
 
@@ -131,27 +136,41 @@ function HomePage() {
         <p className="landing-genre-section-text">
           Check out the works of our most popular genres
         </p>
-        <div className="landing-genre-section-bullet-wrapper">
-          <div className="landing-genre-section-bullet-icon-wrapper">
-            <img
-              src="/img/star.png"
-              alt=""
-              className="landing-genre-section-bullet-icon"
-            />
-          </div>
-          <p className="landing-genre-section-bullet-text">surreal </p>
+        <div className="landing-genre-section-genre-wrapper">
+          {popularGenres &&
+            popularGenres.map((genre) => {
+              return (
+                <div
+                  key={genre._id}
+                  className="landing-genre-section-bullet-wrapper"
+                >
+                  <div className="landing-genre-section-bullet-icon-wrapper">
+                    <img
+                      src="/img/star.png"
+                      alt=""
+                      className="landing-genre-section-bullet-icon"
+                    />
+                  </div>
+                  <Link to={`/artworks/?genre=${genre._id}`}>
+                    <p className="landing-genre-section-bullet-text">
+                      {genre._id}
+                    </p>
+                  </Link>
+                </div>
+              );
+            })}
         </div>
       </section>
 
       {/* newsletter section */}
       <section className="landing-newsletter-section">
-        <div className="landing-newsletter-section-icon-wrapper">
-          <img
-            src="/img/newsletter.png"
-            alt=""
-            className="landing-newsletter-section-icon"
-          />
-        </div>
+          <div className="landing-newsletter-section-icon-wrapper">
+            <img
+              src="/img/newsletter.png"
+              alt=""
+              className="landing-newsletter-section-icon"
+            />
+          </div>
         <p className="landing-newsletter-section-text">
           Subscribe to our newsletter and stay up to date on the latest open
           storages in your area!

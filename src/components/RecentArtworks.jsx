@@ -1,34 +1,27 @@
 import React from "react";
+import "../styles/styles-components/RecentArtworks.css";
+import ArtworkCardRecent from "./ArtworkCardRecent";
+import { Link } from "react-router-dom";
 
 function RecentArtworks(props) {
-  const { artwork } = props;
+  const { artworks } = props;
+
   return (
-    <div className="landing-artworks-section-gallery-card"> 
-      <div className="landing-artworks-section-gallery-image-wrapper">
-        <img
-          src={artwork.images_url[0]}
-          alt=""
-          className="landing-artworks-section-gallery-image-img"
-        />
-      </div>
-      <div className="landing-artworks-section-gallery-caption-wrapper">
-        <p className="landing-artworks-section-gallery-caption-left">{`<`}</p>
-        <div className="landing-artworks-section-gallery-caption-data-wrapper">
-          <p className="landing-artworks-section-gallery-caption-text">
-            {artwork.artist.user_name + ", " + artwork.medium}
-          </p>
-          <p className="landing-artworks-section-gallery-caption-text">
-            {artwork.dimensions.x +
-              " x " +
-              artwork.dimensions.y +
-              (artwork.dimensions.z ? " x " + artwork.dimensions.z : "") +
-              " cm" +
-              ", " +
-              artwork.year}
-          </p>
-        </div>
-        <p className="landing-artworks-section-gallery-caption-right">{`>`}</p>
-      </div>
+    <div className="recent-section-gallery-wrapper">
+      {artworks &&
+        artworks.map((artwork) => {
+          return (
+            <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
+              <ArtworkCardRecent
+                img={artwork.images_url[0]}
+                name={artwork.artist.real_name}
+                title={artwork.title}
+                year={artwork.year}
+                medium={artwork.medium}
+              ></ArtworkCardRecent>
+            </Link>
+          );
+        })}
     </div>
   );
 }

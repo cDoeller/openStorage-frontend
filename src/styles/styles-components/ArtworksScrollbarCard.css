@@ -1,0 +1,14 @@
+.scrollbar-artwork-card-image-wrapper{
+    width:200px;
+ }
+ 
+ .scrollbar-artwork-card-image-wrapper>img{
+     width:100%;
+  }
+ 
+ .scrollbar-artwork-card-info-wrapper{
+     margin:0 5px;
+     font-size: 12px;
+     font-weight: 600;
+ }
+ 

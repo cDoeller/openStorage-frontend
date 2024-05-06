@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/ArtworkCard.css";
+import "../styles/styles-components/ArtworkCard.css";
 
 function ArtworkCard(props) {
   const { name, title, dimensions, year, img, medium } = props;
@@ -8,26 +8,46 @@ function ArtworkCard(props) {
 
   switch (medium) {
     case "Painting":
-      medium_img = "../../public/img/painting-icon.png";
+      medium_img = "/img/painting-icon.png";
       break;
     case "Photography":
-      medium_img = "../../public/img/photo-icon.png";
+      medium_img = "/img/photo-icon.png";
       break;
-      default:
-        medium_img = "../../public/img/photo-icon.png";
+    case "Drawing":
+      medium_img = "/img/drawing-icon.png";
+      break;
+    case "Sculpture":
+      medium_img = "/img/sculpture-icon.png";
+      break;
+    case "Object":
+      medium_img = "/img/object-icon.png";
+      break;
+    case "Installation":
+      medium_img = "/img/installation-icon.png";
+      break;
+    case "Print":
+      medium_img = "/img/print-icon.png";
+      break;
+    case "Collage":
+      medium_img = "/img/collage-icon.png";
+      break;
+    case "Mixed Media":
+      medium_img = "/img/mixedmedia-icon.png";
+      break;
+    default:
+      medium_img = "/img/media.png";
   }
 
   return (
-    <div className="artwork-card-wrapper">
+    <div className="artwork-card-wrapper box-shadow">
       <div className="artwork-card-image-wrapper">
         <img src={img} alt="" />
       </div>
       <div className="artwork-card-info-wrapper">
         <div className="artwork-card-info-text-wrapper">
-          <p className="artwork-card-info-text-text">
-            {name}, {title}
-          </p>
-          <p className="artwork-card-info-text-text">
+          <p className="artwork-card-info-text-text">{name}</p>
+          <p className="artwork-card-info-text-text italic">{title}</p>
+          <p className="artwork-card-info-text-text-year">
             {dimensions}, {year}
           </p>
         </div>

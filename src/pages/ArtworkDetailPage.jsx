@@ -1,18 +1,24 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
-import "../styles/ArtworkDetails.css";
+import "../styles/styles-pages/ArtworkDetails.css";
 import artworksService from "../services/artworks.services";
 import userService from "../services/user.services";
 
 function ArtworkDetailPage() {
+  const [currentImage, setCurrentImage] = useState(
+    "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
+  );
   const [favorites, setFavorites] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [userRentals, setUserRentals] = useState(null);
 
   const { id } = useParams();
   const [artwork, setArtwork] = useState();
   const { user, isLoggedIn } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     artworksService
@@ -20,9 +26,84 @@ function ArtworkDetailPage() {
       .then((response) => {
         const oneArtwork = response.data;
         setArtwork(oneArtwork);
+        setCurrentImage(oneArtwork.images_url[0]);
       })
       .catch((err) => console.log(err));
   }, [id]);
+
+  useEffect(() => {
+    if (user) {
+      userService
+        .getAllRentalsUser(user._id)
+        .then((response) => {
+          console.log(id);
+          // console.log(response.data.rentals.rentals_receiving);
+          // setUserRentals(response.data.rentals.rentals_receiving);
+          return response.data.rentals.rentals_receiving;
+        })
+        .then((response) => {
+          const rentalArtworksIds = response.map((oneRental) => {
+            return { artwork_id: oneRental.artwork, state: oneRental.state };
+          });
+          console.log(rentalArtworksIds);
+          setUserRentals(rentalArtworksIds);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+
+  // * REQUEST BUTTON RENDER
+  function handleRequestButtonRender() {
+    if (user && artwork && userRentals) {
+      if (user._id === artwork.artist._id) return editButtonElement;
+      if (checkIdMatching()) {
+        if (artwork.is_borrowed) return rentingWorkElement;
+        return requestedWorkElement;
+      }
+      if (artwork.is_borrowed) return notAvailableElement;
+      return requestButtonElement;
+    }
+  }
+
+  function checkIdMatching() {
+    let matching = false;
+    userRentals.forEach((rental) => {
+      if (rental.artwork_id === id) {
+        matching = true;
+      }
+    });
+    return matching;
+  }
+
+  const notAvailableElement = (
+    <p className="artwork-details-request-message">Currently Not Available</p>
+  );
+
+  const requestedWorkElement = (
+    <p className="artwork-details-request-message">Currently Requested</p>
+  );
+
+  const rentingWorkElement = (
+    <p className="artwork-details-request-message">Currently Renting</p>
+  );
+
+  let requestButtonElement = <></>;
+  if (artwork) {
+    requestButtonElement = (
+      <Link to={`/artworks/${artwork._id}/request`}>
+        <button className="artwork-details-request-button">Request</button>
+      </Link>
+    );
+  }
+
+  let editButtonElement = <></>;
+  if (artwork) {
+    editButtonElement = (
+      <Link to={`/profile/edit-artwork/${artwork._id}`}>
+        <button className="artwork-details-request-button">Edit</button>
+      </Link>
+    );
+  }
 
   // * FAVORITES
   useEffect(() => {
@@ -30,8 +111,11 @@ function ArtworkDetailPage() {
       userService
         .getFavorites(user._id)
         .then((response) => {
-          setFavorites(response.data.favorites);
-          return response.data.favorites;
+          const favoritesArtworkIds = response.data.favorites.map((artwork) => {
+            return artwork._id;
+          });
+          setFavorites(favoritesArtworkIds);
+          return favoritesArtworkIds;
         })
         .then((response) => {
           if (!artwork) return;
@@ -77,55 +161,85 @@ function ArtworkDetailPage() {
     }
   }, [isFavorite]);
 
+  // * IMAGE GALLERY
+  function handleImageClick(imageUrl) {
+    setCurrentImage(imageUrl);
+  }
+
   return (
-    <div className="ArtworkDetailsPage page-wrapper">
+    <div className="page-wrapper mobile-dvh-general flex-column">
       {artwork && (
         <div className="artwork-details-wrapper">
-          <h1>{artwork.title}</h1>
+          <div className="artwork-details-title-wrapper">
+            <h1>{artwork.title}</h1>
+            <button
+              className="back-button"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
+              }}
+            >
+              {"< Back"}
+            </button>
+          </div>
 
-          <div className="artwork-details-img">
-            <img
-              src={artwork.images_url[0]}
-              alt={artwork.title}
-              style={{ width: "100%" }}
-            />
-            <div className="artwork-thumbnail-wrapper">
+          {/* ARTWORK IMAGES */}
+
+          <div className="artwork-details-images-wrapper">
+            <div className="artwork-details-images-main">
+              <img
+                src={currentImage}
+                alt={artwork.title}
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="artwork-details-thumbnail-wrapper">
               {artwork.images_url.map((oneArtwork, index) => {
-                if (index !== 0) {
-                  return (
-                    <div key={index} className="artwork-thumbnail">
-                      <img src={oneArtwork} alt={artwork.title} />
-                    </div>
-                  );
-                }
+                return (
+                  <div
+                    key={index}
+                    onClick={() => {
+                      handleImageClick(oneArtwork);
+                      // console.log(oneArtwork)
+                    }}
+                    className="artwork-details-thumbnail"
+                  >
+                    <img src={oneArtwork} alt={artwork.title} />
+                  </div>
+                );
               })}
             </div>
           </div>
-          <div className="artwork-info">
-            <p className="artwork-info-favorite" onClick={handleFavorite}>
+
+          {/* ARTWORK INFO */}
+          <div className="artwork-details-info-wrapper">
+            <p
+              className="artwork-details-info-favorite"
+              onClick={handleFavorite}
+            >
               {isFavorite ? "★" : "☆"}
             </p>
-            <div className="artwork-info-text">
-              <p>{artwork.artist.real_name}</p>
-              <p>{artwork.medium}</p>
+            <div className="artwork-details-info-wrapper">
+              <p className="artwork-details-info-text">
+                {artwork.artist.real_name}
+              </p>
+              <p className="artwork-details-info-text">{artwork.medium}</p>
               {artwork.dimensions.z ? (
-                <p>
+                <p className="artwork-details-info-text">
                   {artwork.dimensions.x} x {artwork.dimensions.y} x{" "}
                   {artwork.dimensions.z} cm, {artwork.year}
                 </p>
               ) : (
-                <p>
+                <p className="artwork-details-info-text">
                   {artwork.dimensions.x} x {artwork.dimensions.y} cm,{" "}
                   {artwork.year}
                 </p>
               )}
             </div>
           </div>
-          {isLoggedIn && (
-            <Link to={`/artworks/${artwork._id}/request`}>
-              <button className="artwork-request-button">Request</button>
-            </Link>
-          )}
+
+          {/* ARTWORK BUTTON BOTTOM */}
+          {isLoggedIn && handleRequestButtonRender()}
         </div>
       )}
     </div>

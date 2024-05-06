@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
-import "./styles/App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import { AuthContext } from "./context/auth.context";
 
@@ -26,9 +25,37 @@ import ScrollToTop from "./components/ScrollToTop";
 import FooterProfile from "./components/FooterProfile";
 import FAQPage from "./pages/FAQPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import FavoritesPage from "./pages/FavoritesPage";
+import BecomeArtistPage from "./pages/BecomeArtistPage";
 
 function App() {
   const { user, isLoggedIn } = useContext(AuthContext);
+
+  const location = useLocation();
+  let { pathname } = location;
+
+  function cleanUpPathName(path) {
+    if (path === "/") path = "/home";
+    path = path.split("/")[1];
+    return path;
+  }
+
+  // change path name of
+  // /artworks/:id/edit
+  // /artworks/create-artwork
+  // /artworks/:id/request
+  const cleanPathname = cleanUpPathName(pathname);
+
+  const generalFooterPages = [
+    "home",
+    "manual",
+    "about",
+    "artworks",
+    "faq",
+    "signup",
+    "login",
+  ];
+  const profileFooterPages = ["profile", "request", "notifications"];
 
   return (
     <>
@@ -73,7 +100,7 @@ function App() {
           }
         />
         <Route
-          path="/artworks/:id/edit"
+          path="/profile/edit-artwork/:id/"
           element={
             <IsPrivate>
               <EditArtworkPage />
@@ -81,7 +108,7 @@ function App() {
           }
         />
         <Route
-          path="/artworks/create-artwork"
+          path="/profile/create-artwork"
           element={
             <IsPrivate>
               <CreateArtworkPage />
@@ -96,6 +123,14 @@ function App() {
             </IsPrivate>
           }
         />
+        <Route
+          path="/profile/become-artist"
+          element={
+            <IsPrivate>
+              <BecomeArtistPage />
+            </IsPrivate>
+          }
+        ></Route>
         <Route
           path="/artworks/:id/request"
           element={
@@ -120,10 +155,29 @@ function App() {
             </IsPrivate>
           }
         />
+        <Route
+          path="/favorites"
+          element={
+            <IsPrivate>
+              <FavoritesPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/profile/faq"
+          element={
+            <IsPrivate>
+              <FAQPage />
+            </IsPrivate>
+          }
+        />
       </Routes>
 
-      <FooterGeneral />
-      <FooterProfile />
+      {generalFooterPages.includes(cleanPathname) ? (
+        <FooterGeneral />
+      ) : (
+        <FooterProfile pathname={pathname} />
+      )}
     </>
   );
 }

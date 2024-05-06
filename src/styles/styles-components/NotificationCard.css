@@ -31,8 +31,13 @@
   flex-grow: 1;
   font-weight: 500;
 }
-.notification-card-text {
+.notification-card-text-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
   padding: 1rem;
+}
+.notification-card-text {
   text-align: center;
 }
 .notification-card-button-wrapper {
@@ -51,5 +56,10 @@
   margin-bottom: 1rem;
 }
 .new {
-  background-color: rgb(255, 223, 223);
+  background-color: rgb(192, 255, 172);
+}
+.notification-card-link {
+  /* text-decoration: underline; */
+  color: rgb(0, 13, 255);
+  /* background-color: rgb(192, 241, 255); */
 }

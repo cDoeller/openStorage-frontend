@@ -35,8 +35,8 @@ class UserService {
     return this.api.get("/api/user/artists");
   };
 
-// GET only artists with artworks
-getAllArtistsWithWorks = () => {
+  // GET only artists with artworks
+  getAllArtistsWithWorks = () => {
     return this.api.get(`/api/user/artists/works`);
   };
 
@@ -46,23 +46,73 @@ getAllArtistsWithWorks = () => {
   };
 
   // GET all favorites
-  getFavorites = (id) =>{
+  getFavorites = (id) => {
     return this.api.get(`/api/user/${id}/favorites`);
-  }
+  };
+
+  getAllRentalsUser = (id) => {
+    return this.api.get(`/api/user/${id}/rentals`);
+  };
 
   // UPDATE favorites
-  updateFavorites = (id, favorites) =>{
+  updateFavorites = (id, favorites) => {
     return this.api.patch(`/api/user/${id}/favorites`, favorites);
-  }
+  };
 
   // PATCH update a user
   updateUser = (id, requestBody) => {
     return this.api.patch(`/api/user/${id}/update`, requestBody);
   };
 
+  // PATCH verify as an artist
+  verifyArtist = (id, requestBody) => {
+    return this.api.patch(`/api/user/${id}/verify-artist`, requestBody)
+  }
+
   // DELETE a user
   deleteUser = (id) => {
     return this.api.delete(`/api/user/${id}/delete`);
+  };
+
+  // NOTIFICATIONS
+  // POST one notification in sub-schema
+  createNotification = (_id, notification) => {
+    return this.api.post(`/api/user/${_id}/notifications`, notification);
+  };
+
+  // GET if new notification exists
+  hasNewNotifications = (_id) => {
+    return this.api.get(`/api/user/${_id}/notifications/hasNew`);
+  };
+
+  // GET all notifications of one user
+  getNotifications = (id) => {
+    return this.api.get(`/api/user/${id}/notifications`);
+  };
+
+  getNotificationForRequest = (id, request_id) => {
+    return this.api.get(`/api/user/${id}/notifications/${request_id}`);
+  };
+
+  // UPDATE a notification//
+  updateNotification = (_id, notification_id, notification) => {
+    return this.api.patch(
+      `/api/user/${_id}/notifications/${notification_id}`,
+      notification
+    );
+  };
+
+  // UPDATE a notification//
+  updateNotificationNew = (_id, notification_id, _isNew) => {
+    return this.api.patch(
+      `/api/user/${_id}/notifications/${notification_id}/new`,
+      _isNew
+    );
+  };
+
+  // DELETE a notification
+  deleteNotification = (_id, notification_id) => {
+    return this.api.delete(`/api/user/${_id}/notifications/${notification_id}`);
   };
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/ArtworksPage.css";
+import "../styles/styles-pages/ArtworksPage.css";
 import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
 import artworksService from "../services/artworks.services";
@@ -11,14 +11,30 @@ function ArtworksPage() {
   const [showInterface, setShowInterface] = useState(false);
   const [allArtists, setAllArtists] = useState(null);
   const [allCities, setAllCities] = useState(null);
+  const [genrePreset, setGenrePreset] = useState("");
 
   function toggleFilterInterface() {
     setShowInterface(!showInterface);
   }
 
+  const urlParams = new URLSearchParams(window.location.search);
+
   useEffect(() => {
+    const genre = urlParams.get("genre");
+    //  if a genre is passed from homepage, render prefiltered works
+    if (genre) {
+      setGenrePreset(genre);
+      const genreQueryString = `?genre=${genre}`;
+      getPrefilteredArtworks(genreQueryString);
+      // if no genre is present, render all artworks
+    } else {
+      getAllArtworks();
+    }
+  }, [urlParams]);
+
+  function getPrefilteredArtworks(queryString) {
     artworksService
-      .getAllArtworks()
+      .getArtworkQuery(queryString)
       .then((response) => {
         // console.log(response.data);
         setArtworks(response.data);
@@ -42,14 +58,41 @@ function ArtworksPage() {
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
-  }, []);
+  }
+
+  function getAllArtworks() {
+    artworksService
+      .getAllArtworks()
+      .then((response) => {
+        // console.log(response.data);
+        setArtworks(response.data);
+      })
+      .then(() => {
+        userService
+          .getAllArtistsWithWorks()
+          .then((response) => {
+            setAllArtists(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
+      .then(() => {
+        artworksService
+          .getArtworkCities()
+          .then((response) => {
+            // console.log(response.data);
+            setAllCities(response.data);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  }
 
   // disable scroll when filter page open
   function disableScroll() {
     const scrollTopPosition =
       window.pageYOffset || document.documentElement.scrollTop;
     window.onscroll = function () {
-      window.scrollTo(0,scrollTopPosition);
+      window.scrollTo(0, scrollTopPosition);
     };
   }
   function enableScroll() {
@@ -64,7 +107,7 @@ function ArtworksPage() {
   }, [showInterface]);
 
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper mobile-dvh-general artworks-page">
       {/* FILTER INTERFACE */}
       <div
         className={
@@ -77,6 +120,7 @@ function ArtworksPage() {
           setArtworks={setArtworks}
           allArtists={allArtists}
           allCities={allCities}
+          genrePreset={genrePreset}
         />
       </div>
 
@@ -105,7 +149,7 @@ function ArtworksPage() {
               return (
                 <Link to={`/artworks/${artwork._id}`} key={artwork._id}>
                   <ArtworkCard
-                    name={artwork.artist.user_name}
+                    name={artwork.artist.real_name}
                     title={artwork.title}
                     dimensions={
                       artwork.dimensions.x +
@@ -120,6 +164,16 @@ function ArtworksPage() {
                 </Link>
               );
             })}
+          {artworks && artworks.length === 0 && (
+            <div className="artworks-no-artworks-wrapper">
+              <div className="artworks-no-artworks-icon-wrapper">
+                <img src="/img/media.png" alt="" />
+              </div>
+              <h3 className="artworks-no-artworks-headline">
+                No Artworks Found
+              </h3>
+            </div>
+          )}
         </div>
       </>
     </div>

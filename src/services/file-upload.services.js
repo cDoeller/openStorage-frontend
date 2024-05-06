@@ -1,35 +1,35 @@
 import axios from "axios";
 
-const api = axios.create({
-  // make sure you use PORT = 5005 (the port where our server is running)
-  baseURL: `${import.meta.env.VITE_API_URL}/api` || "http://localhost:5005/api"
-  // withCredentials: true // => you might need this option if using cookies and sessions
-});
+class UploadService {
+    constructor(){
+        this.api = axios.create({
+            baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5005'
+          });
+       
+          // Automatically set JWT token in the headers for every request
+          this.api.interceptors.request.use((config) => {
+            // Retrieve the JWT token from the local storage
+            const storedToken = localStorage.getItem("authToken");
+       
+            if (storedToken) {
+              console.log("setting headers...", storedToken)
+              config.headers = { Authorization: `Bearer ${storedToken}` };
+            }
+       
+            return config;
+          });
+    }
 
-const errorHandler = (err) => {
-  throw err;
-};
+    uploadImage = (files) => {
+      return this.api.post("/api/upload", files)
+        // .then(res => res.data)
+        // .catch((err)=>{
+        //     console.log(err)
+        // });
+    };
 
-// const getMovies = () => {
-//   return api.get("/movies")
-//     .then((res) => res.data)
-//     .catch(errorHandler);
-// };
+}
 
-const uploadImage = (file) => {
-  return api.post("/upload", file)
-    .then(res => res.data)
-    .catch(errorHandler);
-};
+const uploadService = new UploadService
 
-// const createMovie = (newMovie) => {
-//   return api.post("/movies", newMovie)
-//     .then(res => res.data)
-//     .catch(errorHandler);
-// };
-
-export default {
-//   getMovies,
-  uploadImage,
-//   createMovie
-};
+export default uploadService

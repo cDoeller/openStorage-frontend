@@ -1,21 +1,24 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import Select from "react-select";
-import cityService from "../services/city.services";
-import "../styles/CreateArtwork.css"
+import "../styles/styles-pages/CreateArtwork.css";
 import artworksService from "../services/artworks.services";
+import uploadService from "../services/file-upload.services";
+import citiesGermany from "../data/cities-germany.json";
 
 function CreateArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [cityOptions, setCityOptions] = useState();
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(new Date());
-  const [imagesUrl, setImagesUrl] = useState([]);
+  // array for local file paths
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [imageData, setImageData] = useState("");
   const [city, setCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
@@ -23,7 +26,9 @@ function CreateArtworkPage() {
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
 
-  const [imageToUpload, setImageToUpload] = useState("")
+  // adding and removing a single path of a file to be uploaded
+  const [imageToUpload, setImageToUpload] = useState("");
+  const [uploadedImages, setUploadedImages] = useState([]);
 
   // REACT SELECT OPTIONS
   let mediaOptions = [
@@ -32,16 +37,32 @@ function CreateArtworkPage() {
     { value: "Painting", label: "Painting" },
     { value: "Installation", label: "Installation" },
     { value: "Drawing", label: "Drawing" },
+    { value: "Sculpture", label: "Sculpture" },
+    { value: "Object", label: "Object" },
+    { value: "Print", label: "Print" },
+    { value: "Collage", label: "Collage" },
+    { value: "Mixed Media", label: "Mixed Media" },
   ];
   let genreOptions = [
     // { value: "", label: "- type / select -" },
     { value: "Surreal", label: "Surreal" },
     { value: "Dada", label: "Dada" },
-    { value: "Minimalism", label: "Minimalism" },
-    { value: "Digital Art", label: "Digital Art" },
+    { value: "Minimal", label: "Minimal" },
+    { value: "Digital", label: "Digital" },
     { value: "Abstract", label: "Abstract" },
     { value: "Figurative", label: "Figurative" },
-    { value: "Conceptual Art", label: "Conceptual Art" },
+    { value: "Conceptual", label: "Conceptual" },
+    { value: "Real", label: "Real" },
+    { value: "Natural", label: "Natural" },
+    { value: "Arte Povera", label: "Arte Povera" },
+    { value: "Pop", label: "Pop" },
+    { value: "Ready Made", label: "Ready Made" },
+    { value: "Assemblage", label: "Assemblage" },
+    { value: "Concrete", label: "Concrete" },
+    { value: "Kinetic", label: "Kinetic" },
+    { value: "Political", label: "Political" },
+    { value: "Interactive", label: "Interactive" },
+    { value: "Art & Design", label: "Art & Design" },
   ];
 
   // REACT SELECT HANDLE SELECT FUNCTIONS
@@ -87,66 +108,106 @@ function CreateArtworkPage() {
   };
 
   useEffect(() => {
-    cityService.getAllCities().then((response) => {
-      let cityNames = response.data.map((oneCity) => {
-        return { value: oneCity.name, label: oneCity.name };
-      });
-      console.log(cityNames);
-      setCityOptions(cityNames);
+    let cityNames = citiesGermany.map((oneCity) => {
+      return { value: oneCity.city, label: oneCity.city };
     });
+    // console.log(cityNames);
+    setCityOptions(cityNames);
   }, []);
 
-  function handleDeleteImage(e,index){
-    e.preventDefault()
-    const copiedImages = [...imagesUrl]
-    copiedImages.splice(index, 1)
-    setImagesUrl(copiedImages)
+
+    function handleDeleteImage(index){
+      const newImageData = [...imageData]
+      const newPreviews = [...imagePreviews]
+      newPreviews.splice(index, 1)
+      newImageData.splice(index,1)
+
+    setImageData(newImageData);
+    console.log(newPreviews);
+    setImagePreviews(newPreviews);
   }
 
-  function handleImagesUrl(e){
-    e.preventDefault()
-    const copiedImages = [imageToUpload,...imagesUrl]
-    setImagesUrl(copiedImages)
-    console.log(copiedImages)
+
+
+  function handleImagesUrl(e) {
+    // e.preventDefault();
+
+    const files = Array.from(e.target.files);
+    const newImageData = [...imageData, ...files];
+    
+    setImageData(newImageData);
+    const previews = newImageData.map((files) => URL.createObjectURL(files));
+
+    setImagePreviews(previews);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+    let newArtwork = {
+      title: title,
+      year: year,
+      artist: user._id,
+      city: city,
+      dimensions: {
+        x: dimensionsX,
+        y: dimensionsY,
+        z: dimensionsZ,
+      },
+      medium: medium,
+      genre: genre,
+    };
 
-    const newArtwork = {
-        title:title,
-        year:year,
-        artist:user._id,
-        city:city,
-        dimensions:{
-            x:dimensionsX,
-            y:dimensionsY,
-            z:dimensionsZ
-        },
-        images_url:imagesUrl,
-        medium:medium,
-        genre:genre
-    }
-
-    artworksService.createArtwork(newArtwork)
-    .then((response)=>{
-        console.log("successfully created a new artwork")
-        const newArtwork = response.data.newArtwork
-        navigate(`/artworks/${newArtwork._id}`)
-    })
-    .catch((err)=>{
-        console.log(err)
+    const uploadData = new FormData();
+    
+    imageData.forEach((file)=>{
+      uploadData.append("images", file)
     })
 
+    console.log("image data ", imageData)
+    uploadService
+      .uploadImage(uploadData)
+      .then((response) => {
+        newArtwork.images_url = response.data.fileUrls;
+
+        // console.log("response is: ", response);
+
+        let copiedArray = [...uploadedImages, response.data.fileUrls];
+        setUploadedImages(copiedArray);
+        return artworksService.createArtwork(newArtwork);
+      })
+      .then((response) => {
+        console.log("successfully created a new artwork");
+        const newArtwork = response.data.newArtwork;
+        console.log(newArtwork);
+        navigate(`/artworks/${newArtwork._id}`);
+      })
+      .catch((err) => console.log("Error while uploading the file: ", err));
   }
 
   return (
     <div id="CreateArtworkPage" className="page-wrapper">
-      <h1>Create Artwork</h1>
-      <form onSubmit={(e)=>{handleSubmit(e)}} className="create-artwork-form">
+      <div className="create-artwork-heading-wrapper">
+        <h1>Create Artwork</h1>
+        <button
+          className="back-button"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
+          {" "}
+          {"< Back"}
+        </button>
+      </div>
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+        className="create-artwork-form"
+      >
         <label htmlFor="title">Title</label>
         <input
-        className="create-artwork-input"
+          className="create-artwork-input"
           name="title"
           type="text"
           onChange={(e) => {
@@ -167,8 +228,8 @@ function CreateArtworkPage() {
 
         {/* CITY */}
         <label htmlFor="" className="filterinterface-form-label">
-              City
-            </label>
+          City
+        </label>
         <Select
           options={cityOptions}
           onChange={handleCitiesSelectChange}
@@ -208,43 +269,55 @@ function CreateArtworkPage() {
         </div>
 
         <div className="create-artwork-img-section">
-          <label htmlFor="images">Images</label>
-          <input name="images" onChange={(e)=>{setImageToUpload(e.target.value)}} type="url" />
-          <button onClick={(e)=>{handleImagesUrl(e)}}>Upload Image</button>
+        <div className="file-input-container">
+        <label htmlFor="images">Upload Images</label>
+          <input
+            name="images"
+            className="file-input"
+            type="file"
+            accept=".jpg, .png"
+            multiple
+            onChange={(e) => {
+              handleImagesUrl(e);
+            }}
+          />
+
+        </div>
           <div className="create-artwork-thumbnail-wrapper">
-            {imagesUrl &&
-              imagesUrl.map((oneImage, index) => {
-                return (
-                  <div key={index} className="create-artwork-img-wrapper">
-                    <img src={oneImage} alt={title} />
-                    <button className="create-artwork-delete-img-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
-                  </div>
-                );
-              })}
+            {imagePreviews.map((preview, index) => (
+              <div className="create-artwork-img-thumbnail" key={index}>
+              <img
+                src={preview}
+                alt={`Preview ${index}`}
+                
+              />
+              <button className="delete-img-button" onClick={()=>{handleDeleteImage(index)}}>x</button>
+              </div>
+            ))}
           </div>
         </div>
-         {/* MEDIUM */}
-         <label htmlFor="" className="filterinterface-form-label">
-              Medium
-            </label>
-            <Select
-              options={mediaOptions}
-              onChange={handleMediaSelectChange}
-              value={{ label: medium }}
-              styles={selectStles}
-            />
+        {/* MEDIUM */}
+        <label htmlFor="" className="filterinterface-form-label">
+          Medium
+        </label>
+        <Select
+          options={mediaOptions}
+          onChange={handleMediaSelectChange}
+          value={{ label: medium }}
+          styles={selectStles}
+        />
 
-            {/* GENRE */}
-            <label htmlFor="" className="filterinterface-form-label">
-              Genre
-            </label>
-            <Select
-              options={genreOptions}
-              onChange={handleGenreSelectChange}
-              value={{ label: genre }}
-              styles={selectStles}
-            />
-            <button>Submit</button>
+        {/* GENRE */}
+        <label htmlFor="" className="filterinterface-form-label">
+          Genre
+        </label>
+        <Select
+          options={genreOptions}
+          onChange={handleGenreSelectChange}
+          value={{ label: genre }}
+          styles={selectStles}
+        />
+        <button>Submit</button>
       </form>
     </div>
   );

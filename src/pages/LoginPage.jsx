@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
-import "../styles/Login.css";
+import "../styles/styles-pages/Login.css";
 
 import { AuthContext } from "../context/auth.context";
 import authService from "../services/auth.services";

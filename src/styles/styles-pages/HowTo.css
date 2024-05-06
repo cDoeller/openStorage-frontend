@@ -13,13 +13,17 @@
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: 0.6rem;
   padding: 1rem 0;
 }
 .howto-nav-button {
-  padding: 0.6rem 1.6rem;
+  padding: 0.6rem 1.4rem;
   border-radius: 20px;
   background-color: white;
+  border:none;
+  background-color: var(--lime);
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 /* FOR SECTION */
@@ -53,6 +57,7 @@
   counter-increment: orderedlist;
   content: counter(orderedlist);
   border: 1px solid black;
+  /* background-color: var(--lime); */
   width: 1.7rem;
   border-radius: 50%;
   box-sizing: border-box;

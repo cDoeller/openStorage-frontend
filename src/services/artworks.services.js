@@ -12,7 +12,6 @@ class ArtworksService {
       const storedToken = localStorage.getItem("authToken");
 
       if (storedToken) {
-        console.log("setting headers...", storedToken);
         config.headers = { Authorization: `Bearer ${storedToken}` };
       }
 
@@ -34,6 +33,11 @@ class ArtworksService {
   getRecentArtworks = (amount) => {
     return this.api.get(`/api/artworks/recent?amount=${amount}`);
   };
+
+    // GET /api/artworks
+    getPopularGenres = () => {
+      return this.api.get(`/api/artworks/popular-genres`);
+    };
 
   // GET /api/artworks/cities
   getArtworkCities = () => {

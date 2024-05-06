@@ -2,13 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import artworksService from "../services/artworks.services";
-import cityService from "../services/city.services";
+import uploadService from "../services/file-upload.services";
 import { AuthContext } from "../context/auth.context";
-import "../styles/EditArtwork.css";
+import "../styles/styles-pages/EditArtwork.css";
+import Popup from "../components/Popup";
+import germanCities from "../data/cities-germany.json"
 
 function EditArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
   const { id } = useParams();
+
+  const [showPopup, setShowPopup] = useState(false)
 
   const [artwork, setArtwork] = useState(null);
   const [cityOptions, setCityOptions] = useState([])
@@ -19,10 +23,12 @@ function EditArtworkPage() {
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
   const [dimensionsZ, setDimensionsZ] = useState(0);
-  const [imagesUrl, setImagesUrl] = useState([]);
+
+  const [oldImages, setOldImages] = useState([]);
+  const [newImages, setNewImages] = useState([])
+  const [imageData, setImageData] = useState([])
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
-  const [imageToUpload, setImageToUpload] = useState("");
 
   const navigate = useNavigate();
 
@@ -33,18 +39,33 @@ function EditArtworkPage() {
     { value: "Painting", label: "Painting" },
     { value: "Installation", label: "Installation" },
     { value: "Drawing", label: "Drawing" },
+    { value: "Sculpture", label: "Sculpture" },
+    { value: "Object", label: "Object" },
+    { value: "Print", label: "Print" },
+    { value: "Collage", label: "Collage" },
+    { value: "Mixed Media", label: "Mixed Media" },
   ];
   let genreOptions = [
     // { value: "", label: "- type / select -" },
     { value: "Surreal", label: "Surreal" },
     { value: "Dada", label: "Dada" },
-    { value: "Minimalism", label: "Minimalism" },
-    { value: "Digital Art", label: "Digital Art" },
+    { value: "Minimal", label: "Minimal" },
+    { value: "Digital", label: "Digital" },
     { value: "Abstract", label: "Abstract" },
     { value: "Figurative", label: "Figurative" },
-    { value: "Conceptual Art", label: "Conceptual Art" },
+    { value: "Conceptual", label: "Conceptual" },
+    { value: "Real", label: "Real" },
+    { value: "Natural", label: "Natural" },
+    { value: "Arte Povera", label: "Arte Povera" },
+    { value: "Pop", label: "Pop" },
+    { value: "Ready Made", label: "Ready Made" },
+    { value: "Assemblage", label: "Assemblage" },
+    { value: "Concrete", label: "Concrete" },
+    { value: "Kinetic", label: "Kinetic" },
+    { value: "Political", label: "Political" },
+    { value: "Interactive", label: "Interactive" },
+    { value: "Art & Design", label: "Art & Design" },
   ];
-
 
   // REACT SELECT HANDLE SELECT FUNCTIONS
   function handleMediaSelectChange(selectedOption) {
@@ -90,22 +111,7 @@ function EditArtworkPage() {
 
   useEffect(() => {
 
-    // FETCH all cities from the cities model
-    // FETCH all cities within germany from an API ?
-    // ---> display as options of the city select
-
-    cityService.getAllCities()
-    .then((response)=>{
-        console.log("fetched all cities", response.data)
-        let cityNames = response.data.map((oneCity)=>{
-            return {value:oneCity.name, label:oneCity.name}
-        })
-        console.log(cityNames)
-        setCityOptions(cityNames)
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    setCityOptions(germanCities)
     artworksService
       .getArtwork(id)
       .then((response) => {
@@ -118,7 +124,7 @@ function EditArtworkPage() {
         setDimensionsX(initialArtwork.dimensions.x);
         setDimensionsY(initialArtwork.dimensions.y);
         setDimensionsZ(initialArtwork.dimensions.z);
-        setImagesUrl(initialArtwork.images_url);
+        setOldImages(initialArtwork.images_url)
         setMedium(initialArtwork.medium);
         setGenre(initialArtwork.genre);
       })
@@ -127,32 +133,82 @@ function EditArtworkPage() {
       });
   }, [id]);
 
-  function handleImageUpload(e) {
-    e.preventDefault();
 
-    const copiedImages = [imageToUpload,...imagesUrl]
-    console.log(imageToUpload)
-    setImagesUrl(copiedImages)
+
+  function handleImagesUrl(e) {
+    // e.preventDefault();
+
+    const files = Array.from(e.target.files);
+    const newImageData = [...imageData,...files]
+  
+    const previewImages = newImageData.map((files) => URL.createObjectURL(files));
+
+    console.log(previewImages)
+
+    const newPreviews = [...previewImages]
+  
+    setImageData(newImageData);
+    setNewImages(newPreviews)
+    console.log("image data after adding new ", imageData)
   }
 
-  function handleDeleteImage(e,index){
-    e.preventDefault()
-    const copiedImages = [...imagesUrl]
-    copiedImages.splice(index, 1)
-    setImagesUrl(copiedImages)
+  function handleDeleteImage(index){
+    
+    
+    const newImagePreviews = [...newImages]
+    const newImageData = [...imageData]
+    
+    newImageData.splice(index, 1);
+    newImagePreviews.splice(index, 1);
+
+    setImageData(newImageData);
+    setNewImages(newImagePreviews);
   }
+
+  function handleDeleteOldImage(index){
+    
+    const copiedOldImages = [...oldImages]
+    
+    copiedOldImages.splice(index, 1);
+    
+    setOldImages(copiedOldImages)
+  }
+
+  // DELETE ARTWORK POPUP
+    function handleYes(e){
+      e.preventDefault()
+
+      artworksService.deleteArtwork(id)
+      .then((deletedArtwork)=>{
+        console.log(deletedArtwork)
+        setShowPopup(false)
+        navigate("/profile")
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    
+    }
+    function handleNo(e){
+      e.preventDefault()
+      setShowPopup(false)
+    }
+  const deleteButton = <div className="">
+    <button onClick={(e)=>{handleYes(e)}}>Yes</button>
+    <button onClick={(e)=>{handleNo(e)}}>No</button>
+    </div>
+
+
 
   function handleDeleteArtwork(e) {
     e.preventDefault();
-
-    // open a modal to confirm choice
-    // then make the delete call
+    setShowPopup(true)
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const changedArtwork = {
+    let updatedArtwork = {
       title: title,
       artist: artwork.artist,
       year: year,
@@ -162,26 +218,68 @@ function EditArtworkPage() {
         y: dimensionsY,
         z: dimensionsZ,
       },
-      images_url: imagesUrl,
+      // images_url: imagesUrl,
       medium: medium,
       genre: genre,
       isForSale: artwork.isForSale,
     };
 
-    artworksService
-      .updateArtwork(id, changedArtwork)
-      .then((response) => {
-        console.log("successfully changed an artwork");
-        navigate("/profile");
+    console.log("imageData ", imageData)
+
+    
+    if(imageData.length > 0){
+      const uploadData = new FormData();
+      
+      imageData.forEach((file)=>{
+        uploadData.append("images", file)
       })
-      .catch((err) => {
-        console.log(err);
-      });
+
+      uploadService
+        .uploadImage(uploadData)
+        .then((response) => {
+          let newImagesUrls = response.data.fileUrls
+          
+          console.log("response is: ", response.data.fileUrls);
+          
+          let allImagesArray = [...oldImages, ...newImagesUrls];
+          
+          updatedArtwork.images_url = allImagesArray;
+          return artworksService.updateArtwork(artwork._id, updatedArtwork);
+        })
+        .then((response) => {
+          console.log("successfully updated an artwork with images");
+          console.log(response.data);
+          navigate(`/artworks/${artwork._id}`)
+        })
+        .catch((err) => console.log("Error while uploading the file: ", err));
+    }
+    else{
+      updatedArtwork.images_url = oldImages
+      artworksService.updateArtwork(artwork._id, updatedArtwork)
+      .then((response)=>{
+        console.log("successfully updated an artwork");
+          console.log(response.data);
+          navigate(`/artworks/${artwork._id}`)
+      })
+      .catch((err)=>{
+        console.log("Error while uploading the file: ", err)
+      })
+    }
   }
 
   return (
-    <div id="EditArtworkPage" className="page-wrapper">
+    <div id="EditArtworkPage" className="page-wrapper mobile-dvh">
+    <Popup
+    headline={"Are you sure?"}
+    showPopup={showPopup}
+    setShowPopup={setShowPopup}
+    text={"Deleting the artwork is irreversible"}
+    button={deleteButton}
+     />
+    <div className="heading-wrapper">
       <h1>Edit Artwork</h1>
+      <button className="back-button" onClick={(e)=>{e.preventDefault(); navigate(-1)}}>{"< Back"}</button>
+    </div>
 
       {isLoggedIn && artwork && (
         <form
@@ -252,25 +350,42 @@ function EditArtworkPage() {
               />
               z
             </div>
+            <div className="edit-artwork-img-section">
+              <div className="file-input-container">
+
             <label htmlFor="">Images</label>
               <input
-                className="edit-artwork-input"
-                type="text"
+                className="file-input"
+                type="file"
+                accept=".jpg, .png"
+                multiple
                 onChange={(e) => {
-                  setImageToUpload(e.target.value);
+                  handleImagesUrl(e);
                 }}
               />
-              <button onClick={(e)=>handleImageUpload(e)}>Upload Image</button>
-              <div className="edit-artwork-img-section">
-              {imagesUrl && imagesUrl.map((oneUrl, index) => {
+              </div>
+
+              <div className="edit-artwork-thumbnail-wrapper">
+              {oldImages && oldImages.map((oneUrl, index) => {
                 return (
-                  <div className="edit-artwork-img-wrapper" key={index}>
+                  <div className="edit-artwork-img-thumbnail" key={index}>
+                {/* {console.log("one url", oneUrl)} */}
                     <img src={oneUrl} alt={title} />
-                    <button className="edit-artwork-img-delete-button" onClick={(e,index)=>{handleDeleteImage(e,index)}}>x</button>
+                    <button type="button" className="delete-img-button" onClick={()=>{handleDeleteOldImage(index)}}>x</button>
+                  </div>
+                );
+              })}
+              {newImages && newImages.map((oneUrl, index) => {
+                return (
+                  <div className="edit-artwork-img-thumbnail" key={index}>
+                {/* {console.log("one url", oneUrl)} */}
+                    <img src={oneUrl} alt={title} />
+                    <button type="button" className="delete-img-button" onClick={()=>{handleDeleteImage(index)}}>x</button>
                   </div>
                 );
               })}
           </div>
+            </div>
 
             {/* MEDIUM */}
             <label htmlFor="" className="filterinterface-form-label">
@@ -293,7 +408,8 @@ function EditArtworkPage() {
               value={{ label: genre }}
               styles={selectStles}
             />
-          <button onSubmit={handleSubmit}>Submit Changes</button>
+            <button onClick={handleDeleteArtwork}>Delete Artwork</button>
+          <button type="submit">Submit Changes</button>
         </form>
       )}
     </div>

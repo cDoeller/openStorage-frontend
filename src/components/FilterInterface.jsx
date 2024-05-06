@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "../styles/FilterInterface.css";
+import "../styles/styles-components/FilterInterface.css";
 import artworksService from "../services/artworks.services";
 import Select from "react-select";
 
 function FilterInterface(props) {
-  const { setArtworks, allArtists, allCities } = props;
+  const { setArtworks, allArtists, allCities, genrePreset } = props;
 
   const [city, setCity] = useState("");
   const [medium, setMedium] = useState("");
@@ -13,9 +13,16 @@ function FilterInterface(props) {
   const [artistId, setArtistId] = useState("");
   const [artistName, setArtistName] = useState("");
 
+  // Genre Preset
+  useEffect(() => {
+    if (genrePreset) {
+      setGenre(genrePreset);
+    }
+  }, [genrePreset]);
+
   // Filtering
   useEffect(() => {
-    console.log(artistName);
+    // console.log(artistName);
 
     let queryString = "?";
     if (city) queryString += `city=${city}&`;
@@ -26,7 +33,7 @@ function FilterInterface(props) {
     if (dimensions.z) queryString += `dimensions_z=${dimensions.z}&`;
     if (artistId) queryString += `artist=${artistId}`;
 
-    console.log(queryString);
+    // console.log(queryString);
 
     artworksService
       .getArtworkQuery(queryString)
@@ -53,16 +60,32 @@ function FilterInterface(props) {
     { value: "Painting", label: "Painting" },
     { value: "Installation", label: "Installation" },
     { value: "Drawing", label: "Drawing" },
+    { value: "Sculpture", label: "Sculpture" },
+    { value: "Object", label: "Object" },
+    { value: "Print", label: "Print" },
+    { value: "Collage", label: "Collage" },
+    { value: "Mixed Media", label: "Mixed Media" },
   ];
   let genreOptions = [
     // { value: "", label: "- type / select -" },
     { value: "Surreal", label: "Surreal" },
     { value: "Dada", label: "Dada" },
-    { value: "Minimalism", label: "Minimalism" },
-    { value: "Digital Art", label: "Digital Art" },
+    { value: "Minimal", label: "Minimal" },
+    { value: "Digital", label: "Digital" },
     { value: "Abstract", label: "Abstract" },
     { value: "Figurative", label: "Figurative" },
-    { value: "Conceptual Art", label: "Conceptual Art" },
+    { value: "Conceptual", label: "Conceptual" },
+    { value: "Real", label: "Real" },
+    { value: "Natural", label: "Natural" },
+    { value: "Arte Povera", label: "Arte Povera" },
+    { value: "Pop", label: "Pop" },
+    { value: "Ready Made", label: "Ready Made" },
+    { value: "Assemblage", label: "Assemblage" },
+    { value: "Concrete", label: "Concrete" },
+    { value: "Kinetic", label: "Kinetic" },
+    { value: "Political", label: "Political" },
+    { value: "Interactive", label: "Interactive" },
+    { value: "Art & Design", label: "Art & Design" },
   ];
   let cityOptions = [];
   if (allCities) {
@@ -74,7 +97,7 @@ function FilterInterface(props) {
   let artistOptions = [];
   if (allArtists) {
     allArtists.forEach((oneArtist) => {
-      artistOptions.push({ value: oneArtist._id, label: oneArtist.user_name });
+      artistOptions.push({ value: oneArtist._id, label: oneArtist.real_name });
     });
   }
 
@@ -228,9 +251,9 @@ function FilterInterface(props) {
         <button
           type="button"
           onClick={resetAll}
-          className="filterinterface-reset-button"
+          className="filterinterface-reset-button button"
         >
-          Reset
+          Reset Filters
         </button>
       </form>
     </div>

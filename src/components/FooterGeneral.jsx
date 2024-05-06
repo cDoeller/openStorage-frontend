@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/FooterGeneral.css";
+import "../styles/styles-components/FooterGeneral.css";
 import { Link, useLocation } from "react-router-dom";
 
 function FooterGeneral() {

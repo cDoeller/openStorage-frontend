@@ -1,9 +1,13 @@
+.artworks-page {
+  margin: 2rem 0 3rem 0;
+}
+
 .artworks-filterinterface-hide {
   display: none;
 }
 .artworks-filterinterface-show {
   display: block;
-  width:100%;
+  width: 100%;
   position: fixed;
   left: 0;
 }
@@ -16,8 +20,8 @@
 }
 .artworks-filterinterfacebutton-wrapper-inner {
   position: fixed;
-  top: var(--navbarHeightMobile);
-  right: 0;
+  top: calc(var(--navbarHeightMobile) + 1rem);
+  right: 0.4rem;
   background-color: white;
   border-radius: 10px;
   border: 2px solid black;
@@ -45,4 +49,21 @@
   flex-direction: column;
   gap: 2rem;
   margin-bottom: 3rem;
+}
+
+.artworks-no-artworks-wrapper {
+  margin-top: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.artworks-no-artworks-icon-wrapper {
+  width: 60px;
+}
+.artworks-no-artworks-icon-wrapper > img {
+  width: 100%;
+}
+.artworks-no-artworks-headline {
+  font-weight: 400;
 }

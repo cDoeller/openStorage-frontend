@@ -1,0 +1,27 @@
+.recent-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    height: 100%;
+    box-shadow: 0 0 1rem var(--greydark);
+    min-height: 320px;
+    border-radius: 10px;
+    overflow:hidden;
+}
+.recent-card-image-wrapper {
+    width: 250px;
+    height: 200px;
+    overflow: hidden;
+}
+.recent-card-image-img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+.recent-card-caption-wrapper {
+}
+.recent-card-caption-info-wrapper {
+    padding: 0.4rem;
+}
+.recent-card-caption-text {
+}
