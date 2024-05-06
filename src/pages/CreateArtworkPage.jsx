@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import Select from "react-select";
-import cityService from "../services/city.services";
 import "../styles/CreateArtwork.css";
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
@@ -117,16 +116,15 @@ function CreateArtworkPage() {
   }, []);
 
 
-    function handleDeleteImage(e,index){
-      e.preventDefault()
+    function handleDeleteImage(index){
       const newImageData = [...imageData]
-      const copiedImages = [...imagePreviews]
-      copiedImages.splice(index, 1)
+      const newPreviews = [...imagePreviews]
+      newPreviews.splice(index, 1)
       newImageData.splice(index,1)
 
     setImageData(newImageData);
-    console.log(copiedImages);
-    setImagePreviews(copiedImages);
+    console.log(newPreviews);
+    setImagePreviews(newPreviews);
   }
 
 
@@ -275,12 +273,13 @@ function CreateArtworkPage() {
         <label htmlFor="images">Upload Images</label>
           <input
             name="images"
-            className="input file-input"
+            className="file-input"
+            type="file"
+            accept=".jpg, .png"
             multiple
             onChange={(e) => {
               handleImagesUrl(e);
             }}
-            type="file"
           />
 
         </div>
@@ -292,7 +291,7 @@ function CreateArtworkPage() {
                 alt={`Preview ${index}`}
                 
               />
-              <button className="delete-button" onClick={(e)=>{handleDeleteImage(e)}}>x</button>
+              <button className="delete-img-button" onClick={()=>{handleDeleteImage(index)}}>x</button>
               </div>
             ))}
           </div>

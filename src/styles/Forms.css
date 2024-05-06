@@ -4,6 +4,14 @@
   justify-content: space-between;
 }
 
+.back-button{
+  border-style: none;
+  background:white;
+  font-size: 15px;
+  font-weight:600;
+  text-decoration: underline;
+}
+
 .input {
   padding: 0.4rem 1rem;
   border: none;
@@ -44,5 +52,17 @@
   border-radius: 2px;
   text-align: center;
   border:none;
+}
 
+.delete-img-button{
+  border-radius:50%;
+  border:none;
+  background-color: black;
+  color:white;
+  aspect-ratio: 1;
+  height:2rem;
+}
+
+.delete-img-button:hover{
+  color:mediumspringgreen;
 }

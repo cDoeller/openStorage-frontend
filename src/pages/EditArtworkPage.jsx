@@ -3,10 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
-import cityService from "../services/city.services";
 import { AuthContext } from "../context/auth.context";
 import "../styles/EditArtwork.css";
 import Popup from "../components/Popup";
+import germanCities from "../data/cities-germany.json"
 
 function EditArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -25,8 +25,8 @@ function EditArtworkPage() {
   const [dimensionsZ, setDimensionsZ] = useState(0);
 
   const [oldImages, setOldImages] = useState([]);
+  const [newImages, setNewImages] = useState([])
   const [imageData, setImageData] = useState([])
-  const [imagePreviews, setImagePreviews] = useState([])
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
 
@@ -111,22 +111,7 @@ function EditArtworkPage() {
 
   useEffect(() => {
 
-    // FETCH all cities from the cities model
-    // FETCH all cities within germany from an API ?
-    // ---> display as options of the city select
-
-    cityService.getAllCities()
-    .then((response)=>{
-        console.log("fetched all cities", response.data)
-        let cityNames = response.data.map((oneCity)=>{
-            return {value:oneCity.name, label:oneCity.name}
-        })
-        console.log(cityNames)
-        setCityOptions(cityNames)
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+    setCityOptions(germanCities)
     artworksService
       .getArtwork(id)
       .then((response) => {
@@ -139,8 +124,7 @@ function EditArtworkPage() {
         setDimensionsX(initialArtwork.dimensions.x);
         setDimensionsY(initialArtwork.dimensions.y);
         setDimensionsZ(initialArtwork.dimensions.z);
-        setOldImages(initialArtwork.images_url);
-        setImagePreviews(initialArtwork.images_url)
+        setOldImages(initialArtwork.images_url)
         setMedium(initialArtwork.medium);
         setGenre(initialArtwork.genre);
       })
@@ -149,7 +133,7 @@ function EditArtworkPage() {
       });
   }, [id]);
 
-  // console.log("images url beginning", imagesUrl)
+
 
   function handleImagesUrl(e) {
     // e.preventDefault();
@@ -157,24 +141,37 @@ function EditArtworkPage() {
     const files = Array.from(e.target.files);
     const newImageData = [...imageData,...files]
   
-    const previews = newImageData.map((files) => URL.createObjectURL(files));
-    console.log("previews after adding files", previews);
+    const previewImages = newImageData.map((files) => URL.createObjectURL(files));
 
-    const newPreviews = [...previews,...oldImages]
+    console.log(previewImages)
+
+    const newPreviews = [...previewImages]
   
     setImageData(newImageData);
-    setImagePreviews(newPreviews)
+    setNewImages(newPreviews)
     console.log("image data after adding new ", imageData)
   }
 
-  function handleDeleteImage(e,index){
-    e.preventDefault()
-    // const copiedImages = [...oldImages]
-    // const newImageData = [...imageData]
-    // copiedImages.splice(index, 1)
-    // newImageData.splice(index, 1)
-    // setOldImages(copiedImages)
-    // setImageData(newImageData)
+  function handleDeleteImage(index){
+    
+    
+    const newImagePreviews = [...newImages]
+    const newImageData = [...imageData]
+    
+    newImageData.splice(index, 1);
+    newImagePreviews.splice(index, 1);
+
+    setImageData(newImageData);
+    setNewImages(newImagePreviews);
+  }
+
+  function handleDeleteOldImage(index){
+    
+    const copiedOldImages = [...oldImages]
+    
+    copiedOldImages.splice(index, 1);
+    
+    setOldImages(copiedOldImages)
   }
 
   // DELETE ARTWORK POPUP
@@ -229,21 +226,22 @@ function EditArtworkPage() {
 
     console.log("imageData ", imageData)
 
-    const uploadData = new FormData();
     
-    imageData.forEach((file)=>{
-      uploadData.append("images", file)
-    })
+    if(imageData.length > 0){
+      const uploadData = new FormData();
+      
+      imageData.forEach((file)=>{
+        uploadData.append("images", file)
+      })
 
-    if(uploadData){
       uploadService
         .uploadImage(uploadData)
         .then((response) => {
-          let newImages = response.data.fileUrls
+          let newImagesUrls = response.data.fileUrls
           
           console.log("response is: ", response.data.fileUrls);
           
-          let allImagesArray = [...oldImages, ...newImages];
+          let allImagesArray = [...oldImages, ...newImagesUrls];
           
           updatedArtwork.images_url = allImagesArray;
           return artworksService.updateArtwork(artwork._id, updatedArtwork);
@@ -270,7 +268,7 @@ function EditArtworkPage() {
   }
 
   return (
-    <div id="EditArtworkPage" className="page-wrapper">
+    <div id="EditArtworkPage" className="page-wrapper mobile-dvh">
     <Popup
     headline={"Are you sure?"}
     showPopup={showPopup}
@@ -352,26 +350,42 @@ function EditArtworkPage() {
               />
               z
             </div>
+            <div className="edit-artwork-img-section">
+              <div className="file-input-container">
+
             <label htmlFor="">Images</label>
               <input
-                className="file-input edit-artwork-input"
+                className="file-input"
                 type="file"
+                accept=".jpg, .png"
                 multiple
                 onChange={(e) => {
                   handleImagesUrl(e);
                 }}
               />
-              {/* <button onClick={(e)=>handleImageUpload(e)}>Upload Image</button> */}
-              <div className="edit-artwork-img-section">
-              {imagePreviews && imagePreviews.map((oneUrl, index) => {
+              </div>
+
+              <div className="edit-artwork-thumbnail-wrapper">
+              {oldImages && oldImages.map((oneUrl, index) => {
                 return (
-                  <div className="edit-artwork-img-wrapper" key={index}>
+                  <div className="edit-artwork-img-thumbnail" key={index}>
+                {/* {console.log("one url", oneUrl)} */}
                     <img src={oneUrl} alt={title} />
-                    <button className="edit-artwork-img-delete-button" onClick={(e)=>{handleDeleteImage(e,index)}}>x</button>
+                    <button type="button" className="delete-img-button" onClick={()=>{handleDeleteOldImage(index)}}>x</button>
+                  </div>
+                );
+              })}
+              {newImages && newImages.map((oneUrl, index) => {
+                return (
+                  <div className="edit-artwork-img-thumbnail" key={index}>
+                {/* {console.log("one url", oneUrl)} */}
+                    <img src={oneUrl} alt={title} />
+                    <button type="button" className="delete-img-button" onClick={()=>{handleDeleteImage(index)}}>x</button>
                   </div>
                 );
               })}
           </div>
+            </div>
 
             {/* MEDIUM */}
             <label htmlFor="" className="filterinterface-form-label">
@@ -395,7 +409,7 @@ function EditArtworkPage() {
               styles={selectStles}
             />
             <button onClick={handleDeleteArtwork}>Delete Artwork</button>
-          <button onSubmit={handleSubmit}>Submit Changes</button>
+          <button type="submit">Submit Changes</button>
         </form>
       )}
     </div>
