@@ -11,7 +11,7 @@ function FAQQuestion(props) {
 
   return (
     <div className="faq-question-wrapper">
-      <h3 onClick={handleQuestionClick} className="faq-question-headline">
+      <h3 onClick={handleQuestionClick} className={"faq-question-headline " + (questionClicked && "faq-question-wrapper-open")}>
         {question}
       </h3>
       <p className={"faq-question-text " + (questionClicked && "show")}>
