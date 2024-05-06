@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
-import "../styles/styles-pages/Login.css";
+import "../styles/styles-pages/SignUp-LogIn.css";
 
 import { AuthContext } from "../context/auth.context";
 import authService from "../services/auth.services";
@@ -50,8 +50,8 @@ function LoginPage() {
   );
 
   return (
-    <div className="signup-page-wrapper page-wrapper">
-      <h1 className="signup-headline">Welcome to Open Storage</h1>
+    <div className="signup-page-wrapper page-wrapper mobile-dvh-general">
+      <h1 className="signup-headline highlight">Welcome to Open Storage</h1>
       <form
         action=""
         onSubmit={(e) => {
