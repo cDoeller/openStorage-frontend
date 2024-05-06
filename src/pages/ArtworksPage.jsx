@@ -17,54 +17,54 @@ function ArtworksPage() {
     setShowInterface(!showInterface);
   }
 
-  const urlParams = new URLSearchParams(window.location.search);
+  // const urlParams = new URLSearchParams(window.location.search);
 
   useEffect(() => {
-    const genre = urlParams.get("genre");
-    //  if a genre is passed from homepage, render prefiltered works
-    if (genre) {
-      setGenrePreset(genre);
-      const genreQueryString = `?genre=${genre}`;
-      getPrefilteredArtworks(genreQueryString);
-      // if no genre is present, render all artworks
-    } else {
-      getAllArtworks();
-    }
-  }, [urlParams]);
+    // const genre = urlParams.get("genre");
+    // //  if a genre is passed from homepage, render prefiltered works
+    // if (genre) {
+    //   setGenrePreset(genre);
+    //   const genreQueryString = `?genre=${genre}`;
+    //   getPrefilteredArtworks(genreQueryString);
+    //   // if no genre is present, render all artworks
+    // } else {
+    // }
 
-  function getPrefilteredArtworks(queryString) {
-    artworksService
-      .getArtworkQuery(queryString)
-      .then((response) => {
-        // console.log(response.data);
-        setArtworks(response.data);
-      })
-      .then(() => {
-        userService
-          .getAllArtistsWithWorks()
-          .then((response) => {
-            // console.log(response.data);
-            setAllArtists(response.data);
-          })
-          .catch((err) => console.log(err));
-      })
-      .then(() => {
-        artworksService
-          .getArtworkCities()
-          .then((response) => {
-            // console.log(response.data);
-            setAllCities(response.data);
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
-  }
+    getAllArtworks();
+  }, []);
+
+  // function getPrefilteredArtworks(queryString) {
+  //   artworksService
+  //     .getArtworkQuery(queryString)
+  //     .then((response) => {
+  //       // console.log(response.data);
+  //       setArtworks(response.data);
+  //     })
+  //     .then(() => {
+  //       userService
+  //         .getAllArtistsWithWorks()
+  //         .then((response) => {
+  //           // console.log(response.data);
+  //           setAllArtists(response.data);
+  //         })
+  //         .catch((err) => console.log(err));
+  //     })
+  //     .then(() => {
+  //       artworksService
+  //         .getArtworkCities()
+  //         .then((response) => {
+  //           // console.log(response.data);
+  //           setAllCities(response.data);
+  //         })
+  //         .catch((err) => console.log(err));
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   function getAllArtworks() {
     artworksService
       .getAllArtworks()
       .then((response) => {
-        // console.log(response.data);
         setArtworks(response.data);
       })
       .then(() => {
@@ -86,33 +86,16 @@ function ArtworksPage() {
       })
       .catch((err) => console.log(err));
   }
-
-  // disable scroll when filter page open
-  function disableScroll() {
-    const scrollTopPosition =
-      window.pageYOffset || document.documentElement.scrollTop;
-    window.onscroll = function () {
-      window.scrollTo(0, scrollTopPosition);
-    };
-  }
-  function enableScroll() {
-    window.onscroll = function () {};
-  }
-
-  useEffect(() => {
-    if (showInterface) {
-      // disableScroll();
-    } else {
-      // enableScroll();
-    }
-  }, [showInterface]);
 
   return (
     <>
       {/* FILTER INTERFACE BUTTON */}
       <div className="artworks-filterinterfacebutton-wrapper">
         <div
-          onClick={toggleFilterInterface}
+          onClick={() => {
+            window.scrollTo(0, 0);
+            toggleFilterInterface();
+          }}
           className="artworks-filterinterfacebutton-wrapper-inner"
           id={showInterface ? "no-border-button" : ""}
         >
