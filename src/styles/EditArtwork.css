@@ -42,17 +42,17 @@
 }
 .edit-artwork-img-thumbnail {
   width: 150px;
-    overflow: hidden;
-    display: flex;
-    border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  border-radius: 4px;
 }
 
 .edit-artwork-img-thumbnail > img {
   width: 100%;
-    object-fit: cover;
-    border:1px solid white;
+  object-fit: cover;
+  border: 1px solid white;
 }
 
-.edit-artwork-img-thumbnail>img:hover{
-  border:1px solid mediumspringgreen;
+.edit-artwork-img-thumbnail > img:hover {
+  border: 1px solid mediumspringgreen;
 }
