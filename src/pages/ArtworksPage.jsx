@@ -17,10 +17,10 @@ function ArtworksPage() {
     setShowInterface(!showInterface);
   }
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const genre = urlParams.get("genre");
+  const urlParams = new URLSearchParams(window.location.search);
 
+  useEffect(() => {
+    const genre = urlParams.get("genre");
     //  if a genre is passed from homepage, render prefiltered works
     if (genre) {
       setGenrePreset(genre);
@@ -30,7 +30,7 @@ function ArtworksPage() {
     } else {
       getAllArtworks();
     }
-  }, []);
+  }, [urlParams]);
 
   function getPrefilteredArtworks(queryString) {
     artworksService
