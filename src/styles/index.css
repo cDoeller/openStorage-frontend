@@ -1,21 +1,35 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&family=Space+Grotesk:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
 
+:root {
+  /* FONT STANDARDS */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* COLORS */
+  --pink: rgb(251, 198, 254);
+  --lilac: #a79aff;
+  --purple: rgb(207, 156, 255);
+  --lime: #b1f4b1;
+  --grey: #ebebeb;
+  --greydark: #cccccc;
+  --black: #2d2c39;
+
+  /* SIZES */
   --navbarHeightMobile: 155px;
   --profileFooterHeightMobile: 80px;
   --mobileInterfacesHeight: calc(
     var(--navbarHeightMobile) + var(--profileFooterHeightMobile)
   );
-  --pink: rgb(251, 198, 254);
 }
 
+/* RESET */
 html,
 body,
 a,
@@ -28,8 +42,20 @@ li,
 ol {
   margin: 0;
   padding: 0;
-  color: black;
   text-decoration: none;
+  color: var(--black);
+}
+
+/* FONTS */
+h1,
+h2,
+h3,
+h4,
+h5,
+button {
+  /* font-family: "Poetsen One", sans-serif; */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 600;
 }
 
 .page-wrapper {
@@ -44,7 +70,7 @@ ol {
   min-height: calc(100dvh - var(--navbarHeightMobile));
 }
 
-.flex-column{
+.flex-column {
   display: flex;
   flex-direction: column;
 }
@@ -53,8 +79,7 @@ ol {
   text-decoration-line: underline;
   text-decoration-style: wavy;
   text-decoration-thickness: 1.5px;
-  /* text-decoration-color: var(--pink);  */
-  /* background-color: rgb(255, 220, 149); */
+  text-decoration-color: var(--lime); 
 }
 /* ---> {" "}<span className="highlight">TEXT</span> */
 
@@ -67,10 +92,28 @@ ol {
   padding: 1rem;
 }
 
-.back-button{
+/* BUTTONS */
+.back-button {
   border-style: none;
-  background:white;
+  background: white;
   font-size: 15px;
-  font-weight:600;
+  font-weight: 600;
   text-decoration: underline;
+}
+
+.button {
+  padding: 1rem 1.4rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  border-radius: 10px;
+  border: none;
+  text-transform:uppercase;
+}
+
+.box-shadow{
+  box-shadow: 0 0 1rem var(--greydark);
+}
+
+.italic{
+  font-style: italic;
 }

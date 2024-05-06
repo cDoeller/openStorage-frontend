@@ -52,7 +52,7 @@
 }
 .landing-description-section-link {
   text-decoration: underline;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* artworks section */
@@ -67,10 +67,8 @@
 }
 .landing-artworks-section-button {
   width: 100%;
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  border: none;
   margin-top: 2rem;
+  background-color: var(--lime);
 }
 
 /* functionality section */

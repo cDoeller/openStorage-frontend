@@ -10,7 +10,7 @@
 .nav-top {
   /* <---- HEIGHT TOP */
   height: 90px;
-  background-color: rgb(160, 144, 248);
+  background-color: var(--lilac);
   box-sizing: border-box;
   width: 100%;
   display: flex;
@@ -39,7 +39,7 @@
   /* <---- HEIGHT BOTTOM */
   height: 65px;
   box-sizing: border-box;
-  background-color: rgb(252, 192, 255);
+  background-color: var(--pink);
   display: flex;
   justify-content: space-around;
   padding: 0.8rem;

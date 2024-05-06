@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../styles/FilterInterface.css";
+import "../styles/styles-components/FilterInterface.css";
 import artworksService from "../services/artworks.services";
 import Select from "react-select";
 
@@ -251,9 +251,9 @@ function FilterInterface(props) {
         <button
           type="button"
           onClick={resetAll}
-          className="filterinterface-reset-button"
+          className="filterinterface-reset-button button"
         >
-          Reset
+          Reset Filters
         </button>
       </form>
     </div>

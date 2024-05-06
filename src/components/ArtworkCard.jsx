@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/ArtworkCard.css";
+import "../styles/styles-components/ArtworkCard.css";
 
 function ArtworkCard(props) {
   const { name, title, dimensions, year, img, medium } = props;
@@ -39,16 +39,15 @@ function ArtworkCard(props) {
   }
 
   return (
-    <div className="artwork-card-wrapper">
+    <div className="artwork-card-wrapper box-shadow">
       <div className="artwork-card-image-wrapper">
         <img src={img} alt="" />
       </div>
       <div className="artwork-card-info-wrapper">
         <div className="artwork-card-info-text-wrapper">
-          <p className="artwork-card-info-text-text">
-            {name}, {title}
-          </p>
-          <p className="artwork-card-info-text-text">
+          <p className="artwork-card-info-text-text">{name}</p>
+          <p className="artwork-card-info-text-text italic">{title}</p>
+          <p className="artwork-card-info-text-text-year">
             {dimensions}, {year}
           </p>
         </div>

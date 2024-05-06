@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/Popup.css";
+import "../styles/styles-components/Popup.css";
 
 function Popup(props) {
   const { showPopup, setShowPopup, headline, text, button } = props;

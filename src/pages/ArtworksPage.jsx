@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/ArtworksPage.css";
+import "../styles/styles-pages/ArtworksPage.css";
 import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
 import artworksService from "../services/artworks.services";
@@ -107,7 +107,7 @@ function ArtworksPage() {
   }, [showInterface]);
 
   return (
-    <div className="page-wrapper mobile-dvh-general">
+    <div className="page-wrapper mobile-dvh-general artworks-page">
       {/* FILTER INTERFACE */}
       <div
         className={

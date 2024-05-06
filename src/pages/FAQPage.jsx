@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/FAQPage.css";
+import "../styles/styles-pages/FAQPage.css";
 import FAQQuestion from "../components/FAQQuestion";
 
 function FAQPage() {

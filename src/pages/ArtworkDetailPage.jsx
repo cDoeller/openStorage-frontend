@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
-import "../styles/ArtworkDetails.css";
+import "../styles/styles-pages/ArtworkDetails.css";
 import artworksService from "../services/artworks.services";
 import userService from "../services/user.services";
 

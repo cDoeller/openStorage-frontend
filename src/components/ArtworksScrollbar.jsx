@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import "../styles/ArtworksScrollbar.css";
+import "../styles/styles-components/ArtworksScrollbar.css";
 import ArtworkScrollbarCard from "./ArtworkScrollbarCard";
 import { AuthContext } from "../context/auth.context";
 

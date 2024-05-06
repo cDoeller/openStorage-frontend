@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../styles/ArtworksScrollbarCard.css"
+import "../styles/styles-components/ArtworksScrollbarCard.css"
 import { useState, useEffect } from "react";
 
 function ArtworkScrollbarCard(props) {

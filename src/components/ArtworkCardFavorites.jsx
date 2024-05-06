@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/ArtworkCardFavorites.css";
+import "../styles/styles-components/ArtworkCardFavorites.css";
 
 function ArtworkCardFavorites(props) {
   const { img, name, title, year, medium } = props;

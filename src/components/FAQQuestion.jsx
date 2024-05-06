@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/FAQQUestion.css";
+import "../styles/styles-components/FAQQUestion.css";
 
 function FAQQuestion(props) {
   const { question, answer } = props;

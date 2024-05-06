@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {Link} from "react-router-dom"
-import "../styles/FavoritesPage.css";
+import "../styles/styles-pages/FavoritesPage.css";
 import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
 import ArtworkCardFavorites from "../components/ArtworkCardFavorites";

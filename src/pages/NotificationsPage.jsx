@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import NotificationCard from "../components/NotificationCard";
-import "../styles/NotificationsPage.css";
+import "../styles/styles-pages/NotificationsPage.css";
 import { AuthContext } from "../context/auth.context";
 import userService from "../services/user.services";
 

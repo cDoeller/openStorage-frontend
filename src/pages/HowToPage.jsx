@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/HowTo.css";
+import "../styles/styles-pages/HowTo.css";
 import { useRef, useEffect } from "react";
 
 function HowToPage() {

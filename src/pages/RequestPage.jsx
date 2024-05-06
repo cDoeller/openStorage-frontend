@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "../styles/RequestPage.css";
+import "../styles/styles-pages/RequestPage.css";
 import artworksService from "../services/artworks.services";
 import { AuthContext } from "../context/auth.context";
 import rentalsService from "../services/rentals.services";

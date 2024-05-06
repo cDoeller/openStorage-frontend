@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
-import "../styles/Profile.css";
+import "../styles/styles-pages/Profile.css";
 import userService from "../services/user.services";
 import ArtworksScrollbar from "../components/ArtworksScrollbar";
 import UserProfileCard from "../components/UserProfileCard";

@@ -2,10 +2,10 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { AuthContext } from "../context/auth.context";
-import "../styles/EditProfile.css";
+import "../styles/styles-pages/EditProfile.css";
 import userService from "../services/user.services";
 import uploadService from "../services/file-upload.services";
-import "../styles/Forms.css";
+import "../styles/styles-templates/Forms.css";
 import germanCities from "../data/cities-germany.json";
 
 function EditProfilePage() {
