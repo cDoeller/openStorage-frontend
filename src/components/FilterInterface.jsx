@@ -4,34 +4,21 @@ import artworksService from "../services/artworks.services";
 import Select from "react-select";
 
 function FilterInterface(props) {
-  const { setArtworks, allArtists, allCities, genrePreset } = props;
-
-  const [city, setCity] = useState("");
-  const [medium, setMedium] = useState("");
-  const [genre, setGenre] = useState("");
-  const [dimensions, setDimensions] = useState({ x: 0, y: 0, z: 0 });
-  const [artistId, setArtistId] = useState("");
-  const [artistName, setArtistName] = useState("");
-
-  // Genre Preset
-  useEffect(() => {
-    if (genrePreset) {
-      setGenre(genrePreset);
-    }
-  }, [genrePreset]);
+  const { setArtworks, allArtists, allCities, filterStates } = props;
+  const { city, medium, genre, dimensions, artistId, artistName } = filterStates;
 
   // Filtering
   useEffect(() => {
     // console.log(artistName);
 
     let queryString = "?";
-    if (city) queryString += `city=${city}&`;
-    if (medium) queryString += `medium=${medium}&`;
-    if (genre) queryString += `genre=${genre}&`;
-    if (dimensions.x) queryString += `dimensions_x=${dimensions.x}&`;
-    if (dimensions.y) queryString += `dimensions_y=${dimensions.y}&`;
-    if (dimensions.z) queryString += `dimensions_z=${dimensions.z}&`;
-    if (artistId) queryString += `artist=${artistId}`;
+    if (city.state) queryString += `city=${city.state}&`;
+    if (medium.state) queryString += `medium=${medium.state}&`;
+    if (genre.state) queryString += `genre=${genre.state}&`;
+    if (dimensions.state.x) queryString += `dimensions_x=${dimensions.state.x}&`;
+    if (dimensions.state.y) queryString += `dimensions_y=${dimensions.state.y}&`;
+    if (dimensions.state.z) queryString += `dimensions_z=${dimensions.state.z}&`;
+    if (artistId.state) queryString += `artist=${artistId.state}`;
 
     // console.log(queryString);
 
@@ -42,15 +29,15 @@ function FilterInterface(props) {
         setArtworks(response.data);
       })
       .catch((err) => console.log(err));
-  }, [city, medium, genre, dimensions, artistId]);
+  }, [city.state, medium.state, genre.state, dimensions.state, artistId.state]);
 
   function resetAll() {
-    setCity("");
-    setMedium("");
-    setGenre("");
-    setDimensions({ x: 0, y: 0, z: 0 });
-    setArtistName("");
-    setArtistId("");
+    city.setter("");
+    medium.setter("");
+    genre.setter("");
+    dimensions.setter({ x: 0, y: 0, z: 0 });
+    artistName.setter("");
+    artistId.setter("");
   }
 
   // REACT SELECT OPTIONS
@@ -103,17 +90,17 @@ function FilterInterface(props) {
 
   // REACT SELECT HANDLE SELECT FUNCTIONS
   function handleMediaSelectChange(selectedOption) {
-    setMedium(selectedOption.value);
+    medium.setter(selectedOption.value);
   }
   function handleGenreSelectChange(selectedOption) {
-    setGenre(selectedOption.value);
+    genre.setter(selectedOption.value);
   }
   function handleArtistSelectChange(selectedOption) {
-    setArtistId(selectedOption.value);
-    setArtistName(selectedOption.label);
+    artistId.setter(selectedOption.value);
+    artistName.setter(selectedOption.label);
   }
   function handleCitiesSelectChange(selectedOption) {
-    setCity(selectedOption.value);
+    city.setter(selectedOption.value);
   }
 
   // REACT SELECT STYLING
@@ -157,7 +144,7 @@ function FilterInterface(props) {
         <Select
           options={cityOptions}
           onChange={handleCitiesSelectChange}
-          value={{ label: city }}
+          value={{ label: city.state }}
           styles={selectStles}
         />
 
@@ -168,7 +155,7 @@ function FilterInterface(props) {
         <Select
           options={mediaOptions}
           onChange={handleMediaSelectChange}
-          value={{ label: medium }}
+          value={{ label: medium.state }}
           styles={selectStles}
         />
 
@@ -179,53 +166,53 @@ function FilterInterface(props) {
         <Select
           options={genreOptions}
           onChange={handleGenreSelectChange}
-          value={{ label: genre }}
+          value={{ label: genre.state }}
           styles={selectStles}
         />
 
         {/* DIMENSIONS */}
-        <label htmlFor="" className="filterinterface-form-label">
+        <label htmlFor="" className="filterinterface-form-label filterinterface-dimensions">
           Max Dimensions [cm]
           <div className="filterinterface-form-dimension-input-wrapper">
             <input
               className="filterinterface-form-input filterinterface-form-dimension-input"
               type="number"
-              value={dimensions.x ? dimensions.x : ""}
+              value={dimensions.state.x ? dimensions.state.x : ""}
               onChange={(e) => {
                 const newDim = {
                   x: e.target.value,
-                  y: dimensions.y,
-                  z: dimensions.z,
+                  y: dimensions.state.y,
+                  z: dimensions.state.z,
                 };
-                setDimensions(newDim);
+                dimensions.setter(newDim);
               }}
             />
             x
             <input
               className="filterinterface-form-input filterinterface-form-dimension-input"
               type="number"
-              value={dimensions.y ? dimensions.y : ""}
+              value={dimensions.state.y ? dimensions.state.y : ""}
               onChange={(e) => {
                 const newDim = {
-                  x: dimensions.x,
+                  x: dimensions.state.x,
                   y: e.target.value,
-                  z: dimensions.z,
+                  z: dimensions.state.z,
                 };
-                setDimensions(newDim);
+                dimensions.setter(newDim);
               }}
             />
             x
             <input
               className="filterinterface-form-input filterinterface-form-dimension-input"
               type="number"
-              value={dimensions.z ? dimensions.z : ""}
+              value={dimensions.state.z ? dimensions.state.z : ""}
               onChange={(e) => {
                 const newDim = {
-                  x: dimensions.x,
-                  y: dimensions.y,
+                  x: dimensions.state.x,
+                  y: dimensions.state.y,
                   z: e.target.value,
                 };
-                setDimensions(newDim);
+                dimensions.setter(newDim);
               }}
             />
           </div>
@@ -243,7 +230,7 @@ function FilterInterface(props) {
         <Select
           options={artistOptions}
           onChange={handleArtistSelectChange}
-          value={{ label: artistName }}
+          value={{ label: artistName.state }}
           styles={selectStles}
         />
 
