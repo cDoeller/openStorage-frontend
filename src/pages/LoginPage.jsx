@@ -86,7 +86,7 @@ function LoginPage() {
           />
         </label>
         {errorMessage && errorMessageElement}
-        <button type="submit" className="signup-form-button">
+        <button type="submit" className="signup-form-button box-shadow">
           Log In
         </button>
         <Link to="#">
