@@ -297,7 +297,7 @@ function EditArtworkPage() {
 
   return (
     <>
-      {user && (
+      {user && artwork && user._id === artwork.artist._id && (
         <div id="EditArtworkPage" className="page-wrapper mobile-dvh">
           <Popup
             headline={"Are you sure?"}
@@ -417,8 +417,9 @@ function EditArtworkPage() {
                     oldImages.map((oneUrl, index) => {
                       return (
                         <div className="edit-artwork-img-thumbnail" key={index}>
-                          {/* {console.log("one url", oneUrl)} */}
-                          <img src={oneUrl} alt={title} />
+                          <div className="edit-artwork-img-wrapper">
+                            <img src={oneUrl} alt={title} />
+                          </div>
                           <button
                             type="button"
                             className="delete-img-button"
@@ -435,8 +436,9 @@ function EditArtworkPage() {
                     newImages.map((oneUrl, index) => {
                       return (
                         <div className="edit-artwork-img-thumbnail" key={index}>
-                          {/* {console.log("one url", oneUrl)} */}
-                          <img src={oneUrl} alt={title} />
+                          <div className="edit-artwork-img-wrapper">
+                            <img src={oneUrl} alt={title} />
+                          </div>
                           <button
                             type="button"
                             className="delete-img-button"

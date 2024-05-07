@@ -96,8 +96,8 @@
   border: none;
   background-color: black;
   color: white;
-  aspect-ratio: 1;
-  height: 2rem;
+  height: 25px;
+  width: 25px;
 }
 
 .delete-img-button:hover {
