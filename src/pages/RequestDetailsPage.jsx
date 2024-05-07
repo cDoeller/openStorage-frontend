@@ -509,6 +509,7 @@ function RequestDetailsPage() {
           {/* CHANGE REQUEST */}
           {user._id === request.user_borrowing._id &&
             !request.change_request.change_requested &&
+            (request.state!=="pending") &&
             extendRentalElement}
 
           {user._id === request.artist._id &&
