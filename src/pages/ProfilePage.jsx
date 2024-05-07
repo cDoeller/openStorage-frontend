@@ -74,13 +74,14 @@ function ProfilePage() {
             <div className="profile-edit-link">
               <Link to="/profile/edit-profile">Edit</Link>
             </div>
+            {console.log(userInfo)}
             <UserProfileCard
               name={
                 userInfo.real_name ? userInfo.real_name : userInfo.user_name
               }
               img={userInfo.profile_img_url}
               isArtist={userInfo.isArtist}
-              city={userInfo.contact.address.city ? userInfo.contact.address.city : ""}
+              city={userInfo.contact && userInfo.contact.address.city ? userInfo.contact.address.city : ""}
               tagline={userInfo.tagline ? userInfo.tagline : ""}
             />
           </div>
