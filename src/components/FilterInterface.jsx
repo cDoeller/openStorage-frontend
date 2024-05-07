@@ -108,16 +108,19 @@ function FilterInterface(props) {
   const selectStles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
-      border: "none",
+      border: "0",
       outline: "red",
-      borderRadius: "0",
+      borderRadius: "10px",
+      boxShadow: '0 0 1rem var(--greydark)',
+      padding: "0.2rem"
     }),
     container: (baseStyles, state) => ({
       ...baseStyles,
       outline: "red",
       border: "none",
       borderRadius: "0",
-      borderBottom: "2px solid black",
+      // padding: "1rem"
+      // borderBottom: "2px solid black",
     }),
     dropdownIndicator: (baseStyles, state) => ({
       ...baseStyles,

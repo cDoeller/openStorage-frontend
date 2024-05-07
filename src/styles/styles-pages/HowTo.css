@@ -13,7 +13,7 @@
   align-items: center;
   gap: 2rem;
   padding: 1rem 0;
-  background-color: var(--lime);
+  /* background-color: var(--lime); */
   min-height: calc(100dvh - var(--navbarHeightMobile));
 }
 
@@ -24,6 +24,7 @@
   background-color: white;
   text-transform: uppercase;
   font-size: 1rem;
+  /* box-shadow: 0 0 1rem var(--lime); */
 }
 
 /* FOR SECTION */
@@ -101,7 +102,7 @@ width: 15px;
 height: 15px;
 padding: 1rem;
 border-radius: 50%;
-background-color: var(--lime);
+/* background-color: var(--lime); */
 display: flex;
 }
 

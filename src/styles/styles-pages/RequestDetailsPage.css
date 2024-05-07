@@ -5,27 +5,32 @@
   padding: 0.8rem;
   text-align: center;
   text-transform: uppercase;
+  margin-top:0.5rem;
 }
 .pending {
   background-color: rgb(251, 251, 161);
   color: rgb(255, 162, 0);
+  border-radius: 10px;
 }
 .accepted {
   background-color: rgb(176, 255, 176);
   color: green;
+  border-radius: 10px;
 }
 .rejected {
   background-color: rgb(253, 202, 202);
   color: red;
+  border-radius: 10px;
 }
 .cancelled {
   background-color: rgb(214, 214, 214);
   color: red;
+  border-radius: 10px;
 }
 
 /* REQUEST INFOS */
 .request-details-request-infos-headline {
-  font-weight: 400;
+  font-weight: 500;
 }
 .request-details-request-infos-text {
 }
@@ -42,6 +47,12 @@
   border: none;
   font-size: 1.2rem;
   width: 100%;
+  margin-top:1rem;
+}
+.request-message-label{
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
 }
 .request-message-textarea {
   width: 100%;
@@ -68,16 +79,18 @@
 .request-status-days-left {
   text-align: center;
   font-weight: 400;
-  padding: 0.6rem;
+  padding: 1rem;
   font-size: 1rem;
   background-color: rgb(226, 226, 226);
+  border-radius: 10px;
+  text-transform: uppercase;
 }
 
 /* request extension */
 .request-extension-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.4rem;
 }
 .request-extension-interface-wrapper {
   display: flex;
@@ -86,23 +99,25 @@
 }
 .request-extension-interface-checkbox {
 }
+.request-extension-interface-checkbox:checked {
+  background-color: var(--lime);
+}
 .request-extension-newdate-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 1rem;
 }
 .request-extension-interface-label {
 }
 .request-extension-newdate-datepicker {
   width: fit-content;
 }
-.change-request-infos-for-artist{
+.change-request-infos-for-artist {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.4rem;
   background-color: rgb(222, 222, 222);
-  padding:1rem;
-
+  padding: 1rem;
 }

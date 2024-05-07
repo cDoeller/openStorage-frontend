@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: baseline;
+  padding-top:2rem;
 }
 
 .back-button {
@@ -13,11 +15,13 @@
 }
 
 .input {
-  padding: 0.4rem 1rem;
+  padding: 0.8rem;
   border: none;
-  border-bottom: 2px solid black;
+  /* border-bottom: 2px solid black; */
   background-color: white;
   box-sizing: border-box;
+  box-shadow: 0 0 1rem var(--greydark);
+  border-radius: 10px;
 }
 
 .input:focus {
@@ -26,13 +30,42 @@
 
 .textarea {
   width: 100%;
-  height: 100px;
+  /* height: 100px; */
+  min-height: 5rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  box-shadow: 0 0 1rem var(--greydark);
+  border-radius: 10px;
+  border: none;
+}
+
+.textarea:focus {
+  border: none;
+  outline: none;
+}
+
+.select {
+  box-sizing: border-box;
+  box-shadow: 0 0 1rem var(--greydark);
+  border-radius: 10px;
+  border: none;
+  padding: 0.8rem;
+}
+
+.select:focus {
+  outline: none;
+  border: none;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.form-headline{
+  max-width:70%;
 }
 
 .file-input-container {
@@ -69,4 +102,9 @@
 
 .delete-img-button:hover {
   color: mediumspringgreen;
+}
+
+.submit-button {
+  margin: 2rem 0;
+  background-color: var(--lime);
 }

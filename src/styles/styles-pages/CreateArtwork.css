@@ -1,79 +1,83 @@
-#CreateArtworkPage{
-  margin: 2rem 0 3rem 0; 
+#CreateArtworkPage {
+  margin: 2rem 0 0 0;
 }
 
-.create-artwork-heading-wrapper{
+.create-artwork-heading-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.create-artwork-form{
-    display: flex;
+.create-artwork-heading {
+  /* font-size:1.2rem; */
+}
+
+.create-artwork-form {
+  display: flex;
   flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.create-artwork-input {
+  /* padding: 0.4rem 1rem;
+  border: none;
+  border-bottom: 2px solid black;
+  background-color: white; */
+}
+
+.create-dimensions-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-dimensions-wrapper > input {
+  width: 50px;
+  text-align: center;
+}
+
+.create-artwork-img-section {
+  /* height: 100%; */
+  display: flex;
+  /* flex-flow: row wrap; */
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
 }
 
-.create-artwork-input{
-    padding: 0.4rem 1rem;
-    border:none;
-    border-bottom: 2px solid black;
-    background-color: white;
-}
-
-.create-dimensions-wrapper{
-    display:flex;
-    justify-content: space-between;
-}
-
-.create-dimensions-wrapper > input{
-    width:50px;
-    text-align: center;
-}
-
-
-.create-artwork-img-section {
-    /* height: 100%; */
-    display: flex;
-    /* flex-flow: row wrap; */
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap:1rem;
-  }
-
-  /* .file-input-container{
+/* .file-input-container{
     display: flex;
     flex-direction: column;
     gap:1rem;
   } */
 
-  .create-artwork-thumbnail-wrapper{
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap:1rem;
-  }
-  
-  .create-artwork-img-thumbnail {
-    width: 150px;
-    overflow: hidden;
-    display: flex;
-    border-radius: 4px;
-  }
+.create-artwork-thumbnail-wrapper {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
-  .create-artwork-img-thumbnail>img:hover{
-    border:1px solid mediumspringgreen;
-  }
-  
-  .create-artwork-img-thumbnail > img {
-    width: 100%;
-    object-fit: cover;
-    border:1px solid white;
-  }
+.create-artwork-img-thumbnail {
+  width: 150px;
+  overflow: hidden;
+  display: flex;
+  border-radius: 4px;
+}
 
-  .create-artwork-submit-button{
-    margin-top: 2rem;
-  }
-  
+.create-artwork-img-thumbnail > img:hover {
+  border: 1px solid mediumspringgreen;
+}
+
+.create-artwork-img-thumbnail > img {
+  width: 100%;
+  object-fit: cover;
+  border: 1px solid white;
+}
+
+.create-artwork-submit-button {
+  /* margin-top: 2rem;
+  background-color: var(--lime); */
+}

@@ -84,16 +84,19 @@ function EditArtworkPage() {
   const selectStles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
-      border: "none",
+      border: "0",
       outline: "red",
-      borderRadius: "0",
+      borderRadius: "10px",
+      boxShadow: "0 0 1rem var(--greydark)",
+      padding: "0.2rem",
     }),
     container: (baseStyles, state) => ({
       ...baseStyles,
       outline: "red",
       border: "none",
       borderRadius: "0",
-      borderBottom: "2px solid black",
+      // padding: "1rem"
+      // borderBottom: "2px solid black",
     }),
     dropdownIndicator: (baseStyles, state) => ({
       ...baseStyles,
@@ -291,7 +294,7 @@ function EditArtworkPage() {
         button={deleteButton}
       />
       <div className="heading-wrapper">
-        <h1>Edit Artwork</h1>
+        <h1 className="form-headline">Edit Artwork</h1>
         <button
           className="back-button"
           onClick={(e) => {
@@ -305,14 +308,14 @@ function EditArtworkPage() {
 
       {isLoggedIn && artwork && (
         <form
-          className="edit-artwork-form"
+          className="edit-artwork-form form"
           onSubmit={(e) => {
             handleSubmit(e);
           }}
         >
           <label htmlFor="title">Title</label>
           <input
-            className="edit-artwork-input"
+            className="input"
             name="title"
             value={title}
             type="text"
@@ -322,7 +325,7 @@ function EditArtworkPage() {
           />
           <label htmlFor="year">Year</label>
           <input
-            className="edit-artwork-input"
+            className="input"
             name="year"
             value={year}
             type="number"
@@ -345,7 +348,7 @@ function EditArtworkPage() {
           <label htmlFor="">Dimensions</label>
           <div className="edit-dimensions">
             <input
-              className="edit-artwork-input"
+              className="input"
               type="number"
               value={dimensionsX}
               onChange={(e) => {
@@ -354,7 +357,7 @@ function EditArtworkPage() {
             />
             x
             <input
-              className="edit-artwork-input"
+              className="input"
               type="number"
               value={dimensionsY}
               onChange={(e) => {
@@ -363,7 +366,7 @@ function EditArtworkPage() {
             />
             y
             <input
-              className="edit-artwork-input"
+              className="input"
               type="number"
               value={dimensionsZ}
               onChange={(e) => {
@@ -447,12 +450,14 @@ function EditArtworkPage() {
             value={{ label: genre }}
             styles={selectStles}
           />
-          <button onClick={handleDeleteArtwork} className="button">
-            Delete Artwork
-          </button>
-          <button type="submit" className="button">
-            Submit Changes
-          </button>
+          <div className="edit-artwork-button-wrapper">
+            <button onClick={handleDeleteArtwork} className="button edit-artwork-button-delete">
+              Delete Artwork
+            </button>
+            <button type="submit" className="button edit-artwork-button-submit">
+              Submit Changes
+            </button>
+          </div>
         </form>
       )}
     </div>

@@ -137,7 +137,7 @@ function RequestPage() {
           onChange={(e) => setStreet(e.target.value)}
           type="text"
           required
-          className="request-artwork-form-input"
+          className="request-artwork-form-input input"
         ></input>
       </label>
       <label htmlFor="" className="request-artwork-form-label">
@@ -147,7 +147,7 @@ function RequestPage() {
           onChange={(e) => setPostalCode(e.target.value)}
           type="number"
           required
-          className="request-artwork-form-input"
+          className="request-artwork-form-input input"
         ></input>
       </label>
       <label htmlFor="" className="request-artwork-form-label">
@@ -157,7 +157,7 @@ function RequestPage() {
           onChange={(e) => setCity(e.target.value)}
           type="text"
           required
-          className="request-artwork-form-input"
+          className="request-artwork-form-input input"
         ></input>
       </label>
       <label htmlFor="" className="request-artwork-form-label">
@@ -167,7 +167,7 @@ function RequestPage() {
           onChange={(e) => setCountry(e.target.value)}
           type="text"
           required
-          className="request-artwork-form-input"
+          className="request-artwork-form-input input"
         ></input>
       </label>
     </>
@@ -175,10 +175,10 @@ function RequestPage() {
 
   return (
     <div className="page-wrapper request-wrapper">
-      <h3 className="request-headline">Request Details</h3>
+      <h3 className="request-headline highlight">Request Details</h3>
       {/* ARTWORK DISPLAY */}
       {artwork && (
-        <div className="request-artwork-info-wrapper-sale">
+        <div className="request-artwork-info-wrapper-sale box-shadow">
           <div className="request-artwork-wrapper">
             <div className="request-artwork-image-wrapper">
               <img src={artwork.images_url[0]} alt="" />
@@ -214,7 +214,7 @@ function RequestPage() {
               type="date"
               min={todayDate}
               required
-              className="request-artwork-form-input-date request-artwork-form-input"
+              className="request-artwork-form-input-date request-artwork-form-input input"
             />
           </label>
 
@@ -227,7 +227,7 @@ function RequestPage() {
               type="date"
               min={minEndDate}
               required
-              className="request-artwork-form-input-date request-artwork-form-input"
+              className="request-artwork-form-input-date request-artwork-form-input input"
             />
           </label>
         </div>
@@ -240,7 +240,7 @@ function RequestPage() {
             onChange={(e) => setTransportation(e.target.value)}
             type="select"
             required
-            className="request-artwork-form-input"
+            className="request-artwork-form-input select"
           >
             <option
               className="request-artwork-form-select-option"
@@ -266,11 +266,11 @@ function RequestPage() {
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="request-artwork-form-textarea"
+            className="request-artwork-form-textarea textarea"
           ></textarea>
         </label>
         {errorMessage && errorMessageElement}
-        <button className="request-artwork-form-button" type="submit">
+        <button className="request-artwork-form-button button" type="submit">
           Submit Request
         </button>
       </form>
