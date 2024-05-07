@@ -105,16 +105,19 @@ function BecomeArtistPage() {
   const selectStles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
-      border: "none",
+      border: "0",
       outline: "red",
-      borderRadius: "0",
+      borderRadius: "10px",
+      boxShadow: '0 0 1rem var(--greydark)',
+      padding: "0.2rem"
     }),
     container: (baseStyles, state) => ({
       ...baseStyles,
       outline: "red",
       border: "none",
       borderRadius: "0",
-      borderBottom: "2px solid black",
+      // padding: "1rem"
+      // borderBottom: "2px solid black",
     }),
     dropdownIndicator: (baseStyles, state) => ({
       ...baseStyles,
@@ -264,7 +267,7 @@ function BecomeArtistPage() {
 
     <div className="page-wrapper mobile-dvh">
       <div className="heading-wrapper">
-        <h1>Become an Artist</h1>
+        <h1 className="highlight form-headline">Verify Artist Account</h1>
         <button
           className="back-button"
           onClick={(e) => {
@@ -438,7 +441,7 @@ function BecomeArtistPage() {
         <label htmlFor="">Dimensions [cm]</label>
         <div className="create-dimensions-wrapper">
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             required
             min={1}
@@ -449,7 +452,7 @@ function BecomeArtistPage() {
           />
           x
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             required
             min={1}
@@ -460,7 +463,7 @@ function BecomeArtistPage() {
           />
           y
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             min={0}
             value={dimensionsZ}
@@ -494,7 +497,7 @@ function BecomeArtistPage() {
           styles={selectStles}
         />
 
-        <button type="submit">Submit</button>
+        <button type="submit" className="button submit-button">Submit</button>
         {errorMessage && errorMessageElement}
       </form>
     </div>

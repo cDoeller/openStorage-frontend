@@ -88,16 +88,19 @@ function CreateArtworkPage() {
   const selectStles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
-      border: "none",
+      border: "0",
       outline: "red",
-      borderRadius: "0",
+      borderRadius: "10px",
+      boxShadow: '0 0 1rem var(--greydark)',
+      padding: "0.2rem"
     }),
     container: (baseStyles, state) => ({
       ...baseStyles,
       outline: "red",
       border: "none",
       borderRadius: "0",
-      borderBottom: "2px solid black",
+      // padding: "1rem"
+      // borderBottom: "2px solid black",
     }),
     dropdownIndicator: (baseStyles, state) => ({
       ...baseStyles,
@@ -208,7 +211,7 @@ function CreateArtworkPage() {
   return (
     <div id="CreateArtworkPage" className="page-wrapper">
       <div className="create-artwork-heading-wrapper">
-        <h1>Create Artwork</h1>
+        <h1 className="create-artwork-heading form-headline highlight">Create Artwork</h1>
         <button
           className="back-button"
           onClick={(e) => {
@@ -228,7 +231,7 @@ function CreateArtworkPage() {
       >
         <label htmlFor="title">Title</label>
         <input
-          className="create-artwork-input"
+          className="create-artwork-input input"
           name="title"
           type="text"
           onChange={(e) => {
@@ -238,7 +241,7 @@ function CreateArtworkPage() {
 
         <label htmlFor="year">Year</label>
         <input
-          className="create-artwork-input"
+          className="create-artwork-input input"
           name="year"
           value={year}
           type="number"
@@ -261,7 +264,7 @@ function CreateArtworkPage() {
         <label htmlFor="">Dimensions</label>
         <div className="create-dimensions-wrapper">
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             value={dimensionsX}
             onChange={(e) => {
@@ -270,7 +273,7 @@ function CreateArtworkPage() {
           />
           x
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             value={dimensionsY}
             onChange={(e) => {
@@ -279,7 +282,7 @@ function CreateArtworkPage() {
           />
           y
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             value={dimensionsZ}
             onChange={(e) => {
@@ -338,8 +341,10 @@ function CreateArtworkPage() {
           value={{ label: genre }}
           styles={selectStles}
         />
-        <button className="create-artwork-submit-button button">Submit</button>
+
+        <button className="submit-button button">Submit</button>
         {errorMessage && errorMessageElement}
+
       </form>
     </div>
   );

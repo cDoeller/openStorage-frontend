@@ -68,7 +68,7 @@ function ProfilePage() {
     <div className="page-wrapper mobile-dvh">
       {userInfo && (
         <div className="profile-wrapper">
-          <h1>Your Profile</h1>
+          <h1 className="highlight">Your Profile</h1>
           {/* PROFILE CARD */}
           <div className="profile-profilecard-wrapper">
             <div className="profile-edit-link">

@@ -22,7 +22,6 @@ function RequestDetailsPage() {
     rentalsService
       .getRental(id)
       .then((response) => {
-        // console.log(response.data);
         setRequest(response.data);
         return response.data;
       })
@@ -64,10 +63,9 @@ function RequestDetailsPage() {
               Desired Return Date
             </label>
             <input
-              className="request-extension-newdate-datepicker"
+              className="request-extension-newdate-datepicker input"
               name="newEndDate"
               type="date"
-              // min={new Date(request.end_date).toJSON().slice(0, 10)}
               min={new Date().toJSON().slice(0, 10)}
               value={newEndDate}
               required
@@ -141,7 +139,7 @@ function RequestDetailsPage() {
             onClick={() => {
               handleButtonClick("extension");
             }}
-            className="request-button accepted"
+            className="request-button accepted button"
           >
             request change
           </button>
@@ -151,10 +149,10 @@ function RequestDetailsPage() {
 
   const acceptRejectElement = (
     <>
-      <label htmlFor="">
+      <label htmlFor="" className="request-message-label">
         Message
         <textarea
-          className="request-message-textarea"
+          className="request-message-textarea textarea"
           name=""
           id=""
           onChange={(e) => {
@@ -167,7 +165,7 @@ function RequestDetailsPage() {
           onClick={() => {
             handleButtonClick("accepted");
           }}
-          className="request-button accepted"
+          className="request-button accepted button"
         >
           accept
         </button>
@@ -175,7 +173,7 @@ function RequestDetailsPage() {
           onClick={() => {
             handleButtonClick("rejected");
           }}
-          className="request-button rejected"
+          className="request-button rejected button"
         >
           reject
         </button>
@@ -189,7 +187,7 @@ function RequestDetailsPage() {
         onClick={() => {
           handleButtonClick("cancelled");
         }}
-        className="request-button"
+        className="request-button button"
       >
         cancel request
       </button>
@@ -458,10 +456,10 @@ function RequestDetailsPage() {
     <div className="page-wrapper">
       {user && request && state && (
         <div className="page-wrapper request-wrapper">
-          <h3 className="request-headline">Request Details</h3>
+          <h3 className="request-headline highlight">Request Details</h3>
 
           {/* ARTWORK DISPLAY */}
-          <div className="request-artwork-info-wrapper-sale">
+          <div className="request-artwork-info-wrapper-sale box-shadow">
             <div className="request-artwork-wrapper">
               <div className="request-artwork-image-wrapper">
                 <img src={request.artwork.images_url[0]} alt="" />
@@ -511,6 +509,7 @@ function RequestDetailsPage() {
           {/* CHANGE REQUEST */}
           {user._id === request.user_borrowing._id &&
             !request.change_request.change_requested &&
+            (request.state!=="pending") &&
             extendRentalElement}
 
           {user._id === request.artist._id &&

@@ -75,6 +75,13 @@ function ArtworkDetailPage() {
     return matching;
   }
 
+  const signUpButtonElement = (
+    <p className="artwork-details-request-message">
+      {" "}
+      <Link to="/signup">Sign up</Link> / <Link to="/login">log in</Link> for more functionality.
+    </p>
+  );
+
   const notAvailableElement = (
     <p className="artwork-details-request-message">Currently Not Available</p>
   );
@@ -217,12 +224,14 @@ function ArtworkDetailPage() {
             <div className="artwork-details-info-wrapper">
               <div className="artwork-details-info-wrapper-top">
                 <h3 className="artwork-details-title">{artwork.title}</h3>
-                <p
-                  className="artwork-details-info-favorite"
-                  onClick={handleFavorite}
-                >
-                  {isFavorite ? "★" : "☆"}
-                </p>
+                {isLoggedIn && (
+                  <p
+                    className="artwork-details-info-favorite"
+                    onClick={handleFavorite}
+                  >
+                    {isFavorite ? "★" : "☆"}
+                  </p>
+                )}
                 <p className="artwork-details-info-text">
                   {artwork.artist.real_name}
                 </p>
@@ -247,6 +256,7 @@ function ArtworkDetailPage() {
           </div>
           {/* ARTWORK BUTTON BOTTOM */}
           {isLoggedIn && handleRequestButtonRender()}
+          {!isLoggedIn && signUpButtonElement}
         </div>
       )}
     </div>

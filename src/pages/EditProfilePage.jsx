@@ -56,16 +56,19 @@ function EditProfilePage() {
   const selectStles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
-      border: "none",
+      border: "0",
       outline: "red",
-      borderRadius: "0",
+      borderRadius: "10px",
+      boxShadow: '0 0 1rem var(--greydark)',
+      padding: "0.2rem"
     }),
     container: (baseStyles, state) => ({
       ...baseStyles,
       outline: "red",
       border: "none",
       borderRadius: "0",
-      borderBottom: "2px solid black",
+      // padding: "1rem"
+      // borderBottom: "2px solid black",
     }),
     dropdownIndicator: (baseStyles, state) => ({
       ...baseStyles,
@@ -210,7 +213,7 @@ function EditProfilePage() {
       {userInfo && (
         <div id="EditProfilePage" className="page-wrapper mobile-dvh">
           <div className="heading-wrapper">
-            <h1>Edit Profile</h1>
+            <h1 className="highlight">Edit Profile</h1>
             <button
               className="back-button"
               onClick={(e) => {
@@ -273,27 +276,29 @@ function EditProfilePage() {
               {userInfo.isArtist && (
                 <>
                   <div className="artist-statement-wrapper">
-                    <label htmlFor="">Artist Statement:</label>
-                    <textarea
-                      required
-                      minLength={20}
-                      maxLength={300}
-                      className="edit-profile input edit-profile-textarea"
-                      value={artistStatement}
-                      placeholder="Write a short description of your artistic practice"
-                      onChange={(e) => {
-                        setArtistStatement(e.target.value);
-                      }}
-                    />
+                    <label htmlFor="" className="edit-profile-label">
+                      Artist Statement:
+                      <textarea
+                        required
+                        minLength={20}
+                        maxLength={300}
+                        className="edit-profile input edit-profile-textarea"
+                        value={artistStatement}
+                        placeholder="Write a short description of your artistic practice"
+                        onChange={(e) => {
+                          setArtistStatement(e.target.value);
+                        }}
+                      />
+                    </label>
                   </div>
                 </>
                 )}
                   <div className="edit-profile-contact-info-wrapper">
-                    <h3 className="edit-profile-contact-info-headline">
-                      Contact Information:
-                    </h3>
                     <div className="edit-profile-contact-info-web-wrapper">
-                      <label htmlFor="website">Website</label>
+                      <h3 className="edit-profile-contact-info-headline">
+                        Contact Information:
+                      </h3>
+                       <label htmlFor="website">Website</label>
                       <input
                       name="website"
                         className="edit-profile input"
@@ -375,9 +380,8 @@ function EditProfilePage() {
                       />
                     </div>
                   </div>
-                </div>
-              
-              <button type="submit" className="edit-profile-update-button button">
+                </div>              
+              <button type="submit" className="button submit-button">
                 Update
               </button>
             </form>
