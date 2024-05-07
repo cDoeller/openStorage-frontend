@@ -143,13 +143,14 @@ function BecomeArtistPage() {
   useEffect(() => {
     userService.getUser(user._id).then((response) => {
       const initialData = response.data;
-      const address = initialData.address;
+      const address = initialData.contact.address;
 
       setIsArtist(initialData.isArtist)
       
       if (initialData.real_name) {
         setRealName(initialData.real_name);
       }
+      
       if (address) {
         if (address.street) {
           setStreet(address.street);

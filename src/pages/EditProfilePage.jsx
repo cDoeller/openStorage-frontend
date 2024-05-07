@@ -10,17 +10,24 @@ import germanCities from "../data/cities-germany.json";
 
 function EditProfilePage() {
   const navigate = useNavigate();
-  const { isLoggedIn, user } = useContext(AuthContext);
-  const storedToken = localStorage.getItem("authToken");
+  const { user } = useContext(AuthContext);
+  // const storedToken = localStorage.getItem("authToken");
+
+  const [errorMessage, setErrorMessage] = useState("")
+  const errorMessageElement = (
+    <>
+      <h3 className="page-error-messages">{errorMessage}</h3>
+    </>
+  );
 
   const [userInfo, setUserInfo] = useState({});
-  const [cityOptions, setCityOptions] = useState([]);
+  const [addressCityOptions, setAddressCityOptions] = useState([]);
 
   const [realName, setRealName] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [imageData, setImageData] = useState("");
   const [tagline, setTagline] = useState("");
-  const [city, setCity] = useState("");
+  // const [city, setCity] = useState("");
   const [artistStatement, setArtistStatement] = useState("");
 
   // CONTACT
@@ -37,7 +44,7 @@ function EditProfilePage() {
   let countryOptions = [{ value: "Germany", label: "Germany" }];
 
   function handleCitiesSelectChange(selectedOption) {
-    setCity(selectedOption.value);
+    setAddressCity(selectedOption.value);
   }
 
   function handleCountrySelectChange(selectedOption) {
@@ -79,7 +86,7 @@ function EditProfilePage() {
     let formattedOptions = germanCities.map((oneCity) => {
       return { value: oneCity.city, label: oneCity.city };
     });
-    setCityOptions(formattedOptions);
+    setAddressCityOptions(formattedOptions);
   }, []);
 
   useEffect(() => {
@@ -87,48 +94,63 @@ function EditProfilePage() {
       userService
         .getUser(user._id)
         .then((response) => {
-          const initialData = response.data;
-          const address = initialData.contact.address;
-          setUserInfo(initialData);
-          if (initialData.profile_img_url) {
-            setProfileImg(initialData.profile_img_url);
-          }
-          if (initialData.real_name) {
+        
+          setUserInfo(response.data);
+          const initialData = response.data
+          
+          // console.log("userInfo contact",userInfo.contact)
+          setProfileImg(initialData.profile_img_url);
+          if(initialData.real_name){
             setRealName(initialData.real_name);
           }
-          if (initialData.artist_statement) {
+          if(initialData.artist_statement){
             setArtistStatement(initialData.artist_statement);
           }
-          if (initialData.contact.website) {
-            setWebsite(initialData.contact.website);
-          }
-          if (initialData.contact.instagram) {
-            setInstagram(initialData.contact.instagram);
-          }
-          if (address.street) {
-            setAddressStreet(address.street);
-          }
-          if (address.city) {
-            setAddressCity(address.city);
-          }
-          if (address.country) {
-            setAddressCountry(address.country);
-          }
-          if (address.postal_code) {
-            setAddressPostcode(address.postal_code);
-          }
-          if (address.phone_number) {
-            setPhoneNumber(address.phone_number);
-          }
-          if (initialData.tagline) {
+          if(initialData.tagline){
             setTagline(initialData.tagline);
+            
           }
+          if(initialData.contact){
+            let contact = initialData.contact
+            let address = contact.address;
+            if(contact.website){
+              setWebsite(contact.website);
+            }
+            if(contact.instagram){
+              setInstagram(contact.instagram);
+            }
+            if(address){
+              if(address.street){
+                setAddressStreet(address.street);
+                
+              }
+              if(address.city){
+                setAddressCity(address.city);
+              }
+              if(address.country){
+                setAddressCountry(address.country);
+        
+              if(address.postal_code){
+                setAddressPostcode(address.postal_code);
+        
+              }
+              if(address.phone_number){
+                setPhoneNumber(address.phone_number);
+        
+              }
+            }
+          }
+        
+          }
+          
         })
         .catch((err) => {
+          setErrorMessage(err.response.data.message)
           console.log(err);
         });
     }
-  }, [user, storedToken]);
+  }, [user]);
+
 
   function handleProfileImg(e) {
     let imageToUpload = new FormData();
@@ -148,7 +170,6 @@ function EditProfilePage() {
       let updatedUser = {
         real_name: realName,
         artist_statement: artistStatement,
-        city: city,
         contact: {
           website: website,
           instagram: instagram,
@@ -163,15 +184,16 @@ function EditProfilePage() {
         tagline: tagline,
       };
 
-      if (imageData.length > 0) {
+      if (imageData) {
         const cloudinaryResponse = await uploadService.uploadImage(imageData);
 
         let imageUrl = cloudinaryResponse.data.fileUrls[0];
         updatedUser.profile_img_url = imageUrl;
+        console.log("cloudinary response", cloudinaryResponse)
       }
 
       const updateResponse = await userService.updateUser(
-        userInfo._id,
+        user._id,
         updatedUser
       );
 
@@ -199,8 +221,6 @@ function EditProfilePage() {
               {"< Back"}
             </button>
           </div>
-
-          {isLoggedIn && userInfo && (
             <form
               className="profile edit-form edit-profile-form"
               onSubmit={(e) => {
@@ -248,8 +268,9 @@ function EditProfilePage() {
                 </div>
               </div>
 
-              {userInfo.isArtist && (
                 <div className="edit-profile-artist-info-wrapper">
+              {userInfo.isArtist && (
+                <>
                   <div className="artist-statement-wrapper">
                     <label htmlFor="">Artist Statement:</label>
                     <textarea
@@ -264,14 +285,16 @@ function EditProfilePage() {
                       }}
                     />
                   </div>
-
+                </>
+                )}
                   <div className="edit-profile-contact-info-wrapper">
                     <h3 className="edit-profile-contact-info-headline">
                       Contact Information:
                     </h3>
                     <div className="edit-profile-contact-info-web-wrapper">
-                      <label htmlFor="">Website</label>
+                      <label htmlFor="website">Website</label>
                       <input
+                      name="website"
                         className="edit-profile input"
                         type="url"
                         value={website}
@@ -279,8 +302,9 @@ function EditProfilePage() {
                           setWebsite(e.target.value);
                         }}
                       />
-                      <label htmlFor="">Instagram</label>
+                      <label htmlFor="instagram">Instagram</label>
                       <input
+                      name="instagram"
                         className="edit-profile input"
                         type="text"
                         value={instagram}
@@ -322,16 +346,14 @@ function EditProfilePage() {
                       <label htmlFor="city">City</label>
                       <Select
                         name="city"
-                        required
                         autoComplete="address-level2"
-                        options={cityOptions}
+                        options={addressCityOptions}
                         onChange={handleCitiesSelectChange}
                         value={{ label: addressCity }}
                         styles={selectStles}
                       />
                       <label htmlFor="country">Country</label>
                       <Select
-                        required
                         autoComplete="country"
                         options={countryOptions}
                         onChange={handleCountrySelectChange}
@@ -353,12 +375,13 @@ function EditProfilePage() {
                     </div>
                   </div>
                 </div>
-              )}
-              <button className="edit-profile-update-button button">
+              
+              <button type="submit" className="edit-profile-update-button button">
                 Update
               </button>
             </form>
-          )}
+            {errorMessage && errorMessageElement}
+          
         </div>
       )}
     </>

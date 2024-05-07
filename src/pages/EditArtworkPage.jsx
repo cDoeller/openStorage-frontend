@@ -282,6 +282,9 @@ function EditArtworkPage() {
   }
 
   return (
+    <>
+    {user && (
+
     <div id="EditArtworkPage" className="page-wrapper mobile-dvh">
       <Popup
         headline={"Are you sure?"}
@@ -456,6 +459,8 @@ function EditArtworkPage() {
         </form>
       )}
     </div>
+    )}
+      </>
   );
 }
 
