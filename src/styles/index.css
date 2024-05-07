@@ -114,6 +114,7 @@ button {
   border-radius: 10px;
   border: none;
   text-transform:uppercase;
+  box-shadow: 0 0 1rem var(--greydark);
 }
 
 .box-shadow{

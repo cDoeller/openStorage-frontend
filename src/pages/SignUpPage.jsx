@@ -113,7 +113,7 @@ function SignUpPage() {
           />
         </label>
         {errorMessage && errorMessageElement}
-        <button type="submit" className="signup-form-button">
+        <button type="submit" className="signup-form-button box-shadow">
           Sign Up
         </button>
         <Link to="/login">
