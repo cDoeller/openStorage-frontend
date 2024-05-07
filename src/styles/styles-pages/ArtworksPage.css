@@ -1,5 +1,7 @@
 .artworks-page {
-  margin: 2rem 0 3rem 0;
+  padding: 0 0 3rem 0;
+  margin-top: 2rem;
+  box-sizing: border-box;
 }
 
 /* FILTER INTERFACE BUTTON */

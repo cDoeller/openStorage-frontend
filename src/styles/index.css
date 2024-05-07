@@ -16,7 +16,10 @@
   --pink: rgb(251, 198, 254);
   --lilac: #a79aff;
   --purple: rgb(207, 156, 255);
-  --lime: #b1f4b1;
+  /* --lime: #b1f4b1; */
+  --lime: #93fa93;
+  /* --lime: #8dffa6; */
+  /* --lime: rgb(54, 253, 177); */
   --grey: #ebebeb;
   --greydark: #cccccc;
   --greydarkdark: rgb(109, 109, 109);
@@ -97,15 +100,19 @@ button {
   color: red;
   background-color: rgb(255, 224, 224);
   padding: 1rem;
+  margin: 0.5rem 0;
 }
 
 /* BUTTONS */
 .back-button {
-  border-style: none;
-  background: white;
-  font-size: 15px;
+  /* border-style: none; */
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: underline;
+  /* background-color:var(--grey);
+  padding: 0.6rem;
+  box-sizing: border-box;
+  border-radius: 10px; */
 }
 
 .button {

@@ -12,6 +12,13 @@ function CreateArtworkPage() {
 
   const navigate = useNavigate();
 
+  const [errorMessage,setErrorMessage] = useState(null)
+  const errorMessageElement = (
+    <>
+      <h3 className="page-error-messages">{errorMessage}</h3>
+    </>
+  );
+
   const [cityOptions, setCityOptions] = useState();
 
   const [title, setTitle] = useState("");
@@ -81,16 +88,19 @@ function CreateArtworkPage() {
   const selectStles = {
     control: (baseStyles, state) => ({
       ...baseStyles,
-      border: "none",
+      border: "0",
       outline: "red",
-      borderRadius: "0",
+      borderRadius: "10px",
+      boxShadow: '0 0 1rem var(--greydark)',
+      padding: "0.2rem"
     }),
     container: (baseStyles, state) => ({
       ...baseStyles,
       outline: "red",
       border: "none",
       borderRadius: "0",
-      borderBottom: "2px solid black",
+      // padding: "1rem"
+      // borderBottom: "2px solid black",
     }),
     dropdownIndicator: (baseStyles, state) => ({
       ...baseStyles,
@@ -141,53 +151,67 @@ function CreateArtworkPage() {
     setImagePreviews(previews);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    let newArtwork = {
-      title: title,
-      year: year,
-      artist: user._id,
-      city: city,
-      dimensions: {
-        x: dimensionsX,
-        y: dimensionsY,
-        z: dimensionsZ,
-      },
-      medium: medium,
-      genre: genre,
-    };
+  async function handleSubmit(e) {
+    try {
 
-    const uploadData = new FormData();
+      e.preventDefault();
+
+      
+      if(imageData.length>=1){
+        let newArtwork = {
+          title: title,
+          year: year,
+          artist: user._id,
+          city: city,
+          dimensions: {
+            x: dimensionsX,
+            y: dimensionsY,
+            z: dimensionsZ,
+          },
+          medium: medium,
+          genre: genre,
+        };
+        const uploadData = new FormData();
+        
+        imageData.forEach((file)=>{
+          uploadData.append("images", file)
+        })
     
-    imageData.forEach((file)=>{
-      uploadData.append("images", file)
-    })
+        console.log("image data ", imageData)
 
-    console.log("image data ", imageData)
-    uploadService
-      .uploadImage(uploadData)
-      .then((response) => {
-        newArtwork.images_url = response.data.fileUrls;
+        const cloudinaryResponse = await uploadService
+          .uploadImage(uploadData)
+   
+            newArtwork.images_url = cloudinaryResponse.data.fileUrls;
+    
+            // console.log("response is: ", response);
+    
+            let copiedArray = [...uploadedImages, cloudinaryResponse.data.fileUrls];
+            setUploadedImages(copiedArray);
 
-        // console.log("response is: ", response);
+            const newArtworkResponse = await artworksService.createArtwork(newArtwork);
+        
+            console.log("successfully created a new artwork");
 
-        let copiedArray = [...uploadedImages, response.data.fileUrls];
-        setUploadedImages(copiedArray);
-        return artworksService.createArtwork(newArtwork);
-      })
-      .then((response) => {
-        console.log("successfully created a new artwork");
-        const newArtwork = response.data.newArtwork;
-        console.log(newArtwork);
-        navigate(`/artworks/${newArtwork._id}`);
-      })
-      .catch((err) => console.log("Error while uploading the file: ", err));
+            console.log(newArtworkResponse);
+            navigate(`/artworks/${newArtwork._id}`);
+          }
+          else{
+            setErrorMessage("Please upload at least one image of your artwork")
+          }
+
+      }
+    catch(err) {
+        console.log("Error while uploading the file: ", err)
+        setErrorMessage(err.response.data.message)
+      }
+  
   }
 
   return (
     <div id="CreateArtworkPage" className="page-wrapper">
       <div className="create-artwork-heading-wrapper">
-        <h1>Create Artwork</h1>
+        <h1 className="create-artwork-heading form-headline highlight">Create Artwork</h1>
         <button
           className="back-button"
           onClick={(e) => {
@@ -207,7 +231,7 @@ function CreateArtworkPage() {
       >
         <label htmlFor="title">Title</label>
         <input
-          className="create-artwork-input"
+          className="create-artwork-input input"
           name="title"
           type="text"
           onChange={(e) => {
@@ -217,7 +241,7 @@ function CreateArtworkPage() {
 
         <label htmlFor="year">Year</label>
         <input
-          className="create-artwork-input"
+          className="create-artwork-input input"
           name="year"
           value={year}
           type="number"
@@ -240,7 +264,7 @@ function CreateArtworkPage() {
         <label htmlFor="">Dimensions</label>
         <div className="create-dimensions-wrapper">
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             value={dimensionsX}
             onChange={(e) => {
@@ -249,7 +273,7 @@ function CreateArtworkPage() {
           />
           x
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             value={dimensionsY}
             onChange={(e) => {
@@ -258,7 +282,7 @@ function CreateArtworkPage() {
           />
           y
           <input
-            className="create-artwork-input"
+            className="create-artwork-input input"
             type="number"
             value={dimensionsZ}
             onChange={(e) => {
@@ -317,7 +341,10 @@ function CreateArtworkPage() {
           value={{ label: genre }}
           styles={selectStles}
         />
-        <button className="create-artwork-submit-button button">Submit</button>
+
+        <button className="submit-button button">Submit</button>
+        {errorMessage && errorMessageElement}
+
       </form>
     </div>
   );

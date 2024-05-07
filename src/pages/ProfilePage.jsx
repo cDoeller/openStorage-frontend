@@ -66,9 +66,9 @@ function ProfilePage() {
 
   return (
     <div className="page-wrapper mobile-dvh">
-      {isLoggedIn && userInfo && (
+      {userInfo && (
         <div className="profile-wrapper">
-          <h1>Your Profile</h1>
+          <h1 className="highlight">Your Profile</h1>
           {/* PROFILE CARD */}
           <div className="profile-profilecard-wrapper">
             <div className="profile-edit-link">
@@ -80,7 +80,7 @@ function ProfilePage() {
               }
               img={userInfo.profile_img_url}
               isArtist={userInfo.isArtist}
-              city={userInfo.contact ? userInfo.contact.address.city : ""}
+              city={userInfo.contact.address.city ? userInfo.contact.address.city : ""}
               tagline={userInfo.tagline ? userInfo.tagline : ""}
             />
           </div>

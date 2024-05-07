@@ -11,6 +11,7 @@
   font-size: 1rem;
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
 }
 .faq-question-wrapper-open{
     border-radius: 10px 10px 0 10px;

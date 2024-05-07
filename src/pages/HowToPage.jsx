@@ -35,7 +35,7 @@ function HowToPage() {
           onClick={() => {
             handleClick(artistsRef);
           }}
-          className="howto-nav-button button"
+          className="button howto-nav-button"
         >
           For Artists
         </button>
@@ -43,7 +43,7 @@ function HowToPage() {
           onClick={() => {
             handleClick(artloversRef);
           }}
-          className="howto-nav-button button"
+          className="button howto-nav-button"
         >
           For Art Lovers
         </button>
@@ -51,7 +51,7 @@ function HowToPage() {
           onClick={() => {
             handleClick(paymentRef);
           }}
-          className="howto-nav-button button"
+          className="button howto-nav-button"
         >
           Payment Info
         </button>
@@ -81,7 +81,7 @@ function HowToPage() {
           onClick={() => {
             handleClick(buttonsRef);
           }}
-          className="howto-up-icon-wrapper"
+          className="howto-up-icon-wrapper box-shadow"
         >
           <img src="/img/up-icon.png" alt="" />
         </div>
@@ -111,7 +111,7 @@ function HowToPage() {
           onClick={() => {
             handleClick(buttonsRef);
           }}
-          className="howto-up-icon-wrapper"
+          className="howto-up-icon-wrapper box-shadow"
         >
           <img src="/img/up-icon.png" alt="" />
         </div>
@@ -131,7 +131,7 @@ function HowToPage() {
           onClick={() => {
             handleClick(buttonsRef);
           }}
-          className="howto-up-icon-wrapper"
+          className="howto-up-icon-wrapper box-shadow"
         >
           <img src="/img/up-icon.png" alt="" />
         </div>
