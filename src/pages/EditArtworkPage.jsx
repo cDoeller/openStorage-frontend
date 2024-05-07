@@ -10,8 +10,15 @@ import "../styles/styles-templates/Forms.css";
 import germanCities from "../data/cities-germany.json";
 
 function EditArtworkPage() {
-  const { isLoggedIn, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const errorMessageElement = (
+    <>
+      <h3 className="page-error-messages">{errorMessage}</h3>
+    </>
+  );
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -123,6 +130,7 @@ function EditArtworkPage() {
         setArtwork(initialArtwork);
         setTitle(initialArtwork.title);
         setYear(initialArtwork.year);
+        setCity(initialArtwork.city);
         setDimensionsX(initialArtwork.dimensions.x);
         setDimensionsY(initialArtwork.dimensions.y);
         setDimensionsZ(initialArtwork.dimensions.z);
@@ -223,68 +231,74 @@ function EditArtworkPage() {
     setShowPopup(true);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(e) {
+    try {
+      e.preventDefault();
 
-    let updatedArtwork = {
-      title: title,
-      artist: artwork.artist,
-      year: year,
-      city: city,
-      dimensions: {
-        x: dimensionsX,
-        y: dimensionsY,
-        z: dimensionsZ,
-      },
-      // images_url: imagesUrl,
-      medium: medium,
-      genre: genre,
-      isForSale: artwork.isForSale,
-    };
+      let updatedArtwork = {
+        title: title,
+        artist: artwork.artist,
+        year: year,
+        city: city,
+        dimensions: {
+          x: dimensionsX,
+          y: dimensionsY,
+          z: dimensionsZ,
+        },
+        // images_url: imagesUrl,
+        medium: medium,
+        genre: genre,
+        isForSale: artwork.isForSale,
+      };
 
-    console.log("imageData ", imageData);
+      console.log("imageData ", imageData);
 
-    if (imageData.length > 0) {
-      const uploadData = new FormData();
+      if (imageData.length > 0) {
+        const uploadData = new FormData();
 
-      imageData.forEach((file) => {
-        uploadData.append("images", file);
-      });
-
-      uploadService
-        .uploadImage(uploadData)
-        .then((response) => {
-          let newImagesUrls = response.data.fileUrls;
-
-          console.log("response is: ", response.data.fileUrls);
-
-          let allImagesArray = [...oldImages, ...newImagesUrls];
-
-          updatedArtwork.images_url = allImagesArray;
-          return artworksService.updateArtwork(artwork._id, updatedArtwork);
-        })
-        .then((response) => {
-          console.log("successfully updated an artwork with images");
-          console.log(response.data);
-          navigate(`/artworks/${artwork._id}`);
-        })
-        .catch((err) => console.log("Error while uploading the file: ", err));
-    } else {
-      updatedArtwork.images_url = oldImages;
-      artworksService
-        .updateArtwork(artwork._id, updatedArtwork)
-        .then((response) => {
-          console.log("successfully updated an artwork");
-          console.log(response.data);
-          navigate(`/artworks/${artwork._id}`);
-        })
-        .catch((err) => {
-          console.log("Error while uploading the file: ", err);
+        imageData.forEach((file) => {
+          uploadData.append("images", file);
         });
+
+        const cloudinaryResponse = await uploadService.uploadImage(uploadData);
+
+        let newImagesUrls = cloudinaryResponse.data.fileUrls;
+
+        console.log("response is: ", cloudinaryResponse.data.fileUrls);
+
+        let allImagesArray = [...oldImages, ...newImagesUrls];
+
+        updatedArtwork.images_url = allImagesArray;
+        const newImagesArtworkResponse = await artworksService.updateArtwork(
+          artwork._id,
+          updatedArtwork
+        );
+
+        console.log("successfully updated an artwork with images");
+        console.log(newImagesArtworkResponse.data);
+        navigate(`/artworks/${artwork._id}`);
+      } else if (oldImages.length >= 1) {
+        updatedArtwork.images_url = oldImages;
+        const artworkResponse = await artworksService.updateArtwork(
+          artwork._id,
+          updatedArtwork
+        );
+        console.log("successfully updated an artwork");
+        console.log(artworkResponse.data);
+        navigate(`/artworks/${artwork._id}`);
+      }
+      else{
+        setErrorMessage("The artwork needs to have at least one image")
+      }
+    } catch (err) {
+      console.log("Error while uploading the file: ", err);
+      setErrorMessage(err);
     }
   }
 
   return (
+        <>
+      {user && (
     <div id="EditArtworkPage" className="page-wrapper mobile-dvh">
       <Popup
         headline={"Are you sure?"}
@@ -306,7 +320,7 @@ function EditArtworkPage() {
         </button>
       </div>
 
-      {isLoggedIn && artwork && (
+      {artwork && (
         <form
           className="edit-artwork-form form"
           onSubmit={(e) => {
@@ -315,6 +329,7 @@ function EditArtworkPage() {
         >
           <label htmlFor="title">Title</label>
           <input
+            required
             className="input"
             name="title"
             value={title}
@@ -325,6 +340,7 @@ function EditArtworkPage() {
           />
           <label htmlFor="year">Year</label>
           <input
+            required
             className="input"
             name="year"
             value={year}
@@ -339,6 +355,7 @@ function EditArtworkPage() {
             City
           </label>
           <Select
+            required
             options={cityOptions}
             onChange={handleCitiesSelectChange}
             value={{ label: city }}
@@ -375,76 +392,116 @@ function EditArtworkPage() {
             />
             z
           </div>
-          <div className="edit-artwork-img-section">
-            <div className="file-input-container">
-              <label htmlFor="">Images</label>
-              <input
-                className="file-input"
-                type="file"
-                accept=".jpg, .png"
-                multiple
-                onChange={(e) => {
-                  handleImagesUrl(e);
-                }}
+              <label htmlFor="">Dimensions</label>
+              <div className="edit-dimensions">
+                <input
+                  required
+                  className="edit-artwork-input"
+                  type="number"
+                  min={1}
+                  value={dimensionsX}
+                  onChange={(e) => {
+                    setDimensionsX(e.target.value);
+                  }}
+                />
+                x
+                <input
+                  required
+                  className="edit-artwork-input"
+                  type="number"
+                  min={1}
+                  value={dimensionsY}
+                  onChange={(e) => {
+                    setDimensionsY(e.target.value);
+                  }}
+                />
+                y
+                <input
+                  className="edit-artwork-input"
+                  type="number"
+                  min={0}
+                  value={dimensionsZ}
+                  onChange={(e) => {
+                    setDimensionsZ(e.target.value);
+                  }}
+                />
+                z
+              </div>
+              <div className="edit-artwork-img-section">
+                <div className="file-input-container">
+                  <label htmlFor="upload">Images</label>
+                  <input
+                    name="upload"
+                    className="file-input"
+                    type="file"
+                    accept=".jpg, .png"
+                    multiple
+                    onChange={(e) => {
+                      handleImagesUrl(e);
+                    }}
+                  />
+                </div>
+
+                <div className="edit-artwork-thumbnail-wrapper">
+                  {oldImages &&
+                    oldImages.map((oneUrl, index) => {
+                      return (
+                        <div className="edit-artwork-img-thumbnail" key={index}>
+                          {/* {console.log("one url", oneUrl)} */}
+                          <img src={oneUrl} alt={title} />
+                          <button
+                            type="button"
+                            className="delete-img-button"
+                            onClick={() => {
+                              handleDeleteOldImage(index);
+                            }}
+                          >
+                            x
+                          </button>
+                        </div>
+                      );
+                    })}
+                  {newImages &&
+                    newImages.map((oneUrl, index) => {
+                      return (
+                        <div className="edit-artwork-img-thumbnail" key={index}>
+                          {/* {console.log("one url", oneUrl)} */}
+                          <img src={oneUrl} alt={title} />
+                          <button
+                            type="button"
+                            className="delete-img-button"
+                            onClick={() => {
+                              handleDeleteImage(index);
+                            }}
+                          >
+                            x
+                          </button>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+
+              {/* MEDIUM */}
+              <label htmlFor="medium" className="filterinterface-form-label">
+                Medium
+              </label>
+              <Select
+                required
+                name="medium"
+                options={mediaOptions}
+                onChange={handleMediaSelectChange}
+                value={{ label: medium }}
+                styles={selectStles}
               />
-            </div>
-
-            <div className="edit-artwork-thumbnail-wrapper">
-              {oldImages &&
-                oldImages.map((oneUrl, index) => {
-                  return (
-                    <div className="edit-artwork-img-thumbnail" key={index}>
-                      {/* {console.log("one url", oneUrl)} */}
-                      <img src={oneUrl} alt={title} />
-                      <button
-                        type="button"
-                        className="delete-img-button"
-                        onClick={() => {
-                          handleDeleteOldImage(index);
-                        }}
-                      >
-                        x
-                      </button>
-                    </div>
-                  );
-                })}
-              {newImages &&
-                newImages.map((oneUrl, index) => {
-                  return (
-                    <div className="edit-artwork-img-thumbnail" key={index}>
-                      {/* {console.log("one url", oneUrl)} */}
-                      <img src={oneUrl} alt={title} />
-                      <button
-                        type="button"
-                        className="delete-img-button"
-                        onClick={() => {
-                          handleDeleteImage(index);
-                        }}
-                      >
-                        x
-                      </button>
-                    </div>
-                  );
-                })}
-            </div>
-          </div>
-
-          {/* MEDIUM */}
-          <label htmlFor="" className="filterinterface-form-label">
-            Medium
-          </label>
-          <Select
-            options={mediaOptions}
-            onChange={handleMediaSelectChange}
-            value={{ label: medium }}
-            styles={selectStles}
-          />
 
           {/* GENRE */}
-          <label htmlFor="" className="filterinterface-form-label">
+          <label htmlFor="genre" className="filterinterface-form-label">
             Genre
           </label>
           <Select
+            name="genre"
+            required
             options={genreOptions}
             onChange={handleGenreSelectChange}
             value={{ label: genre }}
@@ -459,8 +516,11 @@ function EditArtworkPage() {
             </button>
           </div>
         </form>
+          )}
+          {errorMessage && errorMessageElement}
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
