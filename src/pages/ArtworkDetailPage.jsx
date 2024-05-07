@@ -50,7 +50,7 @@ function ArtworkDetailPage() {
         })
         .catch((err) => console.log(err));
     }
-  }, [user]);
+  }, [user, id]);
 
   // * REQUEST BUTTON RENDER
   function handleRequestButtonRender() {
@@ -91,7 +91,9 @@ function ArtworkDetailPage() {
   if (artwork) {
     requestButtonElement = (
       <Link to={`/artworks/${artwork._id}/request`}>
-        <button className="artwork-details-request-button">Request</button>
+        <button className="artwork-details-request-button button">
+          Request
+        </button>
       </Link>
     );
   }
@@ -100,7 +102,7 @@ function ArtworkDetailPage() {
   if (artwork) {
     editButtonElement = (
       <Link to={`/profile/edit-artwork/${artwork._id}`}>
-        <button className="artwork-details-request-button">Edit</button>
+        <button className="artwork-details-request-button button">Edit</button>
       </Link>
     );
   }
@@ -169,9 +171,10 @@ function ArtworkDetailPage() {
   return (
     <div className="page-wrapper mobile-dvh-general flex-column">
       {artwork && (
-        <div className="artwork-details-wrapper">
-          <div className="artwork-details-title-wrapper">
-            <h1>{artwork.title}</h1>
+        <div className="artwork-details-buttons-wrapper">
+          <div className="artwork-details-wrapper">
+            {/* BACK BUTTON */}
+            {/* <div className="artwork-details-back-wrapper">
             <button
               className="back-button"
               onClick={(e) => {
@@ -181,63 +184,67 @@ function ArtworkDetailPage() {
             >
               {"< Back"}
             </button>
-          </div>
-
-          {/* ARTWORK IMAGES */}
-
-          <div className="artwork-details-images-wrapper">
-            <div className="artwork-details-images-main">
-              <img
-                src={currentImage}
-                alt={artwork.title}
-                style={{ width: "100%" }}
-              />
+          </div> */}
+            {/* ARTWORK IMAGES */}
+            <div className="artwork-details-images-wrapper">
+              <div className="artwork-details-images-main">
+                <img
+                  src={currentImage}
+                  alt={artwork.title}
+                  style={{ width: "100%" }}
+                />
+              </div>
+              <div className="artwork-details-thumbnail-wrapper">
+                {artwork.images_url.map((oneArtwork, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        handleImageClick(oneArtwork);
+                        // console.log(oneArtwork)
+                      }}
+                      className="artwork-details-thumbnail"
+                    >
+                      <img src={oneArtwork} alt={artwork.title} />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <div className="artwork-details-thumbnail-wrapper">
-              {artwork.images_url.map((oneArtwork, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      handleImageClick(oneArtwork);
-                      // console.log(oneArtwork)
-                    }}
-                    className="artwork-details-thumbnail"
-                  >
-                    <img src={oneArtwork} alt={artwork.title} />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* ARTWORK INFO */}
-          <div className="artwork-details-info-wrapper">
-            <p
-              className="artwork-details-info-favorite"
-              onClick={handleFavorite}
-            >
-              {isFavorite ? "★" : "☆"}
-            </p>
+            {/* ARTWORK INFO */}
+
             <div className="artwork-details-info-wrapper">
-              <p className="artwork-details-info-text">
-                {artwork.artist.real_name}
-              </p>
-              <p className="artwork-details-info-text">{artwork.medium}</p>
-              {artwork.dimensions.z ? (
-                <p className="artwork-details-info-text">
-                  {artwork.dimensions.x} x {artwork.dimensions.y} x{" "}
-                  {artwork.dimensions.z} cm, {artwork.year}
+              <div className="artwork-details-info-wrapper-top">
+                <h3 className="artwork-details-title">{artwork.title}</h3>
+                <p
+                  className="artwork-details-info-favorite"
+                  onClick={handleFavorite}
+                >
+                  {isFavorite ? "★" : "☆"}
                 </p>
-              ) : (
                 <p className="artwork-details-info-text">
-                  {artwork.dimensions.x} x {artwork.dimensions.y} cm,{" "}
-                  {artwork.year}
+                  {artwork.artist.real_name}
                 </p>
-              )}
+              </div>
+              <div className="artwork-details-info-wrapper-bottom">
+                <p className="artwork-details-info-text">
+                  {artwork.medium}, {artwork.genre}
+                </p>
+                {artwork.dimensions.z ? (
+                  <p className="artwork-details-info-text">
+                    {artwork.dimensions.x} x {artwork.dimensions.y} x{" "}
+                    {artwork.dimensions.z} cm, {artwork.year}
+                  </p>
+                ) : (
+                  <p className="artwork-details-info-text">
+                    {artwork.dimensions.x} x {artwork.dimensions.y} cm,{" "}
+                    {artwork.year}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-
           {/* ARTWORK BUTTON BOTTOM */}
           {isLoggedIn && handleRequestButtonRender()}
         </div>

@@ -6,6 +6,7 @@ function HowToPage() {
   const artistsRef = useRef(null);
   const artloversRef = useRef(null);
   const paymentRef = useRef(null);
+  const buttonsRef = useRef(null);
   const currentRef = useRef(artistsRef);
 
   const handleClick = (refName) => {
@@ -14,52 +15,53 @@ function HowToPage() {
   };
 
   // DISABLE SCROLLING BEHAVIOR ON THIS PAGE
-  useEffect(() => {
-    const preventDefaultScroll = (event) => {
-      event.preventDefault();
-    };
-    // add when mounted
-    window.addEventListener("wheel", preventDefaultScroll, { passive: false });
-    // remove when unmounted
-    return () => {
-      window.removeEventListener("wheel", preventDefaultScroll);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const preventDefaultScroll = (event) => {
+  //     event.preventDefault();
+  //   };
+  //   // add when mounted
+  //   window.addEventListener("wheel", preventDefaultScroll, { passive: false });
+  //   // remove when unmounted
+  //   return () => {
+  //     window.removeEventListener("wheel", preventDefaultScroll);
+  //   };
+  // }, []);
 
   return (
-    <div className="howto-page-wrapper page-wrapper">
+    <div className="howto-page-wrapper">
       {/* nav buttons */}
-      <section className="howto-nav-button-wrapper">
+      <section ref={buttonsRef} className="howto-nav-button-wrapper">
         <button
           onClick={() => {
             handleClick(artistsRef);
           }}
-          className="howto-nav-button"
+          className="howto-nav-button button"
         >
-          Artists
+          For Artists
         </button>
         <button
           onClick={() => {
             handleClick(artloversRef);
           }}
-          className="howto-nav-button"
+          className="howto-nav-button button"
         >
-          Art Lovers
+          For Art Lovers
         </button>
-
         <button
           onClick={() => {
             handleClick(paymentRef);
           }}
-          className="howto-nav-button"
+          className="howto-nav-button button"
         >
-          Payment
+          Payment Info
         </button>
       </section>
 
       {/* FOR ARTISTS */}
       <section ref={artistsRef} className="howto-for-wrapper">
-        <h2 className="howto-for-headline">Open Storage for Artists</h2>
+        <h2 className="howto-for-headline highlight">
+          Open Storage for Artists
+        </h2>
         <ol className="howto-for-ol">
           <li className="howto-for-li">
             Sign Up and get verified for your personal Artist Account for free
@@ -75,11 +77,21 @@ function HowToPage() {
             Wait for a rental request and make an appointment for delivery
           </li>
         </ol>
+        <div
+          onClick={() => {
+            handleClick(buttonsRef);
+          }}
+          className="howto-up-icon-wrapper"
+        >
+          <img src="/img/up-icon.png" alt="" />
+        </div>
       </section>
 
       {/* FOR ART LOVERS */}
       <section ref={artloversRef} className="howto-for-wrapper">
-        <h2 className="howto-for-headline">Open Storage for Art Lovers</h2>
+        <h2 className="howto-for-headline highlight">
+          Open Storage for Art Lovers
+        </h2>
         <ol className="howto-for-ol">
           <li className="howto-for-li">
             Sign Up for your personal Art Lover Account for free
@@ -95,6 +107,14 @@ function HowToPage() {
             Pick up your favorite work or let it be delivered to your home
           </li>
         </ol>
+        <div
+          onClick={() => {
+            handleClick(buttonsRef);
+          }}
+          className="howto-up-icon-wrapper"
+        >
+          <img src="/img/up-icon.png" alt="" />
+        </div>
       </section>
 
       {/* PAYMENT INFORMATION */}
@@ -104,15 +124,23 @@ function HowToPage() {
         </div>
         <p className="artworks-paymentinfo-text">
           Our rental fees are fixed: no matter how famous, large or colourful,
-          you pay <span className="highlight">€15 / month</span> for each work of art!
+          you pay <span className="highlight">€15 / month</span> for each work
+          of art!
         </p>
+        <div
+          onClick={() => {
+            handleClick(buttonsRef);
+          }}
+          className="howto-up-icon-wrapper"
+        >
+          <img src="/img/up-icon.png" alt="" />
+        </div>
       </section>
     </div>
   );
 }
 
 export default HowToPage;
-
 
 //  trying to scroll automatically to next component
 // idea: call handleScroll in event listener for scrolling
