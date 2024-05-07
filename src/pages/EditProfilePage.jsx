@@ -201,6 +201,7 @@ function EditProfilePage() {
       navigate("/profile");
     } catch (err) {
       console.log(err);
+      setErrorMessage(err.response.data.message)
     }
   }
 
