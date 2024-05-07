@@ -286,9 +286,8 @@ function EditArtworkPage() {
         console.log("successfully updated an artwork");
         console.log(artworkResponse.data);
         navigate(`/artworks/${artwork._id}`);
-      }
-      else{
-        setErrorMessage("The artwork needs to have at least one image")
+      } else {
+        setErrorMessage("The artwork needs to have at least one image");
       }
     } catch (err) {
       console.log("Error while uploading the file: ", err);
@@ -297,106 +296,77 @@ function EditArtworkPage() {
   }
 
   return (
-        <>
+    <>
       {user && (
-    <div id="EditArtworkPage" className="page-wrapper mobile-dvh">
-      <Popup
-        headline={"Are you sure?"}
-        showPopup={showPopup}
-        setShowPopup={setShowPopup}
-        text={"Deleting the artwork is irreversible"}
-        button={deleteButton}
-      />
-      <div className="heading-wrapper">
-        <h1 className="form-headline">Edit Artwork</h1>
-        <button
-          className="back-button"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(-1);
-          }}
-        >
-          {"< Back"}
-        </button>
-      </div>
-
-      {artwork && (
-        <form
-          className="edit-artwork-form form"
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-        >
-          <label htmlFor="title">Title</label>
-          <input
-            required
-            className="input"
-            name="title"
-            value={title}
-            type="text"
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
+        <div id="EditArtworkPage" className="page-wrapper mobile-dvh">
+          <Popup
+            headline={"Are you sure?"}
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+            text={"Deleting the artwork is irreversible"}
+            button={deleteButton}
           />
-          <label htmlFor="year">Year</label>
-          <input
-            required
-            className="input"
-            name="year"
-            value={year}
-            type="number"
-            onChange={(e) => {
-              setYear(e.target.value);
-            }}
-          />
-
-          {/* CITY */}
-          <label htmlFor="" className="filterinterface-form-label">
-            City
-          </label>
-          <Select
-            required
-            options={cityOptions}
-            onChange={handleCitiesSelectChange}
-            value={{ label: city }}
-            styles={selectStles}
-          />
-
-          <label htmlFor="">Dimensions</label>
-          <div className="edit-dimensions">
-            <input
-              className="input"
-              type="number"
-              value={dimensionsX}
-              onChange={(e) => {
-                setDimensionsX(e.target.value);
+          <div className="heading-wrapper">
+            <h1 className="form-headline">Edit Artwork</h1>
+            <button
+              className="back-button"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
               }}
-            />
-            x
-            <input
-              className="input"
-              type="number"
-              value={dimensionsY}
-              onChange={(e) => {
-                setDimensionsY(e.target.value);
-              }}
-            />
-            y
-            <input
-              className="input"
-              type="number"
-              value={dimensionsZ}
-              onChange={(e) => {
-                setDimensionsZ(e.target.value);
-              }}
-            />
-            z
+            >
+              {"< Back"}
+            </button>
           </div>
+
+          {artwork && (
+            <form
+              className="edit-artwork-form form"
+              onSubmit={(e) => {
+                handleSubmit(e);
+              }}
+            >
+              <label htmlFor="title">Title</label>
+              <input
+                required
+                className="input"
+                name="title"
+                value={title}
+                type="text"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+              />
+              <label htmlFor="year">Year</label>
+              <input
+                required
+                className="input"
+                name="year"
+                value={year}
+                type="number"
+                onChange={(e) => {
+                  setYear(e.target.value);
+                }}
+              />
+
+              {/* CITY */}
+              <label htmlFor="" className="filterinterface-form-label">
+                City
+              </label>
+              <Select
+                required
+                options={cityOptions}
+                onChange={handleCitiesSelectChange}
+                value={{ label: city }}
+                styles={selectStles}
+              />
+
+              {/* DIMENSIONS */}
               <label htmlFor="">Dimensions</label>
               <div className="edit-dimensions">
                 <input
                   required
-                  className="edit-artwork-input"
+                  className="input"
                   type="number"
                   min={1}
                   value={dimensionsX}
@@ -407,7 +377,7 @@ function EditArtworkPage() {
                 x
                 <input
                   required
-                  className="edit-artwork-input"
+                  className="input"
                   type="number"
                   min={1}
                   value={dimensionsY}
@@ -417,7 +387,7 @@ function EditArtworkPage() {
                 />
                 y
                 <input
-                  className="edit-artwork-input"
+                  className="input"
                   type="number"
                   min={0}
                   value={dimensionsZ}
@@ -495,27 +465,33 @@ function EditArtworkPage() {
                 styles={selectStles}
               />
 
-          {/* GENRE */}
-          <label htmlFor="genre" className="filterinterface-form-label">
-            Genre
-          </label>
-          <Select
-            name="genre"
-            required
-            options={genreOptions}
-            onChange={handleGenreSelectChange}
-            value={{ label: genre }}
-            styles={selectStles}
-          />
-          <div className="edit-artwork-button-wrapper">
-            <button onClick={handleDeleteArtwork} className="button edit-artwork-button-delete">
-              Delete Artwork
-            </button>
-            <button type="submit" className="button edit-artwork-button-submit">
-              Submit Changes
-            </button>
-          </div>
-        </form>
+              {/* GENRE */}
+              <label htmlFor="genre" className="filterinterface-form-label">
+                Genre
+              </label>
+              <Select
+                name="genre"
+                required
+                options={genreOptions}
+                onChange={handleGenreSelectChange}
+                value={{ label: genre }}
+                styles={selectStles}
+              />
+              <div className="edit-artwork-button-wrapper">
+                <button
+                  onClick={handleDeleteArtwork}
+                  className="button edit-artwork-button-delete"
+                >
+                  Delete Artwork
+                </button>
+                <button
+                  type="submit"
+                  className="button edit-artwork-button-submit"
+                >
+                  Submit Changes
+                </button>
+              </div>
+            </form>
           )}
           {errorMessage && errorMessageElement}
         </div>
