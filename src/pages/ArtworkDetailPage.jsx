@@ -50,7 +50,7 @@ function ArtworkDetailPage() {
         })
         .catch((err) => console.log(err));
     }
-  }, [user]);
+  }, [user, id]);
 
   // * REQUEST BUTTON RENDER
   function handleRequestButtonRender() {
@@ -91,7 +91,9 @@ function ArtworkDetailPage() {
   if (artwork) {
     requestButtonElement = (
       <Link to={`/artworks/${artwork._id}/request`}>
-        <button className="artwork-details-request-button">Request</button>
+        <button className="artwork-details-request-button button">
+          Request
+        </button>
       </Link>
     );
   }
@@ -100,7 +102,7 @@ function ArtworkDetailPage() {
   if (artwork) {
     editButtonElement = (
       <Link to={`/profile/edit-artwork/${artwork._id}`}>
-        <button className="artwork-details-request-button">Edit</button>
+        <button className="artwork-details-request-button button">Edit</button>
       </Link>
     );
   }
@@ -167,11 +169,11 @@ function ArtworkDetailPage() {
   }
 
   return (
-    <div className="page-wrapper mobile-dvh-general flex-column">
+    <div className="page-wrapper mobile-dvh-general">
       {artwork && (
         <div className="artwork-details-wrapper">
           <div className="artwork-details-title-wrapper">
-            <h1>{artwork.title}</h1>
+            <h3 className="artwork-details-title">{artwork.title}</h3>
             <button
               className="back-button"
               onClick={(e) => {
@@ -223,7 +225,7 @@ function ArtworkDetailPage() {
               <p className="artwork-details-info-text">
                 {artwork.artist.real_name}
               </p>
-              <p className="artwork-details-info-text">{artwork.medium}</p>
+              <p className="artwork-details-info-text">{artwork.medium}, {artwork.genre}</p>
               {artwork.dimensions.z ? (
                 <p className="artwork-details-info-text">
                   {artwork.dimensions.x} x {artwork.dimensions.y} x{" "}
