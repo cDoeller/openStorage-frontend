@@ -52,28 +52,27 @@ function FilterInterface(props) {
   }
 
   // REACT SELECT OPTIONS
-  let genreOptions = [];
+  let genreOptions = [{ value: "", label: "-" }];
   if (allGenres) {
     console.log()
     allGenres.forEach((oneGenre) => {
       genreOptions.push({ value: oneGenre, label: oneGenre });
     });
   }
-
-  let mediaOptions = []
+  let mediaOptions = [{ value: "", label: "-" }];
   if (allMedia) {
     allMedia.forEach((oneMedium) => {
       mediaOptions.push({ value: oneMedium, label: oneMedium });
     });
   }
-  let cityOptions = [];
+  let cityOptions = [{ value: "", label: "-" }];
   if (allCities) {
     allCities.forEach((oneCity) => {
       cityOptions.push({ value: oneCity, label: oneCity });
     });
   }
   // artists: value = id
-  let artistOptions = [];
+  let artistOptions = [{ value: "", label: "-" }];
   if (allArtists) {
     allArtists.forEach((oneArtist) => {
       artistOptions.push({ value: oneArtist._id, label: oneArtist.real_name });
@@ -127,6 +126,10 @@ function FilterInterface(props) {
       maxHeight: "7rem",
       overflow: "scroll",
     }),
+    // option: (baseStyles, state) => ({
+    //   ...baseStyles,
+    //   height: "1rem",
+    // }),
   };
 
   return (
