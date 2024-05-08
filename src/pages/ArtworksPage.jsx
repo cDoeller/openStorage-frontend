@@ -11,6 +11,8 @@ function ArtworksPage() {
   const [showInterface, setShowInterface] = useState(false);
   const [allArtists, setAllArtists] = useState(null);
   const [allCities, setAllCities] = useState(null);
+  const [allGenres, setAllGenres] = useState(null);
+  const [allMedia, setAllMedia] = useState(null);
   const [urlParams, setUrlParams] = useState(null);
 
   // FILTERING STATES UPLIFT
@@ -46,8 +48,14 @@ function ArtworksPage() {
         const artistsWithWorks = await userService.getAllArtistsWithWorks();
         setAllArtists(artistsWithWorks.data);
 
-        const artworkCities = await artworksService.getArtworkCities();
+        const artworkCities = await artworksService.getArtworkDistinct("city");
         setAllCities(artworkCities.data);
+
+        const artworkGenres = await artworksService.getArtworkDistinct("genre");
+        setAllGenres(artworkGenres.data);
+
+        const artworkMedia = await artworksService.getArtworkDistinct("medium");
+        setAllMedia(artworkMedia.data);
 
         // get genre artworks if genre present
         if (genre) {
@@ -62,7 +70,6 @@ function ArtworksPage() {
         // get all artworks if no url params present
         const allArtworks = await artworksService.getAllArtworks();
         setArtworks(allArtworks.data);
-
       } catch (err) {
         console.log(err);
       }
@@ -101,6 +108,8 @@ function ArtworksPage() {
           setArtworks={setArtworks}
           allArtists={allArtists}
           allCities={allCities}
+          allGenres={allGenres}
+          allMedia={allMedia}
           filterStates={filterStates}
         />
       ) : (

@@ -4,8 +4,16 @@ import artworksService from "../services/artworks.services";
 import Select from "react-select";
 
 function FilterInterface(props) {
-  const { setArtworks, allArtists, allCities, filterStates } = props;
-  const { city, medium, genre, dimensions, artistId, artistName } = filterStates;
+  const {
+    setArtworks,
+    allArtists,
+    allCities,
+    filterStates,
+    allGenres,
+    allMedia,
+  } = props;
+  const { city, medium, genre, dimensions, artistId, artistName } =
+    filterStates;
 
   // Filtering
   useEffect(() => {
@@ -15,9 +23,12 @@ function FilterInterface(props) {
     if (city.state) queryString += `city=${city.state}&`;
     if (medium.state) queryString += `medium=${medium.state}&`;
     if (genre.state) queryString += `genre=${genre.state}&`;
-    if (dimensions.state.x) queryString += `dimensions_x=${dimensions.state.x}&`;
-    if (dimensions.state.y) queryString += `dimensions_y=${dimensions.state.y}&`;
-    if (dimensions.state.z) queryString += `dimensions_z=${dimensions.state.z}&`;
+    if (dimensions.state.x)
+      queryString += `dimensions_x=${dimensions.state.x}&`;
+    if (dimensions.state.y)
+      queryString += `dimensions_y=${dimensions.state.y}&`;
+    if (dimensions.state.z)
+      queryString += `dimensions_z=${dimensions.state.z}&`;
     if (artistId.state) queryString += `artist=${artistId.state}`;
 
     // console.log(queryString);
@@ -41,39 +52,20 @@ function FilterInterface(props) {
   }
 
   // REACT SELECT OPTIONS
-  let mediaOptions = [
-    // { value: "", label: "- type / select -" },
-    { value: "Photography", label: "Photography" },
-    { value: "Painting", label: "Painting" },
-    { value: "Installation", label: "Installation" },
-    { value: "Drawing", label: "Drawing" },
-    { value: "Sculpture", label: "Sculpture" },
-    { value: "Object", label: "Object" },
-    { value: "Print", label: "Print" },
-    { value: "Collage", label: "Collage" },
-    { value: "Mixed Media", label: "Mixed Media" },
-  ];
-  let genreOptions = [
-    // { value: "", label: "- type / select -" },
-    { value: "Surreal", label: "Surreal" },
-    { value: "Dada", label: "Dada" },
-    { value: "Minimal", label: "Minimal" },
-    { value: "Digital", label: "Digital" },
-    { value: "Abstract", label: "Abstract" },
-    { value: "Figurative", label: "Figurative" },
-    { value: "Conceptual", label: "Conceptual" },
-    { value: "Real", label: "Real" },
-    { value: "Natural", label: "Natural" },
-    { value: "Arte Povera", label: "Arte Povera" },
-    { value: "Pop", label: "Pop" },
-    { value: "Ready Made", label: "Ready Made" },
-    { value: "Assemblage", label: "Assemblage" },
-    { value: "Concrete", label: "Concrete" },
-    { value: "Kinetic", label: "Kinetic" },
-    { value: "Political", label: "Political" },
-    { value: "Interactive", label: "Interactive" },
-    { value: "Art & Design", label: "Art & Design" },
-  ];
+  let genreOptions = [];
+  if (allGenres) {
+    console.log()
+    allGenres.forEach((oneGenre) => {
+      genreOptions.push({ value: oneGenre, label: oneGenre });
+    });
+  }
+
+  let mediaOptions = []
+  if (allMedia) {
+    allMedia.forEach((oneMedium) => {
+      mediaOptions.push({ value: oneMedium, label: oneMedium });
+    });
+  }
   let cityOptions = [];
   if (allCities) {
     allCities.forEach((oneCity) => {
@@ -111,8 +103,8 @@ function FilterInterface(props) {
       border: "0",
       outline: "red",
       borderRadius: "10px",
-      boxShadow: '0 0 1rem var(--greydark)',
-      padding: "0.2rem"
+      boxShadow: "0 0 1rem var(--greydark)",
+      padding: "0.2rem",
     }),
     container: (baseStyles, state) => ({
       ...baseStyles,
@@ -174,7 +166,10 @@ function FilterInterface(props) {
         />
 
         {/* DIMENSIONS */}
-        <label htmlFor="" className="filterinterface-form-label filterinterface-dimensions">
+        <label
+          htmlFor=""
+          className="filterinterface-form-label filterinterface-dimensions"
+        >
           Max Dimensions [cm]
           <div className="filterinterface-form-dimension-input-wrapper">
             <input
