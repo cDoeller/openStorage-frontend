@@ -13,7 +13,6 @@ function ArtworksPage() {
   const [allCities, setAllCities] = useState(null);
   const [allGenres, setAllGenres] = useState(null);
   const [allMedia, setAllMedia] = useState(null);
-  const [urlParams, setUrlParams] = useState(null);
 
   // FILTERING STATES UPLIFT
   const [city, setCity] = useState("");
@@ -32,44 +31,50 @@ function ArtworksPage() {
     artistName: { state: artistName, setter: setArtistName },
   };
 
-  // get genre prfilter
+  // get genre prfilter on mount
   useEffect(() => {
     const urlData = new URLSearchParams(window.location.search);
-    const genre = urlData.get("genre");
-    if (genre) {
-      setGenre(genre);
-    }
+    const urlGenre = urlData.get("genre");
+    if(urlGenre) setGenre(urlGenre);
+    console.log("urlGenre",urlGenre)
   }, []);
 
   //  get artworks data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const artistsWithWorks = await userService.getAllArtistsWithWorks();
-        setAllArtists(artistsWithWorks.data);
-
-        const artworkCities = await artworksService.getArtworkDistinct("city");
-        setAllCities(artworkCities.data);
-
-        const artworkGenres = await artworksService.getArtworkDistinct("genre");
-        setAllGenres(artworkGenres.data);
-
-        const artworkMedia = await artworksService.getArtworkDistinct("medium");
-        setAllMedia(artworkMedia.data);
-
         // get genre artworks if genre present
         if (genre) {
           const genreQueryString = `?genre=${genre}`;
           const filteredArtworks = await artworksService.getArtworkQuery(
             genreQueryString
           );
-          setArtworks(filteredArtworks.data);
+
+          setArtworks(filteredArtworks.data.artworks);
+          setAllArtists(filteredArtworks.data.uniqueArtists);
+          setAllCities(filteredArtworks.data.uniqueCities);
+          setAllGenres(filteredArtworks.data.uniqueGenres);
+          setAllMedia(filteredArtworks.data.uniqueMedia);
+
+          console.log(filteredArtworks.data.artworks);
+          console.log(genre);
+
           return;
         }
 
-        // get all artworks if no url params present
+        // no prefilter: get all artworks
+        console.log("before all artworks", genre);
+
         const allArtworks = await artworksService.getAllArtworks();
-        setArtworks(allArtworks.data);
+        setArtworks(allArtworks.data.artworks);
+        setAllArtists(allArtworks.data.uniqueArtists);
+        setAllCities(allArtworks.data.uniqueCities);
+        setAllGenres(allArtworks.data.uniqueGenres);
+        setAllMedia(allArtworks.data.uniqueMedia);
+
+        console.log(allArtworks.data);
+        console.log(genre);
+
       } catch (err) {
         console.log(err);
       }
@@ -110,6 +115,10 @@ function ArtworksPage() {
           allCities={allCities}
           allGenres={allGenres}
           allMedia={allMedia}
+          setAllArtists={setAllArtists}
+          setAllCities={setAllCities}
+          setAllGenres={setAllGenres}
+          setAllMedia={setAllMedia}
           filterStates={filterStates}
         />
       ) : (

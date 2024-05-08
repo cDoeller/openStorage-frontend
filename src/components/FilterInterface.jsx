@@ -6,19 +6,21 @@ import Select from "react-select";
 function FilterInterface(props) {
   const {
     setArtworks,
+    filterStates,
     allArtists,
     allCities,
-    filterStates,
     allGenres,
     allMedia,
+    setAllArtists,
+    setAllCities,
+    setAllGenres,
+    setAllMedia,
   } = props;
   const { city, medium, genre, dimensions, artistId, artistName } =
     filterStates;
 
   // Filtering
   useEffect(() => {
-    // console.log(artistName);
-
     let queryString = "?";
     if (city.state) queryString += `city=${city.state}&`;
     if (medium.state) queryString += `medium=${medium.state}&`;
@@ -36,8 +38,12 @@ function FilterInterface(props) {
     artworksService
       .getArtworkQuery(queryString)
       .then((response) => {
-        // console.log(response.data);
-        setArtworks(response.data);
+        console.log(response.data);
+        setArtworks(response.data.artworks);
+        setAllArtists(response.data.uniqueArtists);
+        setAllCities(response.data.uniqueCities);
+        setAllGenres(response.data.uniqueGenres);
+        setAllMedia(response.data.uniqueMedia);
       })
       .catch((err) => console.log(err));
   }, [city.state, medium.state, genre.state, dimensions.state, artistId.state]);
@@ -54,7 +60,7 @@ function FilterInterface(props) {
   // REACT SELECT OPTIONS
   let genreOptions = [{ value: "", label: "-" }];
   if (allGenres) {
-    console.log()
+    console.log();
     allGenres.forEach((oneGenre) => {
       genreOptions.push({ value: oneGenre, label: oneGenre });
     });
@@ -110,8 +116,6 @@ function FilterInterface(props) {
       outline: "red",
       border: "none",
       borderRadius: "0",
-      // padding: "1rem"
-      // borderBottom: "2px solid black",
     }),
     dropdownIndicator: (baseStyles, state) => ({
       ...baseStyles,
@@ -126,10 +130,6 @@ function FilterInterface(props) {
       maxHeight: "7rem",
       overflow: "scroll",
     }),
-    // option: (baseStyles, state) => ({
-    //   ...baseStyles,
-    //   height: "1rem",
-    // }),
   };
 
   return (
