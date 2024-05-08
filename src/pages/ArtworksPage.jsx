@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "../styles/styles-pages/ArtworksPage.css";
 import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
@@ -7,6 +7,9 @@ import artworksService from "../services/artworks.services";
 import userService from "../services/user.services";
 
 function ArtworksPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlGenre = searchParams.get("genre");
+
   const [artworks, setArtworks] = useState(null);
   const [showInterface, setShowInterface] = useState(false);
   const [allArtists, setAllArtists] = useState(null);
@@ -31,40 +34,26 @@ function ArtworksPage() {
     artistName: { state: artistName, setter: setArtistName },
   };
 
-  // get genre prfilter on mount
-  useEffect(() => {
-    const urlData = new URLSearchParams(window.location.search);
-    const urlGenre = urlData.get("genre");
-    if(urlGenre) setGenre(urlGenre);
-    console.log("urlGenre",urlGenre)
-  }, []);
+  const fetchData = async () => {
+    try {
+      // get genre artworks if genre present
+      if (urlGenre) {
+        const genreQueryString = `?genre=${urlGenre}`;
+        const filteredArtworks = await artworksService.getArtworkQuery(
+          genreQueryString
+        );
 
-  //  get artworks data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // get genre artworks if genre present
-        if (genre) {
-          const genreQueryString = `?genre=${genre}`;
-          const filteredArtworks = await artworksService.getArtworkQuery(
-            genreQueryString
-          );
+        setArtworks(filteredArtworks.data.artworks);
+        setAllArtists(filteredArtworks.data.uniqueArtists);
+        setAllCities(filteredArtworks.data.uniqueCities);
+        setAllGenres(filteredArtworks.data.uniqueGenres);
+        setAllMedia(filteredArtworks.data.uniqueMedia);
+        
+        setGenre(urlGenre);
 
-          setArtworks(filteredArtworks.data.artworks);
-          setAllArtists(filteredArtworks.data.uniqueArtists);
-          setAllCities(filteredArtworks.data.uniqueCities);
-          setAllGenres(filteredArtworks.data.uniqueGenres);
-          setAllMedia(filteredArtworks.data.uniqueMedia);
-
-          console.log(filteredArtworks.data.artworks);
-          console.log(genre);
-
-          return;
-        }
-
+        return;
+      } else {
         // no prefilter: get all artworks
-        console.log("before all artworks", genre);
-
         const allArtworks = await artworksService.getAllArtworks();
         setArtworks(allArtworks.data.artworks);
         setAllArtists(allArtworks.data.uniqueArtists);
@@ -72,15 +61,16 @@ function ArtworksPage() {
         setAllGenres(allArtworks.data.uniqueGenres);
         setAllMedia(allArtworks.data.uniqueMedia);
 
-        console.log(allArtworks.data);
-        console.log(genre);
-
-      } catch (err) {
-        console.log(err);
       }
-    };
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //  get artworks data
+  useEffect(() => {
     fetchData();
-  }, [genre]);
+  }, [urlGenre]);
 
   // show/hide filter interface
   function toggleFilterInterface() {
