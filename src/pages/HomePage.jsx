@@ -77,12 +77,12 @@ function HomePage() {
           />
         </div>
         <p className="landing-description-section-text">
-          Open Storage is a platform that brings artists and art lovers
-          together. Our vision is to enable everyone to live with original art
-          from their local scene. We not only want to help artists get their
-          work out into the world and minimise their storage needs. We also want
-          to help you to lower the hurdle of living with art in your everyday
-          life.
+          Open Storage is a platform that connects artists and art lovers. Our
+          vision is to give everyone the opportunity to live with original art
+          from their local scene. To achieve this goal, we are <span className="highlight"> moving away from
+          the concept of ownership and towards a culture of sharing</span>: art lovers
+          can rent a work of art by their favourite artist for a certain period
+          of time and at a reasonable monthly price.
         </p>
         <Link to="/about">
           <p className="landing-description-section-link">learn more</p>
@@ -164,13 +164,13 @@ function HomePage() {
 
       {/* newsletter section */}
       <section className="landing-newsletter-section">
-          <div className="landing-newsletter-section-icon-wrapper">
-            <img
-              src="/img/newsletter.png"
-              alt=""
-              className="landing-newsletter-section-icon"
-            />
-          </div>
+        <div className="landing-newsletter-section-icon-wrapper">
+          <img
+            src="/img/newsletter.png"
+            alt=""
+            className="landing-newsletter-section-icon"
+          />
+        </div>
         <p className="landing-newsletter-section-text">
           Subscribe to our newsletter and stay up to date on the latest open
           storages in your area!
