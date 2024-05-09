@@ -181,7 +181,6 @@ function RequestPage() {
     { value: "delivery", label: "delivery" },
   ];
 
-
   // REACT SELECT STYLING
   // https://react-select.com/styles#inner-components
   const selectStles = {
@@ -217,7 +216,6 @@ function RequestPage() {
   function handleTransportationSelectChange(selectedOption) {
     setTransportation(selectedOption.value);
   }
-
 
   return (
     <div className="page-wrapper request-wrapper">
@@ -279,7 +277,6 @@ function RequestPage() {
         </div>
 
         {/* Transportation*/}
-
         <label htmlFor="" className="request-artwork-form-label">
           Transportation
         </label>
@@ -289,30 +286,6 @@ function RequestPage() {
           value={{ label: transportation }}
           styles={selectStles}
         />
-
-        {/* <label htmlFor="" className="request-artwork-form-label">
-          Transportation
-          <select
-            value={transportation}
-            onChange={(e) => setTransportation(e.target.value)}
-            type="select"
-            required
-            className="request-artwork-form-input select"
-          >
-            <option
-              className="request-artwork-form-select-option"
-              value="pickup"
-            >
-              Pickup
-            </option>
-            <option
-              className="request-artwork-form-select-option"
-              value="delivery"
-            >
-              Delivery
-            </option>
-          </select>
-        </label> */}
 
         {/* Transportation Details*/}
         {transportation === "delivery" ? deliveryDetailsElement : ""}
