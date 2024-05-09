@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "../styles/styles-pages/ArtworksPage.css";
 import ArtworkCard from "../components/ArtworkCard";
 import FilterInterface from "../components/FilterInterface";
@@ -7,11 +7,15 @@ import artworksService from "../services/artworks.services";
 import userService from "../services/user.services";
 
 function ArtworksPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlGenre = searchParams.get("genre");
+
   const [artworks, setArtworks] = useState(null);
   const [showInterface, setShowInterface] = useState(false);
   const [allArtists, setAllArtists] = useState(null);
   const [allCities, setAllCities] = useState(null);
-  const [urlParams, setUrlParams] = useState(null);
+  const [allGenres, setAllGenres] = useState(null);
+  const [allMedia, setAllMedia] = useState(null);
 
   // FILTERING STATES UPLIFT
   const [city, setCity] = useState("");
@@ -30,45 +34,43 @@ function ArtworksPage() {
     artistName: { state: artistName, setter: setArtistName },
   };
 
-  // get genre prfilter
-  useEffect(() => {
-    const urlData = new URLSearchParams(window.location.search);
-    const genre = urlData.get("genre");
-    if (genre) {
-      setGenre(genre);
+  const fetchData = async () => {
+    try {
+      // get genre artworks if genre present
+      if (urlGenre) {
+        const genreQueryString = `?genre=${urlGenre}`;
+        const filteredArtworks = await artworksService.getArtworkQuery(
+          genreQueryString
+        );
+
+        setArtworks(filteredArtworks.data.artworks);
+        setAllArtists(filteredArtworks.data.uniqueArtists);
+        setAllCities(filteredArtworks.data.uniqueCities);
+        setAllGenres(filteredArtworks.data.uniqueGenres);
+        setAllMedia(filteredArtworks.data.uniqueMedia);
+        
+        setGenre(urlGenre);
+
+        return;
+      } else {
+        // no prefilter: get all artworks
+        const allArtworks = await artworksService.getAllArtworks();
+        setArtworks(allArtworks.data.artworks);
+        setAllArtists(allArtworks.data.uniqueArtists);
+        setAllCities(allArtworks.data.uniqueCities);
+        setAllGenres(allArtworks.data.uniqueGenres);
+        setAllMedia(allArtworks.data.uniqueMedia);
+
+      }
+    } catch (err) {
+      console.log(err);
     }
-  }, []);
+  };
 
   //  get artworks data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const artistsWithWorks = await userService.getAllArtistsWithWorks();
-        setAllArtists(artistsWithWorks.data);
-
-        const artworkCities = await artworksService.getArtworkCities();
-        setAllCities(artworkCities.data);
-
-        // get genre artworks if genre present
-        if (genre) {
-          const genreQueryString = `?genre=${genre}`;
-          const filteredArtworks = await artworksService.getArtworkQuery(
-            genreQueryString
-          );
-          setArtworks(filteredArtworks.data);
-          return;
-        }
-
-        // get all artworks if no url params present
-        const allArtworks = await artworksService.getAllArtworks();
-        setArtworks(allArtworks.data);
-
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchData();
-  }, [genre]);
+  }, [urlGenre]);
 
   // show/hide filter interface
   function toggleFilterInterface() {
@@ -101,6 +103,12 @@ function ArtworksPage() {
           setArtworks={setArtworks}
           allArtists={allArtists}
           allCities={allCities}
+          allGenres={allGenres}
+          allMedia={allMedia}
+          setAllArtists={setAllArtists}
+          setAllCities={setAllCities}
+          setAllGenres={setAllGenres}
+          setAllMedia={setAllMedia}
           filterStates={filterStates}
         />
       ) : (

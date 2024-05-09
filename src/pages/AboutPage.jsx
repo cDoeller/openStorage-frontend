@@ -24,7 +24,9 @@ function AboutPage() {
             into the world and minimise their storage needs. On the other hand,
             we want to <span className="highlight">help you</span>, weather you
             are an artist or art lover, to lower the hurdle of living with art
-            in your everyday life. It is Important for us to find{" "}
+            in your everyday life. <span className="highlight">As an art lover, you can rent a work of art
+            by your favourite artist</span> for a certain period of time and at a
+            reasonable monthly price. It is Important for us to find{" "}
             <span className="highlight">sustainable solutions</span> of sharing
             art in local communities and minimize the needs for
             ressource-intensive packaging and transportation.

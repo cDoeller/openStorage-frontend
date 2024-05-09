@@ -39,11 +39,6 @@ class ArtworksService {
       return this.api.get(`/api/artworks/popular-genres`);
     };
 
-  // GET /api/artworks/cities
-  getArtworkCities = () => {
-    return this.api.get("/api/artworks/cities");
-  };
-
   // GET /api/artworks/:id
   getArtwork = (id) => {
     return this.api.get(`/api/artworks/${id}`);

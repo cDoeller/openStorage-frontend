@@ -1,11 +1,13 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import Select from "react-select";
 import "../styles/styles-pages/CreateArtwork.css";
+import "../styles/styles-templates/Forms.css"
 import artworksService from "../services/artworks.services";
 import uploadService from "../services/file-upload.services";
 import citiesGermany from "../data/cities-germany.json";
+import FileUploader from "../components/UploadButton"
 
 function CreateArtworkPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -23,9 +25,8 @@ function CreateArtworkPage() {
 
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(new Date());
-  // array for local file paths
-  const [imagePreviews, setImagePreviews] = useState([]);
-  const [imageData, setImageData] = useState("");
+  
+
   const [city, setCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
@@ -34,7 +35,8 @@ function CreateArtworkPage() {
   const [genre, setGenre] = useState("");
 
   // adding and removing a single path of a file to be uploaded
-  const [imageToUpload, setImageToUpload] = useState("");
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [imageData, setImageData] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]);
 
   // REACT SELECT OPTIONS
@@ -142,7 +144,7 @@ function CreateArtworkPage() {
   function handleImagesUrl(e) {
     // e.preventDefault();
 
-    const files = Array.from(e.target.files);
+    const files = Array.from(e);
     const newImageData = [...imageData, ...files];
     
     setImageData(newImageData);
@@ -194,7 +196,7 @@ function CreateArtworkPage() {
             console.log("successfully created a new artwork");
 
             console.log(newArtworkResponse);
-            navigate(`/artworks/${newArtwork._id}`);
+            navigate(`/artworks/${newArtworkResponse.data.newArtwork._id}`);
           }
           else{
             setErrorMessage("Please upload at least one image of your artwork")
@@ -295,7 +297,9 @@ function CreateArtworkPage() {
         <div className="create-artwork-img-section">
         <div className="file-input-container">
         <label htmlFor="images">Upload Images</label>
-          <input
+        <FileUploader handleFileUpload = {handleImagesUrl} />
+          {/* <input
+          ref={hiddenFileInput}
             name="images"
             className="file-input"
             type="file"
@@ -304,18 +308,21 @@ function CreateArtworkPage() {
             onChange={(e) => {
               handleImagesUrl(e);
             }}
-          />
+          /> */}
 
         </div>
           <div className="create-artwork-thumbnail-wrapper">
             {imagePreviews.map((preview, index) => (
               <div className="create-artwork-img-thumbnail" key={index}>
+              <div className="create-artwork-img-wrapper">
               <img
                 src={preview}
                 alt={`Preview ${index}`}
                 
               />
-              <button className="delete-img-button" onClick={()=>{handleDeleteImage(index)}}>x</button>
+
+              </div>
+              <button type="button" className="delete-img-button" onClick={()=>{handleDeleteImage(index)}}>x</button>
               </div>
             ))}
           </div>
