@@ -447,7 +447,7 @@ function BecomeArtistPage() {
         <label htmlFor="">Dimensions [cm]</label>
         <div className="create-dimensions-wrapper">
           <input
-            className="create-artwork-input input"
+            className="create-artwork-input input dimensions-input"
             type="number"
             required
             min={1}
@@ -458,7 +458,7 @@ function BecomeArtistPage() {
           />
           w
           <input
-            className="create-artwork-input input"
+            className="create-artwork-input input dimensions-input"
             type="number"
             required
             min={1}
@@ -469,7 +469,7 @@ function BecomeArtistPage() {
           />
           h
           <input
-            className="create-artwork-input input"
+            className="create-artwork-input input dimensions-input"
             type="number"
             min={0}
             value={dimensionsZ}

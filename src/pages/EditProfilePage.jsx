@@ -173,7 +173,7 @@ function EditProfilePage() {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      setIsLoading(true)
+      // setIsLoading(true)
 
       let updatedUser = {
         real_name: realName,
@@ -205,7 +205,7 @@ function EditProfilePage() {
         updatedUser
       );
 
-      setIsLoading(false)
+      // setIsLoading(false)
       console.log(updateResponse);
       navigate("/profile");
     } catch (err) {
@@ -243,8 +243,10 @@ function EditProfilePage() {
                   <div className="edit-profile-img-wrapper">
                     <img src={profileImg} alt="profile image" />
                   </div>
-
+                  <div className="file-input-container">
                   <FileUploader handleFileUpload={handleProfileImg} />
+
+                  </div>
                 </div>
                 <div className="edit-profile-text-wrapper">
                   <label htmlFor="">Name</label>

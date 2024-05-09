@@ -263,40 +263,40 @@ function CreateArtworkPage() {
           styles={selectStles}
         />
 
-        <label htmlFor="">Dimensions</label>
+        <label htmlFor="">Dimensions [cm]</label>
         <div className="create-dimensions-wrapper">
           <input
-            className="create-artwork-input input"
+            className="create-artwork-input input dimensions-input"
             type="number"
             value={dimensionsX}
             onChange={(e) => {
               setDimensionsX(e.target.value);
             }}
           />
-          x
+          w
           <input
-            className="create-artwork-input input"
+            className="create-artwork-input input dimensions-input"
             type="number"
             value={dimensionsY}
             onChange={(e) => {
               setDimensionsY(e.target.value);
             }}
           />
-          y
+          h
           <input
-            className="create-artwork-input input"
+            className="create-artwork-input input dimensions-input"
             type="number"
             value={dimensionsZ}
             onChange={(e) => {
               setDimensionsZ(e.target.value);
             }}
           />
-          z
+          d
         </div>
 
         <div className="create-artwork-img-section">
         <div className="file-input-container">
-        <label htmlFor="images">Upload Images</label>
+        <label htmlFor="images">Images (max. 5 files)</label>
         <FileUploader handleFileUpload = {handleImagesUrl} />
   
 

@@ -13,7 +13,7 @@ function FileUploader({handleFileUpload}){
     const handleChange = event => {
         event.preventDefault()
         const files = event.target.files;
-        handleFileUpload(files);                   // ADDED
+        handleFileUpload(files);
       };
 
 
@@ -23,7 +23,7 @@ function FileUploader({handleFileUpload}){
         className="button-upload button"
         onClick={(event)=>handleClick(event)} 
         >
-          Upload a file
+          Upload file
         </button>
 
         <input
