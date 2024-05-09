@@ -105,6 +105,7 @@ function FooterProfile(props) {
         >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/star-icon.png" alt="" />
+            <p className="footer-profile-icon-subtext">Favorites</p>
           </div>
         </Link>
         <Link
@@ -122,6 +123,7 @@ function FooterProfile(props) {
               </div>
             )}
             <img src="/img/bell-icon.png" alt="" />
+            <p className="footer-profile-icon-subtext">Notifications</p>
           </div>
         </Link>
         <Link
@@ -132,13 +134,15 @@ function FooterProfile(props) {
         >
           <div className="footer-profile-icon-wrapper">
             <img src="/img/question-icon.png" alt="" />
+            <p className="footer-profile-icon-subtext">FAQ</p>
           </div>
         </Link>
         <div
           onClick={handleMenuClick}
-          className={"footer-profile-icon-wrapper " + (showMenu && "rotated")}
+          className="footer-profile-icon-wrapper"
         >
-          <img src="/img/more-icon.png" alt="" />
+          <img src="/img/more-icon.png" alt="" className={"" + (showMenu && "rotated")}/>
+          <p className="footer-profile-icon-subtext">Options</p>
         </div>
       </div>
       {showMenu && profileMenuElement}
