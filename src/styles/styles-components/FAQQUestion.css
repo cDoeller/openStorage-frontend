@@ -4,7 +4,7 @@
   align-items: end;
 }
 .faq-question-headline {
-  background-color: var(--lime);
+  background-color: var(--grey);
   border-radius: 10px;
   padding: 1rem;
   font-weight: 500;
@@ -22,7 +22,7 @@
   display: none;
   width: 90%;
   box-sizing: border-box;
-  background-color: var(--grey);
+  background-color: var(--lime);
   hyphens: auto;
   border-radius: 0 0 10px 10px;
   font-style: italic;

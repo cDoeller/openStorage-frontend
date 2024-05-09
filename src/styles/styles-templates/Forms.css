@@ -108,3 +108,13 @@
   margin: 2rem 0;
   background-color: var(--lime);
 }
+
+.dimensions-input {
+  padding:1rem 0;
+  flex-grow: 1;
+  max-width: 5rem;
+}
+
+.file-input-container{
+  margin: 1rem 0 0 0;
+}
