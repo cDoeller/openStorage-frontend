@@ -140,4 +140,12 @@ input, button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  color: var(--black);
+}
+
+
+/* DESKTOP VERSION */
+
+@media only screen and (min-width: 450px) {
+
 }
