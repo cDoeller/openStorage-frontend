@@ -132,3 +132,12 @@ button {
 .italic{
   font-style: italic;
 }
+
+/* DISABLE SAFARI DEFAULT STYLES ON INPUTS */
+
+input, button {
+  /* border-radius: 0; */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
