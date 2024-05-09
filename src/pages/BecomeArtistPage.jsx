@@ -262,8 +262,8 @@ function BecomeArtistPage() {
 
       
 
-      setIsLoading(false)
-      console.log("is loading ?", isLoading)
+      // setIsLoading(false)
+      // console.log("is loading ?", isLoading)
 
       navigate(`/profile`);
 
@@ -276,7 +276,7 @@ function BecomeArtistPage() {
   return (
 <>
     {/* {isLoading && <Loading />} */}
-    {!isArtist && !isLoading && (
+    {!isArtist && (
       <>
     <div className="page-wrapper mobile-dvh">
       <div className="heading-wrapper">
@@ -294,7 +294,6 @@ function BecomeArtistPage() {
       <form
         className="form"
         onSubmit={(e) => {
-          setIsLoading(true);
           handleSubmit(e);
         }}
       >
@@ -417,7 +416,7 @@ function BecomeArtistPage() {
           styles={selectStles}
         />
 
-        <div className="create-artwork-img-section">
+        <div className="create-artwork-image-section">
           <div className="file-input-container">
             <label htmlFor="">Images (max. 5 files)</label>
             <FileUploader handleFileUpload={handleImagesUpload} />
