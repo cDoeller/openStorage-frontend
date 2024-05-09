@@ -26,6 +26,8 @@ function BecomeArtistPage() {
   // const [isLoading, setIsLoading] = useState(false)
   
   const navigate = useNavigate();
+
+  const [isForSale, setIsForSale] = useState(false)
   
   // console.log("is loading ?", isLoading)
   const [artistStatement, setArtistStatement] = useState("");
@@ -228,6 +230,7 @@ function BecomeArtistPage() {
         },
         medium: medium,
         genre: genre,
+        is_for_sale: isForSale
       };
 
       artworkData.images_url = cloudinaryResponse.data.fileUrls;
@@ -502,6 +505,11 @@ function BecomeArtistPage() {
           value={{ label: genre }}
           styles={selectStles}
         />
+
+        <div className="forsale">
+          <input type="checkbox" checked={isForSale} onChange={()=>{setIsForSale(!isForSale)}} />
+          <label htmlFor="forsale">Is this artwork for sale?</label>
+        </div>
 
         <button type="submit" className="button submit-button">Submit</button>
         {errorMessage && errorMessageElement}

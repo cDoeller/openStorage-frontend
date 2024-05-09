@@ -22,23 +22,24 @@ function EditArtworkPage() {
   );
 
   const [showPopup, setShowPopup] = useState(false);
-
+  
   const [artwork, setArtwork] = useState(null);
   const [cityOptions, setCityOptions] = useState([]);
-
+  
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(2024);
   const [city, setCity] = useState("");
   const [dimensionsX, setDimensionsX] = useState(0);
   const [dimensionsY, setDimensionsY] = useState(0);
   const [dimensionsZ, setDimensionsZ] = useState(0);
-
+  
   const [oldImages, setOldImages] = useState([]);
   const [newImages, setNewImages] = useState([]);
   const [imageData, setImageData] = useState([]);
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
-
+  const [isForSale, setIsForSale] = useState(null)
+  
   const navigate = useNavigate();
 
   // REACT SELECT OPTIONS
@@ -138,6 +139,7 @@ function EditArtworkPage() {
         setOldImages(initialArtwork.images_url);
         setMedium(initialArtwork.medium);
         setGenre(initialArtwork.genre);
+        setIsForSale(initialArtwork.is_for_sale)
       })
       .catch((err) => {
         console.log(err);
@@ -239,7 +241,7 @@ function EditArtworkPage() {
         // images_url: imagesUrl,
         medium: medium,
         genre: genre,
-        isForSale: artwork.isForSale,
+        is_for_sale:isForSale,
       };
 
       console.log("imageData ", imageData);
@@ -462,6 +464,12 @@ function EditArtworkPage() {
                 value={{ label: genre }}
                 styles={selectStles}
               />
+
+<div className="forsale">
+          <input type="checkbox" checked={isForSale} onChange={()=>{setIsForSale(!isForSale)}} />
+          <label htmlFor="forsale">Is this artwork for sale?</label>
+        </div>
+
               <div className="edit-artwork-button-wrapper">
                 <button
                   onClick={handleDeleteArtwork}
