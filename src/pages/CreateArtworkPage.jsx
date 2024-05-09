@@ -24,7 +24,7 @@ function CreateArtworkPage() {
   const [cityOptions, setCityOptions] = useState();
 
   const [title, setTitle] = useState("");
-  const [year, setYear] = useState(new Date());
+  const [year, setYear] = useState(null);
   
 
   const [city, setCity] = useState("");
@@ -141,10 +141,10 @@ function CreateArtworkPage() {
 
 
 
-  function handleImagesUrl(e) {
+  function handleImagesUrl(filesToUpload) {
     // e.preventDefault();
 
-    const files = Array.from(e);
+    const files = Array.from(filesToUpload);
     const newImageData = [...imageData, ...files];
     
     setImageData(newImageData);
@@ -298,17 +298,7 @@ function CreateArtworkPage() {
         <div className="file-input-container">
         <label htmlFor="images">Upload Images</label>
         <FileUploader handleFileUpload = {handleImagesUrl} />
-          {/* <input
-          ref={hiddenFileInput}
-            name="images"
-            className="file-input"
-            type="file"
-            accept=".jpg, .png"
-            multiple
-            onChange={(e) => {
-              handleImagesUrl(e);
-            }}
-          /> */}
+  
 
         </div>
           <div className="create-artwork-thumbnail-wrapper">

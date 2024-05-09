@@ -1,12 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+// import Loading from "../components/Loading"
 import { AuthContext } from "../context/auth.context";
 import "../styles/styles-pages/EditProfile.css";
 import userService from "../services/user.services";
 import uploadService from "../services/file-upload.services";
 import "../styles/styles-templates/Forms.css";
 import germanCities from "../data/cities-germany.json";
+import FileUploader from "../components/UploadButton";
 
 function EditProfilePage() {
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ function EditProfilePage() {
       <h3 className="page-error-messages">{errorMessage}</h3>
     </>
   );
+
+  // const [isLoading, setIsLoading] = useState(false)
 
   const [userInfo, setUserInfo] = useState({});
   const [addressCityOptions, setAddressCityOptions] = useState([]);
@@ -155,11 +159,11 @@ function EditProfilePage() {
   }, [user]);
 
 
-  function handleProfileImg(e) {
+  function handleProfileImg(newImg) {
     let imageToUpload = new FormData();
-    imageToUpload.append("images", e.target.files[0]);
+    imageToUpload.append("images", newImg[0]);
 
-    const preview = URL.createObjectURL(e.target.files[0]);
+    const preview = URL.createObjectURL(newImg[0]);
     console.log(preview);
     setProfileImg(preview);
 
@@ -169,6 +173,7 @@ function EditProfilePage() {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+      setIsLoading(true)
 
       let updatedUser = {
         real_name: realName,
@@ -200,6 +205,7 @@ function EditProfilePage() {
         updatedUser
       );
 
+      setIsLoading(false)
       console.log(updateResponse);
       navigate("/profile");
     } catch (err) {
@@ -212,6 +218,7 @@ function EditProfilePage() {
     <>
       {userInfo && (
         <div id="EditProfilePage" className="page-wrapper mobile-dvh">
+    {/* {isLoading && <Loading />} */}
           <div className="heading-wrapper">
             <h1 className="highlight">Edit Profile</h1>
             <button
@@ -237,15 +244,7 @@ function EditProfilePage() {
                     <img src={profileImg} alt="profile image" />
                   </div>
 
-                  <input
-                    name="profile-img"
-                    className="file-input edit-profile-image-file-input"
-                    type="file"
-                    accept=".jpg, .png"
-                    onChange={(e) => {
-                      handleProfileImg(e);
-                    }}
-                  />
+                  <FileUploader handleFileUpload={handleProfileImg} />
                 </div>
                 <div className="edit-profile-text-wrapper">
                   <label htmlFor="">Name</label>

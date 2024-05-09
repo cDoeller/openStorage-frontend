@@ -20,7 +20,7 @@ function FileUploader({handleFileUpload}){
     return (
       <>
         <button
-        className="button-upload"
+        className="button-upload button"
         onClick={(event)=>handleClick(event)} 
         >
           Upload a file
