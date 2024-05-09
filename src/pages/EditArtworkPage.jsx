@@ -298,7 +298,7 @@ function EditArtworkPage() {
             button={deleteButton}
           />
           <div className="heading-wrapper">
-            <h1 className="form-headline">Edit Artwork</h1>
+            <h1 className="form-headline highlight">Edit Artwork</h1>
             <button
               className="back-button"
               onClick={(e) => {
@@ -357,7 +357,7 @@ function EditArtworkPage() {
               <div className="edit-dimensions">
                 <input
                   required
-                  className="input"
+                  className="input dimensions-input"
                   type="number"
                   min={1}
                   value={dimensionsX}
@@ -368,7 +368,7 @@ function EditArtworkPage() {
                 w
                 <input
                   required
-                  className="input"
+                  className="input dimensions-input"
                   type="number"
                   min={1}
                   value={dimensionsY}
@@ -378,7 +378,7 @@ function EditArtworkPage() {
                 />
                 h
                 <input
-                  className="input"
+                  className="input dimensions-input"
                   type="number"
                   min={0}
                   value={dimensionsZ}
@@ -388,6 +388,7 @@ function EditArtworkPage() {
                 />
                 d
               </div>
+              
               <div className="edit-artwork-img-section">
                 <div className="file-input-container">
                   <label htmlFor="upload">Images (max. 5 files)</label>

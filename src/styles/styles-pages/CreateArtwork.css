@@ -29,6 +29,7 @@
 .create-dimensions-wrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .create-dimensions-wrapper > input {
