@@ -137,9 +137,9 @@ button {
 
 input, button {
   /* border-radius: 0; */
-  -webkit-appearance: none;
+  /* -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
+  appearance: none; */
   color: var(--black);
 }
 
