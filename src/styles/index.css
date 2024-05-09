@@ -142,3 +142,10 @@ input, button {
   appearance: none;
   color: var(--black);
 }
+
+
+/* DESKTOP VERSION */
+
+@media only screen and (min-width: 450px) {
+
+}
