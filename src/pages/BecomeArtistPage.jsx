@@ -5,9 +5,11 @@ import userService from "../services/user.services";
 import uploadService from "../services/file-upload.services";
 import artworksServices from "../services/artworks.services";
 import Select from "react-select";
+// import Loading from "../components/Loading"
 import "../styles/styles-templates/Forms.css";
 import "../styles/styles-pages/CreateArtwork.css";
 import citiesGermany from "../data/cities-germany.json";
+import FileUploader from "../components/UploadButton";
 
 function BecomeArtistPage() {
   const { user } = useContext(AuthContext);
@@ -20,8 +22,12 @@ function BecomeArtistPage() {
     </>
   );
 
+  
+  // const [isLoading, setIsLoading] = useState(false)
+  
   const navigate = useNavigate();
-
+  
+  // console.log("is loading ?", isLoading)
   const [artistStatement, setArtistStatement] = useState("");
   const [realName, setRealName] = useState("");
   const [street, setStreet] = useState("");
@@ -182,11 +188,11 @@ function BecomeArtistPage() {
     setImagePreviews(newImagePreviews);
   }
 
-  function handleImagesUpload(e) {
+  function handleImagesUpload(filesToUpload) {
     // e.preventDefault();
     setErrorMessage("")
 
-    const files = e.target.files;
+    const files = filesToUpload;
     const newImageData = [...files, ...imageData];
 
     setImageData(newImageData);
@@ -200,13 +206,14 @@ function BecomeArtistPage() {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-
+      
+      
       if(imageData.length > 0){
-        setErrorMessage("Missing images for artwork. Please upload at least 1 image.")
+        // setErrorMessage("Missing images for artwork. Please upload at least 1 image.")
       }
       const formData = new FormData();
       imageData.forEach((file) => formData.append("images", file));
-
+      
       const cloudinaryResponse = await uploadService.uploadImage(formData);
 
       let artworkData = {
@@ -253,6 +260,11 @@ function BecomeArtistPage() {
       );
       console.log("response from verification: ", verificationResponse);
 
+      
+
+      setIsLoading(false)
+      console.log("is loading ?", isLoading)
+
       navigate(`/profile`);
 
     } catch (err) {
@@ -263,8 +275,9 @@ function BecomeArtistPage() {
 
   return (
 <>
-    {!isArtist && (
-
+    {/* {isLoading && <Loading />} */}
+    {!isArtist && !isLoading && (
+      <>
     <div className="page-wrapper mobile-dvh">
       <div className="heading-wrapper">
         <h1 className="highlight form-headline">Verify Artist Account</h1>
@@ -281,6 +294,7 @@ function BecomeArtistPage() {
       <form
         className="form"
         onSubmit={(e) => {
+          setIsLoading(true);
           handleSubmit(e);
         }}
       >
@@ -405,23 +419,16 @@ function BecomeArtistPage() {
 
         <div className="create-artwork-img-section">
           <div className="file-input-container">
-            <label htmlFor="">Images</label>
-            <input
-              type="file"
-              className="file-input"
-              required
-              multiple
-              accept=".jpg, .png"
-              onChange={(e) => {
-                handleImagesUpload(e);
-              }}
-            />
+            <label htmlFor="">Images (max. 5 files)</label>
+            <FileUploader handleFileUpload={handleImagesUpload} />
             <div className="create-artwork-thumbnail-wrapper">
               {imagePreviews &&
                 imagePreviews.map((oneImage, index) => {
                   return (
                     <div key={index} className="create-artwork-img-thumbnail">
+                    <div className="create-artwork-img-wrapper">
                       <img src={oneImage} alt={title} />
+                    </div>
                       <button
                         type="button"
                         className="delete-img-button"
@@ -450,7 +457,7 @@ function BecomeArtistPage() {
               setDimensionsX(e.target.valueAsNumber);
             }}
           />
-          x
+          w
           <input
             className="create-artwork-input input"
             type="number"
@@ -461,7 +468,7 @@ function BecomeArtistPage() {
               setDimensionsY(e.target.valueAsNumber);
             }}
           />
-          y
+          h
           <input
             className="create-artwork-input input"
             type="number"
@@ -471,7 +478,7 @@ function BecomeArtistPage() {
               setDimensionsZ(e.target.valueAsNumber);
             }}
           />
-          z
+          d
         </div>
         {/* MEDIUM */}
         <label htmlFor="" className="filterinterface-form-label">
@@ -501,6 +508,7 @@ function BecomeArtistPage() {
         {errorMessage && errorMessageElement}
       </form>
     </div>
+      </>
     )}
 </>
   );

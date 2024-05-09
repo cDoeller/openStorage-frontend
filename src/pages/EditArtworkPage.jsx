@@ -8,6 +8,7 @@ import uploadService from "../services/file-upload.services";
 import "../styles/styles-pages/EditArtwork.css";
 import "../styles/styles-templates/Forms.css";
 import germanCities from "../data/cities-germany.json";
+import FileUploader from "../components/UploadButton";
 
 function EditArtworkPage() {
   const { user } = useContext(AuthContext);
@@ -150,10 +151,10 @@ function EditArtworkPage() {
     setCityOptions(formattedOptions);
   }, []);
 
-  function handleImagesUrl(e) {
+  function handleImagesUrl(filesToUpload) {
     // e.preventDefault();
 
-    const files = Array.from(e.target.files);
+    const files = Array.from(filesToUpload);
     const newImageData = [...imageData, ...files];
 
     const previewImages = newImageData.map((files) =>
@@ -203,27 +204,17 @@ function EditArtworkPage() {
         console.log(err);
       });
   }
-  function handleNo(e) {
-    e.preventDefault();
-    setShowPopup(false);
-  }
+
   const deleteButton = (
-    <div className="">
-      <button
+  
+      <button className="popup-button"
         onClick={(e) => {
           handleYes(e);
         }}
       >
         Yes
       </button>
-      <button
-        onClick={(e) => {
-          handleNo(e);
-        }}
-      >
-        No
-      </button>
-    </div>
+
   );
 
   function handleDeleteArtwork(e) {
@@ -362,7 +353,7 @@ function EditArtworkPage() {
               />
 
               {/* DIMENSIONS */}
-              <label htmlFor="">Dimensions</label>
+              <label htmlFor="">Dimensions [cm]</label>
               <div className="edit-dimensions">
                 <input
                   required
@@ -374,7 +365,7 @@ function EditArtworkPage() {
                     setDimensionsX(e.target.value);
                   }}
                 />
-                x
+                w
                 <input
                   required
                   className="input"
@@ -385,7 +376,7 @@ function EditArtworkPage() {
                     setDimensionsY(e.target.value);
                   }}
                 />
-                y
+                h
                 <input
                   className="input"
                   type="number"
@@ -395,21 +386,12 @@ function EditArtworkPage() {
                     setDimensionsZ(e.target.value);
                   }}
                 />
-                z
+                d
               </div>
               <div className="edit-artwork-img-section">
                 <div className="file-input-container">
-                  <label htmlFor="upload">Images</label>
-                  <input
-                    name="upload"
-                    className="file-input"
-                    type="file"
-                    accept=".jpg, .png"
-                    multiple
-                    onChange={(e) => {
-                      handleImagesUrl(e);
-                    }}
-                  />
+                  <label htmlFor="upload">Images (max. 5 files)</label>
+                  <FileUploader handleFileUpload = {handleImagesUrl} />
                 </div>
 
                 <div className="edit-artwork-thumbnail-wrapper">
