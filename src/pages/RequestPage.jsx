@@ -5,6 +5,7 @@ import artworksService from "../services/artworks.services";
 import { AuthContext } from "../context/auth.context";
 import rentalsService from "../services/rentals.services";
 import userService from "../services/user.services";
+import Select from "react-select";
 
 const minRentalWeeks = 4;
 
@@ -173,6 +174,51 @@ function RequestPage() {
     </>
   );
 
+  // React select transportation dropdown
+
+  let transportOptions = [
+    { value: "pickup", label: "pickup" },
+    { value: "delivery", label: "delivery" },
+  ];
+
+
+  // REACT SELECT STYLING
+  // https://react-select.com/styles#inner-components
+  const selectStles = {
+    control: (baseStyles, state) => ({
+      ...baseStyles,
+      border: "0",
+      outline: "red",
+      borderRadius: "10px",
+      boxShadow: "0 0 1rem var(--greydark)",
+      padding: "0.2rem",
+    }),
+    container: (baseStyles, state) => ({
+      ...baseStyles,
+      outline: "red",
+      border: "none",
+      borderRadius: "0",
+    }),
+    dropdownIndicator: (baseStyles, state) => ({
+      ...baseStyles,
+      border: "none",
+      outline: "none",
+      color: "black",
+    }),
+    menu: (baseStyles, state) => ({
+      ...baseStyles,
+      margin: "0",
+      borderRadius: "0",
+      maxHeight: "7rem",
+      overflow: "scroll",
+    }),
+  };
+
+  function handleTransportationSelectChange(selectedOption) {
+    setTransportation(selectedOption.value);
+  }
+
+
   return (
     <div className="page-wrapper request-wrapper">
       <h3 className="request-headline highlight">Request Details</h3>
@@ -233,7 +279,18 @@ function RequestPage() {
         </div>
 
         {/* Transportation*/}
+
         <label htmlFor="" className="request-artwork-form-label">
+          Transportation
+        </label>
+        <Select
+          options={transportOptions}
+          onChange={handleTransportationSelectChange}
+          value={{ label: transportation }}
+          styles={selectStles}
+        />
+
+        {/* <label htmlFor="" className="request-artwork-form-label">
           Transportation
           <select
             value={transportation}
@@ -255,7 +312,7 @@ function RequestPage() {
               Delivery
             </option>
           </select>
-        </label>
+        </label> */}
 
         {/* Transportation Details*/}
         {transportation === "delivery" ? deliveryDetailsElement : ""}
