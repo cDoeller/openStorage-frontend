@@ -33,6 +33,7 @@ function CreateArtworkPage() {
   const [dimensionsZ, setDimensionsZ] = useState(0);
   const [medium, setMedium] = useState("");
   const [genre, setGenre] = useState("");
+  const [isForSale, setIsForSale] = useState(false)
 
   // adding and removing a single path of a file to be uploaded
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -127,6 +128,9 @@ function CreateArtworkPage() {
     setCityOptions(cityNames);
   }, []);
 
+  function checkHandler(){
+    setIsForSale(!isForSale)
+  }
 
     function handleDeleteImage(index){
       const newImageData = [...imageData]
@@ -172,6 +176,7 @@ function CreateArtworkPage() {
           },
           medium: medium,
           genre: genre,
+          is_for_sale: isForSale
         };
         const uploadData = new FormData();
         
@@ -338,6 +343,11 @@ function CreateArtworkPage() {
           value={{ label: genre }}
           styles={selectStles}
         />
+        <div className="forsale">
+        <input name="forsale" className="" type="checkbox" checked={isForSale} onChange={checkHandler} />
+        <label htmlFor="forsale">Is this artwork for sale?</label>
+
+        </div>
 
         <button className="submit-button button">Submit</button>
         {errorMessage && errorMessageElement}
