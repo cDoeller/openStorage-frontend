@@ -173,7 +173,7 @@ function EditProfilePage() {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      setIsLoading(true)
+      // setIsLoading(true)
 
       let updatedUser = {
         real_name: realName,
